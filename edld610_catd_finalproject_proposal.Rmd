@@ -40,32 +40,6 @@ people <- data.frame(t(list.cbind(sw_people))) %>%
 head(people)
 ```
 
-### The Planets
-
-```{r load_planets_data, warning = FALSE}
-# load and format data
-planets <- data.frame(t(list.cbind(sw_planets))) %>%
-  as.tibble() %>%
-  select(name:population) %>%
-  mutate_if(is.list, ~(unlist(.))) %>%
-  mutate_all(~(na_if(., "unknown"))) %>%
-  mutate_at(vars(rotation_period,
-                 orbital_period,
-                 diameter,
-                 surface_water,
-                 population),
-            ~(as.numeric(.))) %>%
-  mutate(population_mils = population / 1000000,
-         au              = (((orbital_period / 365) ^ 2) ^ (1/3)), # calculate distance from sun accoridng to Kepler's 3rd law
-         gravity         = parse_number(as.character(gravity)),
-         g               = gravity * 9.8, # calculate force of gravity
-         radius          = diameter / 2, # calculate radius
-         mass            = (g * (radius^2)) / grav_constant) %>% #calculate planet mass
-  select(which(sapply(., is.character)), which(sapply(., is.numeric)))
-
-# look at the data
-head(planets)
-```
 
 ### The Starships
 
@@ -84,7 +58,8 @@ starships <- data.frame(t(list.cbind(sw_starships))) %>%
          passengers             = as.numeric(passengers),
          cargo_capacity         = as.numeric(cargo_capacity),
          hyperdrive_rating      = as.numeric(hyperdrive_rating),
-         mglt                   = as.numeric(mglt)) %>%
+         mglt                   = as.numeric(mglt),
+         starship_class         = as.factor(tolower(starship_class))) %>%
   separate(consumables, c("con_n", "con_unit"), sep = " ") %>%
   mutate(con_unit    = case_when(con_unit == "day"   ~ "1",
                                  con_unit == "week"  ~ "7",
@@ -92,18 +67,51 @@ starships <- data.frame(t(list.cbind(sw_starships))) %>%
                                  con_unit == "years" ~ "365"),
          consumables = as.numeric(con_n) * as.numeric(con_unit)) %>%
   select(-starts_with("con_")) %>%
-  select(which(sapply(., is.character)), which(sapply(., is.numeric)))
+  select(which(sapply(., is.character)), 
+         which(sapply(., is.factor)), 
+         which(sapply(., is.numeric)))
 
 # look at data
 head(starships) 
 ```
+
+
+### The Planets
+
+```{r load_planets_data, warning = FALSE}
+# load and format data
+planets <- data.frame(t(list.cbind(sw_planets))) %>%
+  as.tibble() %>%
+  select(name:population) %>%
+  mutate_if(is.list, ~(unlist(.))) %>%
+  mutate_all(~(na_if(., "unknown"))) %>%
+  mutate_at(vars(rotation_period,
+                 orbital_period,
+                 diameter,
+                 surface_water,
+                 population),
+            ~(as.numeric(.))) %>%
+  mutate(surface_water   = surface_water / 100,
+         population_mils = population / 1000000,
+         au              = (((orbital_period / 365) ^ 2) ^ (1/3)), # calculate distance from sun accoridng to Kepler's 3rd law
+         gravity         = parse_number(as.character(gravity)),
+         g               = gravity * 9.8, # calculate force of gravity
+         radius          = diameter / 2, # calculate radius
+         mass            = (g * (radius^2)) / grav_constant, #calculate planet mass
+         area            = pi * (radius^2)) %>% # calculate planet area
+  select(which(sapply(., is.character)), which(sapply(., is.numeric)))
+
+# look at the data
+head(planets)
+```
+
 
 ## The Visualizations
 
 ### The People
 
 ```{r visualization_1}
-# load and format data
+# people plot
 people %>%
   filter(gender == "male" | gender == "female" | gender == "droid") %>%
   group_by(gender) %>%
@@ -149,35 +157,68 @@ people %>%
     labs(title = "Average age of Star Wars characters for women, men, and droids at the Battle of Yavin",
            y = "Age (years)",
            x = "Gender",
-           legend = "Gender")
+           legend = "Gender",
+           caption = "Data from https://swapi.co.")
 ```
 
-**Idea**
+#### Idea
 
 Although not a great data/ink ratio, I believe the above figure would be memorable in displaying the ages of the characters in Starwars. I would like to add more design elements to the plot (e.g., a more detailed lightsaber hilt, a glow on top of the saber). It would also be good to add some text labels showing the actual ages of characters beside the bars. Yoda might also be an outlier, so it may be appropriate to eliminate him from the plot. 
 
-**Intended Audience** 
+#### Intended Audience
 
 The intended audience for this visualization are fans of Star Wars and the general public.
 
-**Intended Message**
+#### Intended Message
 
 Other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of female characters is so young compared to that of men. The recent movies have begun to include older women (e.g., Laura Dern), but this is partially due to the aging of actors that were in the original films (i.e., Carrie Fisher). Star Wars would benefit from including an array of ages in women akin to that in men.
 
 ```{r visualization_2}
-# load and format data
-planets %>%
+# starships plot
+starships %>%
+  group_by(starship_class) %>%
+  filter(!is.na(length),
+         n() > 1) %>%
+  summarize(len_m = mean(length),
+            len_sd = sd(length)) %>%
+  filter(!is.na(len_sd)) %>%
+    ggplot(aes(x = fct_reorder(starship_class, desc(len_m)), y = len_m)) +
+      geom_errorbar(aes(ymin = len_m - len_sd, ymax = len_m + len_sd), width = .5) +
+      geom_point(size = 5) +
+      geom_point(size = 3, shape = 13, color = "grey80") +
+      coord_flip() +
+      theme_bw() +
+      labs(title = "Average length of starship by ship class",
+           y = "Average Length (meters)",
+           x = "Ship class",
+           caption = "Data from https://swapi.co.")
 
-  ggplot(aes(x = au, y = population, size = diameter, color = surface_water)) +
-    geom_point(alpha = .7) +
+
+
+```
+
+
+
+
+```{r visualization_3}
+# planets plot
+planets %>%
+  filter(area < mean(area, na.rm = TRUE) + (sd(area, na.rm = TRUE) * 3)) %>%
+  ggplot(aes(x = au, y = surface_water, size = area)) +
+    geom_point(alpha = .8, color = "yellow") +
+    geom_smooth(method = "lm", se = FALSE, color = "yellow") +
     scale_color_gradient(high = "#0E0584", low = "#086703", na.value = "#AB8703") +
     theme(panel.background = element_rect(fill = "black"),
           panel.grid.major = element_line(size = .10),
           panel.grid.minor = element_line(size = .05)) +
-    xlim(0, 7.5) +
-    ylim(0, 30) +
-    labs(y = "Population (Billions)",
-         x = "Distance from the sun (AUs)")
+    scale_y_continuous(labels = scales::percent) +
+    xlim(.5,1.5) +
+    labs(title = "Distance from the sun and amount of surface water",
+         y = "Amount of surface water (%)",
+         x = "Distance from the sun (AUs)",
+         size = "Size",
+         caption = "Data from https://swapi.co")
+
 ```
 
 
