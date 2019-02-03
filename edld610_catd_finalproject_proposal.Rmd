@@ -5,7 +5,7 @@ date: "2/3/2019"
 output: html_document
 ---
 
-```{r load_packages, echo = FALSE}
+```{r load_packages, include = FALSE}
 # load necessary packages
 library(tidyverse)
 library(magrittr)
@@ -18,9 +18,11 @@ grav_constant <- 6.67408 * (10 ^ -11)
 
 ## The Data
 
-I would like to use three of the datasets from The Star Wars API (SWAPI): (1) the characters, (2) the planets, and (3) the starships. Fortunately, the `repurrrsive` package has the Star Wars datasets built in.
+I would like to use three of the datasets from The Star Wars API (SWAPI): (1) the characters, (2) the planets, and (3) the starships. Fortunately, the `repurrrsive` package contains the Star Wars datasets.
 
-```{r load_person_data}
+### The People
+
+```{r load_person_data, warning = FALSE}
 # load and format data
 people <- data.frame(t(list.cbind(sw_people))) %>%
   as.tibble() %>%
@@ -38,7 +40,9 @@ people <- data.frame(t(list.cbind(sw_people))) %>%
 head(people)
 ```
 
-```{r load_planets_data}
+### The Planets
+
+```{r load_planets_data, warning = FALSE}
 # load and format data
 planets <- data.frame(t(list.cbind(sw_planets))) %>%
   as.tibble() %>%
@@ -63,7 +67,9 @@ planets <- data.frame(t(list.cbind(sw_planets))) %>%
 head(planets)
 ```
 
-```{r load_starships_data}
+### The Starships
+
+```{r load_starships_data, warning = FALSE}
 # load and format data
 starships <- data.frame(t(list.cbind(sw_starships))) %>%
   as.tibble() %>%
@@ -92,40 +98,94 @@ starships <- data.frame(t(list.cbind(sw_starships))) %>%
 head(starships) 
 ```
 
-planets <- data.frame(t(list.cbind(sw_planets))) %>%
-  as.tibble()
+## The Visualizations
 
-starships <- data.frame(t(list.cbind(sw_starships))) %>%
-  as.tibble()
+### The People
 
-
-
-
-
-
-
-
-```{}
-
-
-
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r visualization_1}
+# load and format data
+people %>%
+  filter(gender == "male" | gender == "female" | gender == "droid") %>%
+  group_by(gender) %>%
+  summarise(m_age = mean(birth_year, na.rm = TRUE)) %>%
+  ggplot(aes(x = factor(gender), y = m_age, fill = factor(gender))) +
+    geom_col(width = 0.10) +
+    geom_col(width = 0.12, alpha = .6) +
+    geom_col(width = 0.14, alpha = .4) +
+    geom_col(width = 0.16, alpha = .2) +
+    geom_col(width = 0.18, alpha = .1) +
+    scale_fill_manual(values = c("#0FFF00", "#FF0000", "#000CFF")) +
+    geom_rect(aes(ymin = -10, 
+                  ymax = 0, 
+                  xmin = .95,
+                  xmax = 1.05),
+              fill = "gray30") +
+    geom_rect(aes(ymin = -10, 
+                  ymax = 0, 
+                  xmin = 1.95,
+                  xmax = 2.05),
+              fill = "gray30") +
+    geom_rect(aes(ymin = -10, 
+                  ymax = 0, 
+                  xmin = 2.95,
+                  xmax = 3.05),
+              fill = "gray30") +
+    geom_rect(aes(ymin = -5, 
+                  ymax = -20, 
+                  xmin = .94,
+                  xmax = 1.06),
+              fill = "gray30") +
+    geom_rect(aes(ymin = -5, 
+                  ymax = -20, 
+                  xmin = 1.94,
+                  xmax = 2.06),
+              fill = "gray30") +
+    geom_rect(aes(ymin = -5, 
+                  ymax = -20, 
+                  xmin = 2.94,
+                  xmax = 3.06),
+              fill = "gray30") +
+    theme_bw() +
+    labs(title = "Average age of Star Wars characters for women, men, and droids at the Battle of Yavin",
+           y = "Age (years)",
+           x = "Gender",
+           legend = "Gender")
 ```
 
-## Including Plots
+**Idea**
 
-You can also embed plots, for example:
+Although not a great data/ink ratio, I believe the above figure would be memorable in displaying the ages of the characters in Starwars. I would like to add more design elements to the plot (e.g., a more detailed lightsaber hilt, a glow on top of the saber). It would also be good to add some text labels showing the actual ages of characters beside the bars. Yoda might also be an outlier, so it may be appropriate to eliminate him from the plot. 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+**Intended Audience** 
+
+The intended audience for this visualization are fans of Star Wars and the general public.
+
+**Intended Message**
+
+Other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of female characters is so young compared to that of men. The recent movies have begun to include older women (e.g., Laura Dern), but this is partially due to the aging of actors that were in the original films (i.e., Carrie Fisher). Star Wars would benefit from including an array of ages in women akin to that in men.
+
+```{r visualization_2}
+# load and format data
+planets %>%
+
+  ggplot(aes(x = au, y = population, size = diameter, color = surface_water)) +
+    geom_point(alpha = .7) +
+    scale_color_gradient(high = "#0E0584", low = "#086703", na.value = "#AB8703") +
+    theme(panel.background = element_rect(fill = "black"),
+          panel.grid.major = element_line(size = .10),
+          panel.grid.minor = element_line(size = .05)) +
+    xlim(0, 7.5) +
+    ylim(0, 30) +
+    labs(y = "Population (Billions)",
+         x = "Distance from the sun (AUs)")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+
+
+
+
+
