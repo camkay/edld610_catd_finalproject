@@ -1,0 +1,131 @@
+---
+title: "edld610_catd_finalproject_proposal"
+author: "Cameron Kay"
+date: "2/3/2019"
+output: html_document
+---
+
+```{r load_packages, echo = FALSE}
+# load necessary packages
+library(tidyverse)
+library(magrittr)
+library(repurrrsive)
+library(rlist)
+
+# add gravitational constant
+grav_constant <- 6.67408 * (10 ^ -11)
+```
+
+## The Data
+
+I would like to use three of the datasets from The Star Wars API (SWAPI): (1) the characters, (2) the planets, and (3) the starships. Fortunately, the `repurrrsive` package has the Star Wars datasets built in.
+
+```{r load_person_data}
+# load and format data
+people <- data.frame(t(list.cbind(sw_people))) %>%
+  as.tibble() %>%
+  select(name:gender) %>%
+  mutate_if(is.list, ~(unlist(.))) %>%
+  mutate_all(~(na_if(., "unknown"))) %>%
+  mutate_at(vars(height,
+                 mass), 
+            ~(as.numeric(.))) %>%
+  mutate(birth_year = parse_number(as.character(birth_year)),
+         hair_color = if_else(gender == "n/a", "droid", hair_color),
+         gender     = if_else(gender == "n/a", "droid", gender))
+
+# look at the data
+head(people)
+```
+
+```{r load_planets_data}
+# load and format data
+planets <- data.frame(t(list.cbind(sw_planets))) %>%
+  as.tibble() %>%
+  select(name:population) %>%
+  mutate_if(is.list, ~(unlist(.))) %>%
+  mutate_all(~(na_if(., "unknown"))) %>%
+  mutate_at(vars(rotation_period,
+                 orbital_period,
+                 diameter,
+                 surface_water,
+                 population),
+            ~(as.numeric(.))) %>%
+  mutate(population_mils = population / 1000000,
+         au              = (((orbital_period / 365) ^ 2) ^ (1/3)), # calculate distance from sun accoridng to Kepler's 3rd law
+         gravity         = parse_number(as.character(gravity)),
+         g               = gravity * 9.8, # calculate force of gravity
+         radius          = diameter / 2, # calculate radius
+         mass            = (g * (radius^2)) / grav_constant) %>% #calculate planet mass
+  select(which(sapply(., is.character)), which(sapply(., is.numeric)))
+
+# look at the data
+head(planets)
+```
+
+```{r load_starships_data}
+# load and format data
+starships <- data.frame(t(list.cbind(sw_starships))) %>%
+  as.tibble() %>%
+  janitor::clean_names() %>%
+  select(name:starship_class) %>%
+  mutate_if(is.list, ~(unlist(.))) %>%
+  mutate_all(funs(na_if(., "unknown"))) %>%
+  mutate(max_atmosphering_speed = parse_number(max_atmosphering_speed),
+         cost_in_credits        = as.numeric(cost_in_credits),
+         length                 = as.numeric(length),
+         crew                   = as.numeric(crew),
+         passengers             = as.numeric(passengers),
+         cargo_capacity         = as.numeric(cargo_capacity),
+         hyperdrive_rating      = as.numeric(hyperdrive_rating),
+         mglt                   = as.numeric(mglt)) %>%
+  separate(consumables, c("con_n", "con_unit"), sep = " ") %>%
+  mutate(con_unit    = case_when(con_unit == "day"   ~ "1",
+                                 con_unit == "week"  ~ "7",
+                                 con_unit == "month" ~ "30",
+                                 con_unit == "years" ~ "365"),
+         consumables = as.numeric(con_n) * as.numeric(con_unit)) %>%
+  select(-starts_with("con_")) %>%
+  select(which(sapply(., is.character)), which(sapply(., is.numeric)))
+
+# look at data
+head(starships) 
+```
+
+planets <- data.frame(t(list.cbind(sw_planets))) %>%
+  as.tibble()
+
+starships <- data.frame(t(list.cbind(sw_starships))) %>%
+  as.tibble()
+
+
+
+
+
+
+
+
+```{}
+
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
