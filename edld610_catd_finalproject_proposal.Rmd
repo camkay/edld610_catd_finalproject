@@ -230,6 +230,7 @@ planets %>%
 
 #### Idea
 
+
 As interesting as I found the data in the first two plots and after tinkering around with the planets dataset, I think several plots could be devoted to this one dataset. Especially, given the ability of the visualizations to be framed around the common theme of astronomy (e.g., Keppler's third law, calculations of gravitational force). The present plot shows the relationship between a planet's surface water and its distance from the sun.
 
 #### Intended Audience
