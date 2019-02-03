@@ -192,12 +192,19 @@ starships %>%
            y = "Average Length (meters)",
            x = "Ship class",
            caption = "Data from https://swapi.co.")
-
-
-
 ```
 
+#### Idea
 
+Points and standard error bars have always looked like Tie Fighters to me, so I decided I would try to plot the length of a starship against the starship class. As would be expected yachts are the largest ships with assult starfighters being slightly larger than basic starfighters. Although I am quite happy with the plot, I believe the fonts and text elements could be greatly improved. Representing all ships as tie fighters also may be misleading. 
+
+#### Intended Audience
+
+The intended audience for this visualization again are people who like starwars but to appreciate the error bars some knowledge of statistics would likely be needed. 
+
+#### Intended Message
+
+That starship lengths differ by class and that the length of a yacht starship is far more variable than other starship classes. 
 
 
 ```{r visualization_3}
@@ -215,18 +222,20 @@ planets %>%
     xlim(.5,1.5) +
     labs(title = "Distance from the sun and amount of surface water",
          y = "Amount of surface water (%)",
-         x = "Distance from the sun (AUs)",
+         x = "Distance from star (Astronomical Units)",
          size = "Size",
          caption = "Data from https://swapi.co")
 
 ```
 
+#### Idea
 
+As interesting as I found the data in the first two plots and after tinkering around with the planets dataset, I think several plots could be devoted to this one dataset. Especially, given the ability of the visualizations to be framed around the common theme of astronomy (e.g., Keppler's third law, calculations of gravitational force). The present plot shows the relationship between a planet's surface water and its distance from the sun.
 
+#### Intended Audience
 
+Fans of Star Wars who are interested in astronomy. 
 
+#### Intended Message
 
-
-
-
-
+Planets farther from the sun seem to have more surface water, which seems to be consistent with our solar system. 
