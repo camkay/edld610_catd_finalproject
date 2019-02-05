@@ -179,11 +179,14 @@ starships %>%
   group_by(starship_class) %>%
   filter(!is.na(length),
          n() > 1) %>%
-  summarize(len_m = mean(length),
-            len_sd = sd(length)) %>%
+  summarize(len_m  = mean(length),
+            len_sd = sd(length),
+            len_n  = n()) %>%
   filter(!is.na(len_sd)) %>%
+  mutate(len_se = len_sd / sqrt(len_n)) %>%
     ggplot(aes(x = fct_reorder(starship_class, desc(len_m)), y = len_m)) +
-      geom_errorbar(aes(ymin = len_m - len_sd, ymax = len_m + len_sd), width = .5) +
+      geom_errorbar(aes(ymin = len_m - (len_se * 1.96), ymax = len_m + (len_se * 1.96)), 
+                    width = .5) +
       geom_point(size = 5) +
       geom_point(size = 3, shape = 13, color = "grey80") +
       coord_flip() +
