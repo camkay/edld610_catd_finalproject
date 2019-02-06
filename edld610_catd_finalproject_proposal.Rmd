@@ -2,7 +2,13 @@
 title: "edld610_catd_finalproject_proposal"
 author: "Cameron Kay"
 date: "2/3/2019"
-output: html_document
+output:
+  html_document:
+    highlight: espresso
+    theme: lumen
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
 ---
 
 ```{r load_packages, include = FALSE}
@@ -40,7 +46,6 @@ people <- data.frame(t(list.cbind(sw_people))) %>%
 head(people)
 ```
 
-
 ### The Starships
 
 ```{r load_starships_data, warning = FALSE}
@@ -75,7 +80,6 @@ starships <- data.frame(t(list.cbind(sw_starships))) %>%
 head(starships) 
 ```
 
-
 ### The Planets
 
 ```{r load_planets_data, warning = FALSE}
@@ -104,7 +108,6 @@ planets <- data.frame(t(list.cbind(sw_planets))) %>%
 # look at the data
 head(planets)
 ```
-
 
 ## The Visualizations
 
@@ -163,7 +166,7 @@ people %>%
 
 #### Idea
 
-Although not a great data/ink ratio, I believe the above figure would be memorable in displaying the ages of the characters in Starwars. I would like to add more design elements to the plot (e.g., a more detailed lightsaber hilt, a glow on top of the saber). It would also be good to add some text labels showing the actual ages of characters beside the bars. Yoda might also be an outlier, so it may be appropriate to eliminate him from the plot. 
+Although not a great data/ink ratio, I believe the above figure would be memorable in displaying the ages of the characters in Star Wars. I would like to add more design elements to the plot (e.g., a more detailed lightsaber hilt, a glow on top of the saber). It think it would also be informative to add some text labels showing the actual ages of characters beside the bars. Yoda is also an outlier, so it may be appropriate to eliminate him from the plot. 
 
 #### Intended Audience
 
@@ -171,7 +174,9 @@ The intended audience for this visualization are fans of Star Wars and the gener
 
 #### Intended Message
 
-Other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of female characters is so young compared to that of men. The recent movies have begun to include older women (e.g., Laura Dern), but this is partially due to the aging of actors that were in the original films (i.e., Carrie Fisher). Star Wars would benefit from including an array of ages in women akin to that in men.
+Other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of the female characters is so young compared to that of the male characters. It seems the recent movies have taken both incidental (e.g., Carrier Fisher) and deliberate (e.g., Laura Dern) steps to include older women. Star Wars would certainly benefit from being more inclusive when it comes to casting. 
+
+### The Starships
 
 ```{r visualization_2}
 # starships plot
@@ -199,18 +204,18 @@ starships %>%
 
 #### Idea
 
-Points and standard error bars have always looked like Tie Fighters to me, so I decided I would try to plot the length of a starship against the starship class. As would be expected yachts are the largest ships with assult starfighters being slightly larger than basic starfighters. Although I am quite happy with the plot, I believe the fonts and text elements could be greatly improved. Representing all ships as tie fighters also may be misleading. 
+Points and standard error bars have always looked like Tie Fighters to me, so I decided I would try to plot the length of a starship against the starship class. As would be expected yachts are the largest ships with assult starfighters being slightly larger than basic starfighters. Although I am quite happy with the plot, I believe the fonts and text elements could be greatly improved. Representing all ships as Tie Fighters also may be misleading. 
 
 #### Intended Audience
 
-The intended audience for this visualization again are people who like starwars but to appreciate the error bars some knowledge of statistics would likely be needed. 
+Again, the intended audience for this visualization are people who like Star Wars. To appreciate the error bars some knowledge of statistics would likely be needed, as well.  
 
 #### Intended Message
 
 That starship lengths differ by class and that the length of a yacht starship is far more variable than other starship classes. 
 
-
-```{r visualization_3}
+### The Planets
+```{r visualization_3, warning = FALSE}
 # planets plot
 planets %>%
   filter(area < mean(area, na.rm = TRUE) + (sd(area, na.rm = TRUE) * 3)) %>%
@@ -233,12 +238,11 @@ planets %>%
 
 #### Idea
 
-
-As interesting as I found the data in the first two plots and after tinkering around with the planets dataset, I think several plots could be devoted to this one dataset. Especially, given the ability of the visualizations to be framed around the common theme of astronomy (e.g., Keppler's third law, calculations of gravitational force). The present plot shows the relationship between a planet's surface water and its distance from the sun.
+As interesting as I found the data in the first two plots, I think several plots could be devoted to the planets dataset. Specifically, the visualizations could be framed around the common theme of astronomy, serving as an instructive tool for teaching concepts from astronomy (e.g., Keppler's third law, calculations of gravitational force). The present plot shows the relationship between a planet's surface water and its distance from the sun. I would like to add a solar system dataset to the Starwar's planets dataset and use facetwrap to provide a side by side comparison of fictional and non-fictional planets. 
 
 #### Intended Audience
 
-Fans of Star Wars who are interested in astronomy. 
+Fans of Star Wars or anyone who has an interest in astronomy or phyics.
 
 #### Intended Message
 
