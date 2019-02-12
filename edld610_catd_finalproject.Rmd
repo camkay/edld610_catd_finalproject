@@ -1,0 +1,256 @@
+---
+title: "edld610_catd_finalproject_proposal"
+author: "Cameron Kay"
+date: "2/3/2019"
+output:
+  html_document:
+    highlight: espresso
+    theme: lumen
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+---
+
+```{r load_packages, include = FALSE}
+# install necessary packages
+#devtools::install_github("moldach/vapoRwave")
+
+# load necessary packages
+library(tidyverse)
+library(magrittr)
+library(repurrrsive)
+library(rlist)
+library(vapoRwave)
+library(extrafont)
+
+# add gravitational constant
+grav_constant <- 6.67408 * (10 ^ -11)
+```
+
+## The Data
+
+I would like to use three of the datasets from The Star Wars API (SWAPI): (1) the characters, (2) the planets, and (3) the starships. Fortunately, the `repurrrsive` package contains the Star Wars datasets.
+
+### The People
+
+```{r load_person_data, warning = FALSE}
+# load and format data
+people <- data.frame(t(list.cbind(sw_people))) %>%
+  as.tibble() %>%
+  select(name:gender) %>%
+  mutate_if(is.list, ~(unlist(.))) %>%
+  mutate_all(~(na_if(., "unknown"))) %>%
+  mutate_at(vars(height,
+                 mass), 
+            ~(as.numeric(.))) %>%
+  mutate(birth_year = parse_number(as.character(birth_year)),
+         hair_color = if_else(gender == "n/a", "droid", hair_color),
+         gender     = if_else(gender == "n/a", "droid", gender))
+
+# look at the data
+head(people)
+```
+
+### The Starships
+
+```{r load_starships_data, warning = FALSE}
+# load and format data
+starships <- data.frame(t(list.cbind(sw_starships))) %>%
+  as.tibble() %>%
+  janitor::clean_names() %>%
+  select(name:starship_class) %>%
+  mutate_if(is.list, ~(unlist(.))) %>%
+  mutate_all(funs(na_if(., "unknown"))) %>%
+  mutate(max_atmosphering_speed = parse_number(max_atmosphering_speed),
+         cost_in_credits        = as.numeric(cost_in_credits),
+         length                 = as.numeric(length),
+         crew                   = as.numeric(crew),
+         passengers             = as.numeric(passengers),
+         cargo_capacity         = as.numeric(cargo_capacity),
+         hyperdrive_rating      = as.numeric(hyperdrive_rating),
+         mglt                   = as.numeric(mglt),
+         starship_class         = as.factor(tolower(starship_class))) %>%
+  separate(consumables, c("con_n", "con_unit"), sep = " ") %>%
+  mutate(con_unit    = case_when(con_unit == "day"   ~ "1",
+                                 con_unit == "week"  ~ "7",
+                                 con_unit == "month" ~ "30",
+                                 con_unit == "years" ~ "365"),
+         consumables = as.numeric(con_n) * as.numeric(con_unit)) %>%
+  select(-starts_with("con_")) %>%
+  select(which(sapply(., is.character)), 
+         which(sapply(., is.factor)), 
+         which(sapply(., is.numeric)))
+
+# look at data
+head(starships) 
+```
+
+### The Planets
+
+```{r load_planets_data, warning = FALSE}
+# load and format data
+planets <- data.frame(t(list.cbind(sw_planets))) %>%
+  as.tibble() %>%
+  select(name:population) %>%
+  mutate_if(is.list, ~(unlist(.))) %>%
+  mutate_all(~(na_if(., "unknown"))) %>%
+  mutate_at(vars(rotation_period,
+                 orbital_period,
+                 diameter,
+                 surface_water,
+                 population),
+            ~(as.numeric(.))) %>%
+  mutate(surface_water   = surface_water / 100,
+         population_mils = population / 1000000,
+         au              = (((orbital_period / 365) ^ 2) ^ (1/3)), # calculate distance from sun accoridng to Kepler's 3rd law
+         gravity         = parse_number(as.character(gravity)),
+         g               = gravity * 9.8, # calculate force of gravity
+         radius          = diameter / 2, # calculate radius
+         mass            = (g * (radius^2)) / grav_constant, #calculate planet mass
+         area            = pi * (radius^2)) %>% # calculate planet area
+  select(which(sapply(., is.character)), which(sapply(., is.numeric)))
+
+# look at the data
+head(planets)
+```
+
+## The Visualizations
+
+### The People
+
+```{r visualization_1}
+# people plot
+people %>%
+  filter(gender == "male" | gender == "female" | gender == "droid") %>%
+  group_by(gender) %>%
+  summarise(m_age = mean(birth_year, na.rm = TRUE)) %>%
+  ggplot(aes(x = factor(gender), y = m_age, fill = factor(gender))) +
+    geom_col(width = 0.10) +
+    geom_col(width = 0.12, alpha = .6) +
+    geom_col(width = 0.14, alpha = .4) +
+    geom_col(width = 0.16, alpha = .2) +
+    geom_col(width = 0.18, alpha = .1) +
+    scale_fill_manual(values = c("#0FFF00", "#FF0000", "#000CFF")) +
+    geom_rect(aes(ymin = -10, 
+                  ymax = 0, 
+                  xmin = .95,
+                  xmax = 1.05),
+              fill = "gray30") +
+    geom_rect(aes(ymin = -10, 
+                  ymax = 0, 
+                  xmin = 1.95,
+                  xmax = 2.05),
+              fill = "gray30") +
+    geom_rect(aes(ymin = -10, 
+                  ymax = 0, 
+                  xmin = 2.95,
+                  xmax = 3.05),
+              fill = "gray30") +
+    geom_rect(aes(ymin = -5, 
+                  ymax = -20, 
+                  xmin = .94,
+                  xmax = 1.06),
+              fill = "gray30") +
+    geom_rect(aes(ymin = -5, 
+                  ymax = -20, 
+                  xmin = 1.94,
+                  xmax = 2.06),
+              fill = "gray30") +
+    geom_rect(aes(ymin = -5, 
+                  ymax = -20, 
+                  xmin = 2.94,
+                  xmax = 3.06),
+              fill = "gray30") +
+    theme_bw() +
+    labs(title = "Average age of Star Wars characters for women, men, and droids at the Battle of Yavin",
+           y = "Age (years)",
+           x = "Gender",
+           legend = "Gender",
+           caption = "Data from https://swapi.co.")
+```
+
+#### Idea
+
+Although not a great data/ink ratio, I believe the above figure would be memorable in displaying the ages of the characters in Star Wars. I would like to add more design elements to the plot (e.g., a more detailed lightsaber hilt, a glow on top of the saber). It think it would also be informative to add some text labels showing the actual ages of characters beside the bars. Yoda is also an outlier, so it may be appropriate to eliminate him from the plot. 
+
+#### Intended Audience
+
+The intended audience for this visualization are fans of Star Wars and the general public.
+
+#### Intended Message
+
+Other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of the female characters is so young compared to that of the male characters. It seems the recent movies have taken both incidental (e.g., Carrier Fisher) and deliberate (e.g., Laura Dern) steps to include older women. Star Wars would certainly benefit from being more inclusive when it comes to casting. 
+
+### The Starships
+
+```{r visualization_2}
+# starships plot
+starships %>%
+  group_by(starship_class) %>%
+  filter(!is.na(length),
+         n() > 1) %>%
+  summarize(len_m  = mean(length),
+            len_sd = sd(length),
+            len_n  = n()) %>%
+  filter(!is.na(len_sd)) %>%
+  mutate(len_se = len_sd / sqrt(len_n)) %>%
+    ggplot(aes(x = fct_reorder(starship_class, desc(len_m)), y = len_m)) +
+      geom_errorbar(aes(ymin = len_m - (len_se * 1.96), ymax = len_m + (len_se * 1.96)), 
+                    width = .5, color = "grey30", lwd = 1.2) +
+      geom_point(size = 5, color = "grey30") +
+      geom_point(size = 3, shape = 13, color = "grey60") +
+      coord_flip() +
+      theme_bw() +
+      labs(title = "Average length of starship by ship class",
+           y = "Average Length in Meters",
+           x = "Ship class",
+           caption = "Data from https://swapi.co.") + 
+        new_retro(font = "Alien Encounters Solid") + 
+        scale_colour_newRetro()
+```
+
+#### Idea
+
+Points and standard error bars have always looked like Tie Fighters to me, so I decided I would try to plot the length of a starship against the starship class. As would be expected yachts are the largest ships with assult starfighters being slightly larger than basic starfighters. Although I am quite happy with the plot, I believe the fonts and text elements could be greatly improved. Representing all ships as Tie Fighters also may be misleading. 
+
+#### Intended Audience
+
+Again, the intended audience for this visualization are people who like Star Wars. To appreciate the error bars some knowledge of statistics would likely be needed, as well.  
+
+#### Intended Message
+
+That starship lengths differ by class and that the length of a yacht starship is far more variable than other starship classes. 
+
+### The Planets
+```{r visualization_3, warning = FALSE}
+# planets plot
+planets %>%
+  filter(area < mean(area, na.rm = TRUE) + (sd(area, na.rm = TRUE) * 3)) %>%
+  ggplot(aes(x = au, y = surface_water, size = area)) +
+    geom_point(alpha = .8, color = "yellow") +
+    geom_smooth(method = "lm", se = FALSE, color = "yellow") +
+    scale_color_gradient(high = "#0E0584", low = "#086703", na.value = "#AB8703") +
+    theme(panel.background = element_rect(fill = "black"),
+          panel.grid.major = element_line(size = .10),
+          panel.grid.minor = element_line(size = .05)) +
+    scale_y_continuous(labels = scales::percent) +
+    xlim(.5,1.5) +
+    labs(title = "Distance from the sun and amount of surface water",
+         y = "Amount of surface water (%)",
+         x = "Distance from star (Astronomical Units)",
+         size = "Size",
+         caption = "Data from https://swapi.co")
+
+```
+
+#### Idea
+
+As interesting as I found the data in the first two plots, I think several plots could be devoted to the planets dataset. Specifically, the visualizations could be framed around the common theme of astronomy, serving as an instructive tool for teaching concepts from astronomy (e.g., Keppler's third law, calculations of gravitational force). The present plot shows the relationship between a planet's surface water and its distance from the sun. I would like to add a solar system dataset to the Starwar's planets dataset and use facetwrap to provide a side by side comparison of fictional and non-fictional planets. 
+
+#### Intended Audience
+
+Fans of Star Wars or anyone who has an interest in astronomy or phyics.
+
+#### Intended Message
+
+Planets farther from the sun seem to have more surface water, which seems to be consistent with our solar system. 
