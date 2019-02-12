@@ -205,8 +205,9 @@ starships %>%
            y = "Average Length in Meters",
            x = "Ship class",
            caption = "Data from https://swapi.co.") + 
-        new_retro(font = "Alien Encounters Solid") + 
-        scale_colour_newRetro()
+      new_retro(font = "Alien Encounters Solid",
+                main.text.color  = "#ff3d94",
+                panel.grid.color = "#ff3d94")
 ```
 
 #### Idea
