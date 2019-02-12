@@ -228,20 +228,21 @@ That starship lengths differ by class and that the length of a yacht starship is
 planets %>%
   filter(area < mean(area, na.rm = TRUE) + (sd(area, na.rm = TRUE) * 3)) %>%
   ggplot(aes(x = au, y = surface_water, size = area)) +
-    geom_point(alpha = .8, color = "yellow") +
-    geom_smooth(method = "lm", se = FALSE, color = "yellow") +
+    geom_point(alpha = .6, color = "cornflowerblue") +
+    geom_smooth(method = "lm", se = FALSE, color = "cornflowerblue") +
     scale_color_gradient(high = "#0E0584", low = "#086703", na.value = "#AB8703") +
-    theme(panel.background = element_rect(fill = "black"),
-          panel.grid.major = element_line(size = .10),
-          panel.grid.minor = element_line(size = .05)) +
     scale_y_continuous(labels = scales::percent) +
     xlim(.5,1.5) +
     labs(title = "Distance from the sun and amount of surface water",
          y = "Amount of surface water (%)",
          x = "Distance from star (Astronomical Units)",
          size = "Size",
-         caption = "Data from https://swapi.co")
-
+         caption = "Data from https://swapi.co") +
+    new_retro(font = "Andale Mono",
+              main.text.color  = "#ff3d94",
+              panel.grid.color = "#ff3d94") +
+    theme(legend.position = "none") +
+    scale_colour_newRetro()
 ```
 
 #### Idea
