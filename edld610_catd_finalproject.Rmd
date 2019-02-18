@@ -230,6 +230,9 @@ Other than wanting to convey the average difference in ages among genders in the
 
 ```{r visualization_2}
 # create stars data
+stars_data <- tibble(x     = sample(seq(from = 0,   to = 4,  by = .0001), 500),
+                     y     = sample(seq(from = 0,   to = 80, by = .0001), 500),
+                     trans = sample(seq(from = .1, to = .9,   by = .0001), 500))
 
 # starships plot
 starships %>%
@@ -246,7 +249,11 @@ starships %>%
                         ymax = len_m + (len_se * qnorm(.975))), 
                     width = .5, color = "grey30", lwd = 1.2) +
       geom_point(size = 5, color = "grey30") +
+      geom_point(size = 2, color = "grey10") +
       geom_point(size = 3, shape = 13, color = "grey60") +
+      geom_point(data = stars_data, aes(x = x, y = y, alpha = trans), 
+                 color = "white",
+                 size = .001) +
       coord_flip() +
       theme_bw() +
       labs(title = "Average length of starship by ship class",
@@ -255,7 +262,9 @@ starships %>%
            caption = "Data from https://swapi.co.") + 
       new_retro(font = "Alien Encounters Solid",
                 main.text.color  = "#ff3d94",
-                panel.grid.color = "#ff3d94")
+                panel.grid.color = "#ff3d94",
+                legend.position = "none") +
+      scale_y_continuous(limits = c(0,80), expand = expand_scale(mult = c(0, 0)))
 ```
 
 #### Idea
