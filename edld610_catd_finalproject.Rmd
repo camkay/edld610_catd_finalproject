@@ -229,6 +229,8 @@ Other than wanting to convey the average difference in ages among genders in the
 ### The Starships
 
 ```{r visualization_2}
+# create stars data
+
 # starships plot
 starships %>%
   group_by(starship_class) %>%
@@ -240,7 +242,8 @@ starships %>%
   filter(!is.na(len_sd)) %>%
   mutate(len_se = len_sd / sqrt(len_n)) %>%
     ggplot(aes(x = fct_reorder(starship_class, desc(len_m)), y = len_m)) +
-      geom_errorbar(aes(ymin = len_m - (len_se * 1.96), ymax = len_m + (len_se * 1.96)), 
+      geom_errorbar(aes(ymin = len_m - (len_se * qnorm(.975)), 
+                        ymax = len_m + (len_se * qnorm(.975))), 
                     width = .5, color = "grey30", lwd = 1.2) +
       geom_point(size = 5, color = "grey30") +
       geom_point(size = 3, shape = 13, color = "grey60") +
@@ -288,6 +291,20 @@ planets %>%
               panel.grid.color = "#ff3d94") +
     theme(legend.position = "none") +
     scale_colour_newRetro()
+
+# with ggthemeassist
+planets %>%
+  filter(area < mean(area, na.rm = TRUE) + (sd(area, na.rm = TRUE) * 3)) %>%
+  ggplot(aes(x = au, y = surface_water, size = area)) +
+    geom_point(alpha = .6) +
+    geom_smooth(method = "lm", se = FALSE) +
+    scale_y_continuous(labels = scales::percent) +
+    xlim(.5,1.5) +
+    labs(title = "Distance from the sun and amount of surface water",
+         y = "Amount of surface water (%)",
+         x = "Distance from star (Astronomical Units)",
+         size = "Size",
+         caption = "Data from https://swapi.co")
 ```
 
 #### Idea
