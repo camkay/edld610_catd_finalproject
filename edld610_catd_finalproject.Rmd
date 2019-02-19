@@ -298,9 +298,12 @@ starships %>%
             axis.title = element_text(face = "bold", colour = "deeppink2"), 
             axis.text = element_text(size = 10, face = "bold", colour = "deeppink2"), 
             plot.title = element_text(face = "bold", colour = "deeppink2"), 
-                                      panel.background = element_rect(fill = "#000000"), 
-                                      plot.background = element_rect(fill = "#111111"), 
-                                      legend.position = "none")
+            panel.background = element_rect(fill = "#000000"), 
+            plot.background = element_rect(fill = "#111111", color = "000000"), 
+            legend.position = "none",
+            panel.border = element_rect(colour = "deeppink2"),
+            plot.margin = unit(c(.5,.5,.5,.5), "cm"),
+            plot.caption = element_text(face = "bold", colour = "deeppink2"))
 ```
 
 #### Idea
