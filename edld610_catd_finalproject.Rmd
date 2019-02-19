@@ -258,13 +258,49 @@ starships %>%
       theme_bw() +
       labs(title = "Average length of starship by ship class",
            y = "Average Length in Meters",
-           x = "Ship class",
+           x = "Class",
            caption = "Data from https://swapi.co.") + 
-      new_retro(font = "Alien Encounters Solid",
+      new_retro(font = "System Font",
                 main.text.color  = "#ff3d94",
                 panel.grid.color = "#ff3d94",
                 legend.position = "none") +
       scale_y_continuous(limits = c(0,80), expand = expand_scale(mult = c(0, 0)))
+
+starships %>%
+  group_by(starship_class) %>%
+  filter(!is.na(length),
+         n() > 1) %>%
+  summarize(len_m  = mean(length),
+            len_sd = sd(length),
+            len_n  = n()) %>%
+  filter(!is.na(len_sd)) %>%
+  mutate(starship_class = str_to_title(starship_class)) %>%
+  mutate(len_se = len_sd / sqrt(len_n)) %>%
+    ggplot(aes(x = fct_reorder(starship_class, desc(len_m)), y = len_m)) +
+      geom_errorbar(aes(ymin = len_m - (len_se * qnorm(.975)), 
+                        ymax = len_m + (len_se * qnorm(.975))), 
+                    width = .5, color = "grey30", lwd = 1.2) +
+      geom_point(data = stars_data, aes(x = x, y = y, alpha = trans), 
+               color = "white",
+               size = .001) +
+      geom_point(size = 5, color = "grey30") +
+      geom_point(size = 2, color = "grey10") +
+      geom_point(size = 3, shape = 13, color = "grey60") +
+      coord_flip() +
+      theme_bw() +
+      labs(title = "Average length of starship by ship class",
+           y = "Average Length in Meters",
+           x = "Class",
+           caption = "Data from https://swapi.co.") + 
+      scale_y_continuous(limits = c(0,80), expand = expand_scale(mult = c(0, 0))) + 
+      theme(panel.grid.major = element_line(colour = "deeppink4", linetype = "dotted"), 
+            panel.grid.minor = element_line(colour = "deeppink4", size = 4.9, linetype = "blank"), 
+            axis.title = element_text(face = "bold", colour = "deeppink2"), 
+            axis.text = element_text(size = 10, face = "bold", colour = "deeppink2"), 
+            plot.title = element_text(face = "bold", colour = "deeppink2"), 
+                                      panel.background = element_rect(fill = "#000000"), 
+                                      plot.background = element_rect(fill = "#111111"), 
+                                      legend.position = "none")
 ```
 
 #### Idea
