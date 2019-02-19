@@ -25,6 +25,21 @@ library(extrafont)
 
 # add gravitational constant
 grav_constant <- 6.67408 * (10 ^ -11)
+
+#create my theme
+my_theme <- theme_bw() +
+  theme(panel.grid.major = element_line(colour = "deeppink4", linetype = "dotted"), 
+                  panel.grid.minor = element_line(colour = "deeppink4", size = 4.9, linetype = "blank"), 
+                  axis.title = element_text(face = "bold", colour = "deeppink2"), 
+                  axis.text = element_text(size = 10, face = "bold", colour = "deeppink2"), 
+                  plot.title = element_text(face = "bold", colour = "deeppink2"), 
+                  panel.background = element_rect(fill = "#000000"), 
+                  plot.background = element_rect(fill = "#111111", color = "000000"), 
+                  legend.position = "none",
+                  panel.border = element_rect(colour = "deeppink2"),
+                  plot.margin = unit(c(.5,.5,.5,.5), "cm"),
+                  plot.caption = element_text(face = "bold", colour = "deeppink2"))
+
 ```
 
 ## The Data
@@ -176,11 +191,11 @@ geom_hilt <- function(column = NULL) {
 # create sabers
 geom_saber <- function() {
   list(
-       geom_col(width = 0.08),
-       geom_col(aes(y = m_age * 1.001), width = 0.10, alpha = .6),
-       geom_col(aes(y = m_age * 1.002), width = 0.12, alpha = .4),
-       geom_col(aes(y = m_age * 1.004), width = 0.14, alpha = .2),
-       geom_col(aes(y = m_age * 1.008), width = 0.16, alpha = .1),
+       geom_col(width = 0.060),
+       geom_col(width = 0.075, alpha = .6),
+       geom_col(width = 0.090, alpha = .4),
+       geom_col(width = 0.105, alpha = .2),
+       geom_col(width = 0.120, alpha = .1),
        geom_point(aes(color = gender), size = 5),
        geom_point(aes(color = gender), size = 6, alpha = .6),
        geom_point(aes(color = gender), size = 7, alpha = .4),
@@ -201,16 +216,15 @@ people %>%
     geom_saber() +
     scale_fill_manual(values = c("#0FFF00", "#FF0000")) +
     scale_color_manual(values = c("#0FFF00", "#FF0000")) +
+    scale_size_continuous() +
     geom_hilt(column = 1) +
     geom_hilt(column = 2) +
-    theme_bw() +
     labs(title = "Average age and gender",
            y = "Age (years)",
            x = "Gender",
            legend = "Gender",
            caption = "Data from https://swapi.co.") +
-    new_retro(font = "System Font") +
-    theme(legend.position = "none", panel.grid.major.x = element_blank())
+    my_theme
 
 ```
 
@@ -293,17 +307,7 @@ starships %>%
            x = "Class",
            caption = "Data from https://swapi.co.") + 
       scale_y_continuous(limits = c(0,80), expand = expand_scale(mult = c(0, 0))) + 
-      theme(panel.grid.major = element_line(colour = "deeppink4", linetype = "dotted"), 
-            panel.grid.minor = element_line(colour = "deeppink4", size = 4.9, linetype = "blank"), 
-            axis.title = element_text(face = "bold", colour = "deeppink2"), 
-            axis.text = element_text(size = 10, face = "bold", colour = "deeppink2"), 
-            plot.title = element_text(face = "bold", colour = "deeppink2"), 
-            panel.background = element_rect(fill = "#000000"), 
-            plot.background = element_rect(fill = "#111111", color = "000000"), 
-            legend.position = "none",
-            panel.border = element_rect(colour = "deeppink2"),
-            plot.margin = unit(c(.5,.5,.5,.5), "cm"),
-            plot.caption = element_text(face = "bold", colour = "deeppink2"))
+      my_theme
 ```
 
 #### Idea
