@@ -25,8 +25,10 @@ library(rlist)
 # add gravitational constant
 grav_constant <- 6.67408 * (10 ^ -11)
 
-# create my theme
+# load my functions
 source(here("functions/my_theme.R"))
+source(here("functions/geom_saberhilt.R"))
+source(here("functions/geom_saberblade.R"))
 
 # set figure output dimension
 knitr::opts_chunk$set(fig.width  = 12, 
@@ -125,91 +127,25 @@ head(planets)
 ### The People
 
 ```{r visualization_1}
-# create hilts
-geom_hilt <- function(column = NULL) {
-  list(
-    geom_rect(aes(ymin = -10, 
-                  ymax = 0, 
-                  xmin = column - .05,
-                  xmax = column + .05),
-              fill = "gray60",
-              colour = "black"),
-    geom_rect(aes(ymin = -5, 
-                  ymax = -20, 
-                  xmin = column - .04,
-                  xmax = column + .04),
-              fill = "gray60",
-              colour = "black"),
-    geom_rect(aes(ymin = -4, 
-                  ymax = -9, 
-                  xmin = column - .055,
-                  xmax = column + .055),
-              fill = "gray60",
-              colour = "black"),
-    geom_rect(aes(ymin = -12, 
-                  ymax = -20, 
-                  xmin = column - .05,
-                  xmax = column + .05),
-              fill = "gray60",
-              colour = "black"),
-    geom_rect(aes(ymin = -1, 
-                  ymax = 0, 
-                  xmin = column - .06,
-                  xmax = column + .06),
-              fill = "gray60",
-              colour = "black"),
-    geom_rect(aes(ymin = -3, 
-                  ymax = -4, 
-                  xmin = column - .06,
-                  xmax = column + .06),
-              fill = "gray60",
-              colour = "black"),
-    geom_rect(aes(ymin = -12, 
-                ymax = -13, 
-                xmin = column - .06,
-                xmax = column + .06),
-            fill = "gray60",
-              colour = "black"),
-    geom_rect(aes(ymin = -14, 
-                  ymax = -17, 
-                  xmin = column - .000,
-                  xmax = column + .055),
-              fill = "gray60",
-              colour = "black")
-  )
-}
-
-# create sabers
-geom_saber <- function() {
-  list(
-       geom_col(width = 0.060),
-       geom_col(width = 0.075, alpha = .6),
-       geom_col(width = 0.090, alpha = .4),
-       geom_col(width = 0.105, alpha = .2),
-       geom_col(width = 0.120, alpha = .1),
-       geom_point(aes(colour = gender), size = 5),
-       geom_point(aes(colour = gender), size = 6, alpha = .6),
-       geom_point(aes(colour = gender), size = 7, alpha = .4),
-       geom_point(aes(colour = gender), size = 8, alpha = .2),
-       geom_point(aes(colour = gender), size = 9, alpha = .1)
-  )
-}
-
-
 # people plot
 people %>%
   filter(gender == "male" | gender == "female") %>%
   group_by(gender) %>%
-  summarise(m_age = mean(birth_year, na.rm = TRUE)) %>%
+  summarise(m_age   = mean(birth_year, na.rm = TRUE),
+            m_age_r = round(m_age, 2),
+            m_age_r = paste(m_age_r, "YEARS")) %>%
   mutate(gender = str_to_title(gender),
          gender = as.factor(gender)) %>%
   ggplot(aes(x = gender, y = m_age, fill = gender)) +
-    geom_saber() +
+    geom_saberblade() +
     scale_fill_manual(values = c("#0FFF00", "#FF0000")) +
     scale_colour_manual(values = c("#0FFF00", "#FF0000")) +
-    scale_size_continuous() +
-    geom_hilt(column = 1) +
-    geom_hilt(column = 2) +
+    scale_size_continuous(aes(label = )) +
+    geom_saberhilt(column = 1) +
+    geom_saberhilt(column = 2) +
+    geom_text(aes(label = m_age_r, color = gender), 
+              size = 6, 
+              position = position_nudge(x = -.09, y = -8)) +
     labs(title = "Average age and gender",
            y = "Age (years)",
            x = "Gender",
