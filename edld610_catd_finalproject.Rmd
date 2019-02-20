@@ -30,9 +30,9 @@ grav_constant <- 6.67408 * (10 ^ -11)
 my_theme <- theme_bw() +
   theme(panel.grid.major = element_line(colour = "deeppink4", linetype = "dotted"), 
                   panel.grid.minor = element_line(colour = "deeppink4", size = 4.9, linetype = "blank"), 
-                  axis.title = element_text(face = "bold", colour = "deeppink2"), 
-                  axis.text = element_text(size = 10, face = "bold", colour = "deeppink2"), 
-                  plot.title = element_text(face = "bold", colour = "deeppink2"), 
+                  axis.title = element_text(face = "bold", colour = "deeppink2", size = 20), 
+                  axis.text = element_text(size = 15, face = "bold", colour = "deeppink2"), 
+                  plot.title = element_text(size = 20, face = "bold", colour = "deeppink2"), 
                   panel.background = element_rect(fill = "#000000"), 
                   plot.background = element_rect(fill = "#111111", color = "000000"), 
                   legend.position = "none",
@@ -40,6 +40,7 @@ my_theme <- theme_bw() +
                   plot.margin = unit(c(.5,.5,.5,.5), "cm"),
                   plot.caption = element_text(face = "bold", colour = "deeppink2"))
 
+knitr::opts_chunk$set(fig.width=12, fig.height=8)
 ```
 
 ## The Data
