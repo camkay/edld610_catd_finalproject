@@ -20,25 +20,31 @@ library(tidyverse)
 library(magrittr)
 library(repurrrsive)
 library(rlist)
-library(vapoRwave)
-library(extrafont)
 
 # add gravitational constant
 grav_constant <- 6.67408 * (10 ^ -11)
 
-#create my theme
+# create my theme
 my_theme <- theme_bw() +
-  theme(panel.grid.major = element_line(colour = "deeppink4", linetype = "dotted"), 
-                  panel.grid.minor = element_line(colour = "deeppink4", size = 4.9, linetype = "blank"), 
-                  axis.title = element_text(face = "bold", colour = "deeppink2", size = 20), 
-                  axis.text = element_text(size = 15, face = "bold", colour = "deeppink2"), 
-                  plot.title = element_text(size = 20, face = "bold", colour = "deeppink2"), 
-                  panel.background = element_rect(fill = "#000000"), 
-                  plot.background = element_rect(fill = "#111111", color = "000000"), 
-                  legend.position = "none",
-                  panel.border = element_rect(colour = "deeppink2"),
-                  plot.margin = unit(c(.5,.5,.5,.5), "cm"),
-                  plot.caption = element_text(face = "bold", colour = "deeppink2"))
+  theme(
+        # text
+        plot.title   = element_text(face = "bold", size = 25, colour = "deeppink2"), 
+        axis.title   = element_text(face = "bold", size = 20, colour = "deeppink2"), 
+        axis.text    = element_text(face = "bold", size = 20, colour = "deeppink2"), 
+        plot.caption = element_text(face = "bold", size = 15, colour = "deeppink2"),
+        # grid 
+        panel.grid.major = element_line(colour = "deeppink4", linetype = "dotted"), 
+        panel.grid.minor = element_line(colour = "deeppink4", linetype = "blank", size = 4.9), 
+        # panel
+        panel.background = element_rect(fill = "#000000"), 
+        # plot
+        plot.background = element_rect(colour = "000000", fill = "#111111"), 
+        panel.border    = element_rect(colour = "deeppink2"),
+        plot.margin = unit(c(.5, .5, .5, .5), "cm"),
+        # other
+        legend.position = "none")
+                  
+
 
 knitr::opts_chunk$set(fig.width=12, fig.height=8)
 ```
@@ -143,49 +149,49 @@ geom_hilt <- function(column = NULL) {
                   xmin = column - .05,
                   xmax = column + .05),
               fill = "gray60",
-              color = "black"),
+              colour = "black"),
     geom_rect(aes(ymin = -5, 
                   ymax = -20, 
                   xmin = column - .04,
                   xmax = column + .04),
               fill = "gray60",
-              color = "black"),
+              colour = "black"),
     geom_rect(aes(ymin = -4, 
                   ymax = -9, 
                   xmin = column - .055,
                   xmax = column + .055),
               fill = "gray60",
-              color = "black"),
+              colour = "black"),
     geom_rect(aes(ymin = -12, 
                   ymax = -20, 
                   xmin = column - .05,
                   xmax = column + .05),
               fill = "gray60",
-              color = "black"),
+              colour = "black"),
     geom_rect(aes(ymin = -1, 
                   ymax = 0, 
                   xmin = column - .06,
                   xmax = column + .06),
               fill = "gray60",
-              color = "black"),
+              colour = "black"),
     geom_rect(aes(ymin = -3, 
                   ymax = -4, 
                   xmin = column - .06,
                   xmax = column + .06),
               fill = "gray60",
-              color = "black"),
+              colour = "black"),
     geom_rect(aes(ymin = -12, 
                 ymax = -13, 
                 xmin = column - .06,
                 xmax = column + .06),
             fill = "gray60",
-              color = "black"),
+              colour = "black"),
     geom_rect(aes(ymin = -14, 
                   ymax = -17, 
                   xmin = column - .000,
                   xmax = column + .055),
               fill = "gray60",
-              color = "black")
+              colour = "black")
   )
 }
 
@@ -197,11 +203,11 @@ geom_saber <- function() {
        geom_col(width = 0.090, alpha = .4),
        geom_col(width = 0.105, alpha = .2),
        geom_col(width = 0.120, alpha = .1),
-       geom_point(aes(color = gender), size = 5),
-       geom_point(aes(color = gender), size = 6, alpha = .6),
-       geom_point(aes(color = gender), size = 7, alpha = .4),
-       geom_point(aes(color = gender), size = 8, alpha = .2),
-       geom_point(aes(color = gender), size = 9, alpha = .1)
+       geom_point(aes(colour = gender), size = 5),
+       geom_point(aes(colour = gender), size = 6, alpha = .6),
+       geom_point(aes(colour = gender), size = 7, alpha = .4),
+       geom_point(aes(colour = gender), size = 8, alpha = .2),
+       geom_point(aes(colour = gender), size = 9, alpha = .1)
   )
 }
 
@@ -216,7 +222,7 @@ people %>%
   ggplot(aes(x = gender, y = m_age, fill = gender)) +
     geom_saber() +
     scale_fill_manual(values = c("#0FFF00", "#FF0000")) +
-    scale_color_manual(values = c("#0FFF00", "#FF0000")) +
+    scale_colour_manual(values = c("#0FFF00", "#FF0000")) +
     scale_size_continuous() +
     geom_hilt(column = 1) +
     geom_hilt(column = 2) +
@@ -225,7 +231,8 @@ people %>%
            x = "Gender",
            legend = "Gender",
            caption = "Data from https://swapi.co.") +
-    my_theme
+    my_theme +
+    coord_flip()
 
 ```
 
@@ -258,49 +265,18 @@ starships %>%
             len_sd = sd(length),
             len_n  = n()) %>%
   filter(!is.na(len_sd)) %>%
-  mutate(len_se = len_sd / sqrt(len_n)) %>%
-    ggplot(aes(x = fct_reorder(starship_class, desc(len_m)), y = len_m)) +
-      geom_errorbar(aes(ymin = len_m - (len_se * qnorm(.975)), 
-                        ymax = len_m + (len_se * qnorm(.975))), 
-                    width = .5, color = "grey30", lwd = 1.2) +
-      geom_point(size = 5, color = "grey30") +
-      geom_point(size = 2, color = "grey10") +
-      geom_point(size = 3, shape = 13, color = "grey60") +
-      geom_point(data = stars_data, aes(x = x, y = y, alpha = trans), 
-                 color = "white",
-                 size = .001) +
-      coord_flip() +
-      theme_bw() +
-      labs(title = "Average length of starship by ship class",
-           y = "Average Length in Meters",
-           x = "Class",
-           caption = "Data from https://swapi.co.") + 
-      new_retro(font = "System Font",
-                main.text.color  = "#ff3d94",
-                panel.grid.color = "#ff3d94",
-                legend.position = "none") +
-      scale_y_continuous(limits = c(0,80), expand = expand_scale(mult = c(0, 0)))
-
-starships %>%
-  group_by(starship_class) %>%
-  filter(!is.na(length),
-         n() > 1) %>%
-  summarize(len_m  = mean(length),
-            len_sd = sd(length),
-            len_n  = n()) %>%
-  filter(!is.na(len_sd)) %>%
   mutate(starship_class = str_to_title(starship_class)) %>%
   mutate(len_se = len_sd / sqrt(len_n)) %>%
     ggplot(aes(x = fct_reorder(starship_class, desc(len_m)), y = len_m)) +
       geom_errorbar(aes(ymin = len_m - (len_se * qnorm(.975)), 
                         ymax = len_m + (len_se * qnorm(.975))), 
-                    width = .5, color = "grey30", lwd = 1.2) +
+                    width = .5, colour = "grey30", lwd = 1.2) +
       geom_point(data = stars_data, aes(x = x, y = y, alpha = trans), 
-               color = "white",
+               colour = "white",
                size = .001) +
-      geom_point(size = 5, color = "grey30") +
-      geom_point(size = 2, color = "grey10") +
-      geom_point(size = 3, shape = 13, color = "grey60") +
+      geom_point(size = 5, colour = "grey30") +
+      geom_point(size = 2, colour = "grey10") +
+      geom_point(size = 3, shape = 13, colour = "grey60") +
       coord_flip() +
       theme_bw() +
       labs(title = "Average length of starship by ship class",
@@ -329,26 +305,6 @@ That starship lengths differ by class and that the length of a yacht starship is
 planets %>%
   filter(area < mean(area, na.rm = TRUE) + (sd(area, na.rm = TRUE) * 3)) %>%
   ggplot(aes(x = au, y = surface_water, size = area)) +
-    geom_point(alpha = .6, color = "cornflowerblue") +
-    geom_smooth(method = "lm", se = FALSE, color = "cornflowerblue") +
-    scale_color_gradient(high = "#0E0584", low = "#086703", na.value = "#AB8703") +
-    scale_y_continuous(labels = scales::percent) +
-    xlim(.5,1.5) +
-    labs(title = "Distance from the sun and amount of surface water",
-         y = "Amount of surface water (%)",
-         x = "Distance from star (Astronomical Units)",
-         size = "Size",
-         caption = "Data from https://swapi.co") +
-    new_retro(font = "Andale Mono",
-              main.text.color  = "#ff3d94",
-              panel.grid.color = "#ff3d94") +
-    theme(legend.position = "none") +
-    scale_colour_newRetro()
-
-# with ggthemeassist
-planets %>%
-  filter(area < mean(area, na.rm = TRUE) + (sd(area, na.rm = TRUE) * 3)) %>%
-  ggplot(aes(x = au, y = surface_water, size = area)) +
     geom_point(alpha = .6) +
     geom_smooth(method = "lm", se = FALSE) +
     scale_y_continuous(labels = scales::percent) +
@@ -357,7 +313,8 @@ planets %>%
          y = "Amount of surface water (%)",
          x = "Distance from star (Astronomical Units)",
          size = "Size",
-         caption = "Data from https://swapi.co")
+         caption = "Data from https://swapi.co") +
+    my_theme
 ```
 
 #### Idea
