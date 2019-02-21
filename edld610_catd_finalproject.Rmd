@@ -21,6 +21,8 @@ library(magrittr)
 library(here)
 library(repurrrsive)
 library(rlist)
+library(ggrepel)
+library(gghighlight)
 
 # add gravitational constant
 grav_constant <- 6.67408 * (10 ^ -11)
@@ -224,8 +226,8 @@ That starship lengths differ by class and that the length of a yacht starship is
 planets %>%
   filter(area < mean(area, na.rm = TRUE) + (sd(area, na.rm = TRUE) * 3)) %>%
   ggplot(aes(x = au, y = surface_water, size = area)) +
-    geom_point(alpha = .6) +
-    geom_smooth(method = "lm", se = FALSE) +
+    geom_point(alpha = .6, color = "#00ddff") +
+    geom_smooth(method = "lm", se = FALSE, color = "#00ddff") +
     scale_y_continuous(labels = scales::percent) +
     xlim(.5,1.5) +
     labs(title = "Distance from the sun and amount of surface water",
@@ -233,7 +235,48 @@ planets %>%
          x = "Distance from star (Astronomical Units)",
          size = "Size",
          caption = "Data from https://swapi.co") +
-    my_theme()
+    my_theme() +
+    coord_polar()
+
+# size and distance from sun
+planets_c <- planets %>%
+  select(name, au, radius) %>%
+  filter(!is.na(name),
+         !is.na(au),
+         radius != 0.00,
+         au < 2) %>%
+  mutate(orig_tril = case_when(name == "Alderaan" |
+                               name == "Tatooine" |
+                               name == "Yavin" |
+                               name == "Yavin 4" ~ "new_hope",
+                               name == "Bespin" |
+                               name == "Dagobah" |                                 
+                               name == "Hoth" ~ "empire_strikes",                                
+                               name == "Endor" ~ "return_jedi",
+                               TRUE ~ NA_character_)) %>%
+  arrange(au) %>%
+  mutate(degree = seq(from = 1, to = 360, length.out = n()))
+
+
+ggplot(data = planets_c, aes(x = degree, y = au)) +
+  geom_text(aes(x = 0, y = 0, label = "STAR"), color = "deeppink3") +
+  geom_text(aes(x = 0, y = .5, label = ".5 AU"), color = "deeppink3") +
+  geom_text(aes(x = 0, y = 1, label = "1 AU"), color = "deeppink3") +
+  geom_text(aes(x = 0, y = 1.5, label = "1.5 AU"), color = "deeppink3") +
+  geom_text(aes(x = 0, y = 2, label = "2 AU"), color = "deeppink3") +
+  geom_point(aes(size = radius), alpha = .6, color = "#00ddff") +
+  coord_polar(theta = "x") +
+  scale_size_continuous(range = c(1, 3)) +
+  scale_x_continuous(breaks = NULL) +
+  scale_y_continuous(limits = c(0,2)) +
+  my_theme() +
+  theme(axis.text = element_blank(),
+        axis.title = element_blank()) +
+  geom_text_repel(data = filter(planets_c, !is.na(orig_tril)),
+                  aes(label = name),
+                  color = "#00ddff",
+                  min.segment.length = 0,
+                  nudge_y = .5)
 ```
 
 #### Idea
