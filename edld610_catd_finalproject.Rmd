@@ -154,31 +154,42 @@ head(planets, n = 10L)
 ### The People
 
 ```{r visualization_1}
-# people plot
+# plot character gender v. age
 people %>%
-  filter(gender == "male" | gender == "female") %>%
+  # filter for only females and males
+  filter(gender == "female" | gender == "male") %>%
+  # group by gender
   group_by(gender) %>%
+  # calculate mean age and rounded mean age for geom_text
   summarise(m_age   = mean(birth_year, na.rm = TRUE),
             m_age_r = round(m_age, 2),
             m_age_r = paste(m_age_r, "YEARS")) %>%
+  # convert genders to title case and gender to a factor
   mutate(gender = str_to_title(gender),
          gender = as.factor(gender)) %>%
+  # plot gender vs age and fill by gender
   ggplot(aes(x = gender, y = m_age, fill = gender)) +
+    # add the lightsaber blades to the plot
     geom_saberblade() +
-    scale_fill_manual(values = c("#0FFF00", "#FF0000")) +
-    scale_colour_manual(values = c("#0FFF00", "#FF0000")) +
-    scale_size_continuous(aes(label = )) +
+    # add the lightsaber hilts to the plot
     geom_saberhilt(column = 1) +
     geom_saberhilt(column = 2) +
+    # set colour and fill values (i.e., red and green)
+    scale_fill_manual(values   = c("#0FFF00", "#FF0000")) +
+    scale_colour_manual(values = c("#0FFF00", "#FF0000")) +
+    # add text with the mean ages to the plot
     geom_text(aes(label = m_age_r, color = gender), 
-              size = 6, 
+              size     = 6, 
               position = position_nudge(x = -.09, y = -8)) +
-    labs(title = "Average age and gender",
-           y = "Age (years)",
-           x = "Gender",
-           legend = "Gender",
+    # add labels
+    labs(title     = "Average age and gender",
+           y       = "Age (years)",
+           x       = "Gender",
+           legend  = "Gender",
            caption = "Data from https://swapi.co.") +
+    # customize using my theme
     my_theme() +
+    # flip the coordinates
     coord_flip()
 
 ```
