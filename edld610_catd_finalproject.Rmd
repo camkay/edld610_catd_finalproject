@@ -67,34 +67,43 @@ head(people, n = 10L)
 ```{r load_starships_data, warning = FALSE}
 # load and format data
 starships <- data.frame(t(list.cbind(sw_starships))) %>%
-  # convert the star ways star
+  # convert the star ways starship dataset to a tibble
   as_tibble() %>%
+  # clean column names
   janitor::clean_names() %>%
+  # select only those columns between name and starship
   select(name:starship_class) %>%
+  # mutates columns that are lists to non-lists
   mutate_if(is.list, ~(unlist(.))) %>%
-  mutate_all(funs(na_if(., "unknown"))) %>%
+  # mutate all columns and replaces the text "unknown" with "NA"  
+  mutate_all(~(na_if(., "unknown"))) %>%
+  # convert numeric columns to numerics
+  mutate_at(vars(cost_in_credits,
+                 length,
+                 crew,
+                 passengers,
+                 cargo_capacity,
+                 hyperdrive_rating,
+                 mglt), ~(as.numeric(.))) %>%
+  # extract the max_atmosphering_speed and convert starship_class to a lowercase
+  # factor
   mutate(max_atmosphering_speed = parse_number(max_atmosphering_speed),
-         cost_in_credits        = as.numeric(cost_in_credits),
-         length                 = as.numeric(length),
-         crew                   = as.numeric(crew),
-         passengers             = as.numeric(passengers),
-         cargo_capacity         = as.numeric(cargo_capacity),
-         hyperdrive_rating      = as.numeric(hyperdrive_rating),
-         mglt                   = as.numeric(mglt),
          starship_class         = as.factor(tolower(starship_class))) %>%
+  # seperate consumables into a value and unit (e.g., days, weeks, months, 
+  # years)
   separate(consumables, c("con_n", "con_unit"), sep = " ") %>%
+  # convert units to numeric values and multiply with the consumable value to 
+  # provide the amount of consumable in the total number of days
   mutate(con_unit    = case_when(con_unit == "day"   ~ "1",
                                  con_unit == "week"  ~ "7",
                                  con_unit == "month" ~ "30",
                                  con_unit == "years" ~ "365"),
          consumables = as.numeric(con_n) * as.numeric(con_unit)) %>%
-  select(-starts_with("con_")) %>%
-  select(which(sapply(., is.character)), 
-         which(sapply(., is.factor)), 
-         which(sapply(., is.numeric)))
+  # retain only the new consumables column (i.e., drop con_n and con_unit)
+  select(-starts_with("con_"))
 
-# look at data
-head(starships) 
+# look at first ten rows of tidied dataet
+head(starships, n = 10L) 
 ```
 
 ### The Planets
