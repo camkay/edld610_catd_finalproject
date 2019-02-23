@@ -11,7 +11,7 @@ output:
     toc_float: yes
 ---
 
-```{r load_packages, include = FALSE}
+```{r initial_setup, include = FALSE}
 # load necessary packages (if you do not have them, you will need to install them first)
 library(tidyverse) # for dataframe manipulation and plotting
 library(magrittr) # for updating an object that is piped into a function (using `%<>%`)
@@ -42,19 +42,24 @@ I would like to use three of the datasets from The Star Wars API (SWAPI): (1) th
 ```{r load_person_data, warning = FALSE}
 # load and format data
 people <- data.frame(t(list.cbind(sw_people))) %>%
-  as.tibble() %>%
+  # convert the star wars people dataframe to a tibble
+  as_tibble() %>%
+  # select only the columns between name and gender (inclusive)
   select(name:gender) %>%
+  # mutates columns that are lists to non-lists
   mutate_if(is.list, ~(unlist(.))) %>%
+  # mutate all columns and replaces the text "unknown" with "NA"
   mutate_all(~(na_if(., "unknown"))) %>%
-  mutate_at(vars(height,
-                 mass), 
-            ~(as.numeric(.))) %>%
+  # converts height and mass to numeric variables
+  mutate_at(vars(height, mass), ~(as.numeric(.))) %>%
+  # extracts birth year and converts it to numeric; replace "n/a" values with 
+  # droid for hair_color and gender
   mutate(birth_year = parse_number(as.character(birth_year)),
          hair_color = if_else(gender == "n/a", "droid", hair_color),
          gender     = if_else(gender == "n/a", "droid", gender))
 
-# look at the data
-head(people)
+# look at first ten rows of tidied dataet
+head(people, n = 10L)
 ```
 
 ### The Starships
@@ -62,7 +67,8 @@ head(people)
 ```{r load_starships_data, warning = FALSE}
 # load and format data
 starships <- data.frame(t(list.cbind(sw_starships))) %>%
-  as.tibble() %>%
+  # convert the star ways star
+  as_tibble() %>%
   janitor::clean_names() %>%
   select(name:starship_class) %>%
   mutate_if(is.list, ~(unlist(.))) %>%
