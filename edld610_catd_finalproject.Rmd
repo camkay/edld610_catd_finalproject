@@ -273,7 +273,7 @@ Again, the intended audience for this visualization are people who like Star War
 That starship lengths differ by class and that the length of a yacht starship is far more variable than other starship classes. 
 
 ### The Planets
-```{r visualization_3, warning = FALSE}
+```{r visualization_3, fig.height = 12, warning = FALSE}
 # planets plot
 planets %>%
   # select only variables of interest
@@ -282,7 +282,7 @@ planets %>%
   # an AU), (3) an AU less than 2, and (4) a radius greater than 0.
   filter(!is.na(name),
          !is.na(au),
-         au < 2,
+         # au < 2,
          radius != 0.00) %>%
   # create a new variable indicating whether a planet was in the original 
   # trilogy
@@ -301,33 +301,60 @@ planets %>%
   mutate(degree = seq(from = 1, to = 360, length.out = n())) %>%
   # plot the planets distance from the sun against their arbitrary degree
   ggplot(aes(x = degree, y = au)) +
-  # add labels indicating y-axis units
-    geom_text(aes(x = 0, y =   0, label =   "STAR"), color = "deeppink4") +
-    geom_text(aes(x = 0, y =  .5, label =  ".5 AU"), color = "deeppink4") +
-    geom_text(aes(x = 0, y =   1, label =   "1 AU"), color = "deeppink4") +
-    geom_text(aes(x = 0, y = 1.5, label = "1.5 AU"), color = "deeppink4") +
-    geom_text(aes(x = 0, y =   2, label =   "2 AU"), color = "deeppink4") +
+    # add labels indicating y-axis units and add star and earth
+    geom_text(aes(x =   0, y = 0, label = "STAR"), 
+              color = "deeppink3", 
+              size  = 7) +
+    geom_text(aes(x = 270, y = 2, label = "2 AU"), 
+              color = "deeppink3", 
+              size  = 7) +
+    geom_text(aes(x = 270, y = 4, label = "4 AU"), 
+              color = "deeppink3", 
+              size  = 7) +
+    geom_text(aes(x = 270, y = 6, label = "6 AU"), 
+              color = "deeppink3", 
+              size  = 7) +
+    # add solar system planets
+    geom_text(aes(x = 0, y = 1.00, label =   "EARTH"), 
+      color = "deeppink3", 
+      size  = 5) +
+    geom_text(aes(x = 0, y = 1.52, label =    "MARS"), 
+      color = "deeppink3", 
+      size  = 5) +
+    geom_text(aes(x = 0, y = 5.20, label = "JUPITER"), 
+      color = "deeppink3", 
+      size  = 5) +
     # add planet points; map size of the point to planet radius
     geom_point(aes(size = radius), alpha = .6, color = "#00ddff") +
     # make the coordinate polar
     coord_polar(theta = "x") +
     # set the limit of size values
-    scale_size_continuous(range = c(.5, 5)) +
+    scale_size_continuous(range = c(.5, 10)) +
     # drop x-axis grid marks and breaks
     scale_x_continuous(breaks = NULL) +
     # set 2-axis limit
-    scale_y_continuous(limits = c(0,2)) +
+    scale_y_continuous(limits = c(0,7)) +
+    # add labels
+    labs(title    = "Distance of Star War's Planets from their Host Stars",
+         subtitle = "in Astronomical Units (AU)", 
+         caption  = "Data from https://swapi.co.") + 
     # customize using my theme
     my_theme() +
-    # drop axis text and axis titles
-    theme(axis.text  = element_blank(),
-          axis.title = element_blank()) +
+    # drop axis text and axis titles and center title, subtitle, and caption
+    theme(plot.title    = element_text(hjust = 0.5),
+          plot.subtitle = element_text(hjust = 0.5),
+          plot.caption  = element_text(hjust = 0.5),
+          axis.text     = element_blank(),
+          axis.title    = element_blank(),
+          plot.margin   = unit(c(1, 2, 1, 2), "cm")) +
     # add text identifying only those planetss from the original trilogy
-    geom_text_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
-                    color              = "#00ddff",
-                    min.segment.length =         0,
-                    nudge_y            =        .5)
-```
+    geom_label_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
+                     color              = "#00ddff",
+                     fill               =        NA,
+                     size               =         8,
+                     min.segment.length =         0,
+                     nudge_y            =       2.1)
+``` 
 
 #### Idea
 
