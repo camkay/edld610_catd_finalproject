@@ -1,5 +1,5 @@
 ---
-title: "edld610_catd_finalproject_proposal"
+title: "edld610_catd_finalproject"
 author: "Cameron Kay"
 date: "2/3/2019"
 output:
@@ -232,32 +232,32 @@ starships %>%
          starship_class = gsub(" ", " \n", starship_class)) %>%
   # calculate standard error
   mutate(len_se = len_sd / sqrt(len_n)) %>%
-    # plot starship class v starship length
-    ggplot(aes(x = fct_reorder(starship_class, desc(len_m)), y = len_m)) +
-      # add error bars
-      geom_errorbar(aes(ymin = len_m - (len_se * qnorm(.975)), 
-                        ymax = len_m + (len_se * qnorm(.975))), 
-                    width = .5, colour = "grey30", lwd = 1.2) +
-      # add stars 
-      geom_point(data = stars_data, aes(x = x, y = y, alpha = trans), 
-                 colour = "white",
-                 size = .001) +
-      # plot ship body points
-      geom_point(size = 6, colour = "grey30") +
-      geom_point(size = 3, colour = "grey10") +
-      geom_point(size = 4, shape = 13, colour = "grey60") +
-      # flip the coordinates
-      coord_flip() +
-      # add labels
-      labs(title   = "Average length of starship by ship class",
-           y       = "Average Length in Meters",
-           x       = "Class",
-           caption = "Data from https://swapi.co.") + 
-      # set y-axis limits and do not show value beyond limits of y-axis
-      scale_y_continuous(limits = c(0,80), 
-                         expand = expand_scale(mult = c(0, 0))) + 
-      # customize using my theme
-      my_theme()
+  # plot starship class v starship length
+  ggplot(aes(x = fct_reorder(starship_class, desc(len_m)), y = len_m)) +
+    # add error bars
+    geom_errorbar(aes(ymin = len_m - (len_se * qnorm(.975)), 
+                      ymax = len_m + (len_se * qnorm(.975))), 
+                  width = .5, colour = "grey30", lwd = 1.2) +
+    # add stars 
+    geom_point(data = stars_data, aes(x = x, y = y, alpha = trans), 
+               colour = "white",
+               size = .001) +
+    # plot ship body points
+    geom_point(size = 6, colour = "grey30") +
+    geom_point(size = 3, colour = "grey10") +
+    geom_point(size = 4, colour = "grey60", shape = 13) +
+    # flip the coordinates
+    coord_flip() +
+    # add labels
+    labs(title   = "Average length of starship by ship class",
+         y       = "Average Length in Meters",
+         x       = "Class",
+         caption = "Data from https://swapi.co.") + 
+    # set y-axis limits and do not show value beyond limits of y-axis
+    scale_y_continuous(limits = c(0,80), 
+                       expand = expand_scale(mult = c(0, 0))) + 
+    # customize using my theme
+    my_theme()
 ```
 
 #### Idea
@@ -276,59 +276,57 @@ That starship lengths differ by class and that the length of a yacht starship is
 ```{r visualization_3, warning = FALSE}
 # planets plot
 planets %>%
-  filter(area < mean(area, na.rm = TRUE) + (sd(area, na.rm = TRUE) * 3)) %>%
-  ggplot(aes(x = au, y = surface_water, size = area)) +
-    geom_point(alpha = .6, color = "#00ddff") +
-    geom_smooth(method = "lm", se = FALSE, color = "#00ddff") +
-    scale_y_continuous(labels = scales::percent) +
-    xlim(.5,1.5) +
-    labs(title = "Distance from the sun and amount of surface water",
-         y = "Amount of surface water (%)",
-         x = "Distance from star (Astronomical Units)",
-         size = "Size",
-         caption = "Data from https://swapi.co") +
-    my_theme() +
-    coord_polar()
-
-# size and distance from sun
-planets_c <- planets %>%
+  # select only variables of interest
   select(name, au, radius) %>%
+  # drop planets that do not have (1) a name, (2) a distance from the sun (i.e.
+  # an AU), (3) an AU less than 2, and (4) a radius greater than 0.
   filter(!is.na(name),
          !is.na(au),
-         radius != 0.00,
-         au < 2) %>%
+         au < 2,
+         radius != 0.00) %>%
+  # create a new variable indicating whether a planet was in the original 
+  # trilogy
   mutate(orig_tril = case_when(name == "Alderaan" |
                                name == "Tatooine" |
-                               name == "Yavin" |
-                               name == "Yavin 4" ~ "new_hope",
-                               name == "Bespin" |
-                               name == "Dagobah" |                                 
-                               name == "Hoth" ~ "empire_strikes",                                
-                               name == "Endor" ~ "return_jedi",
+                               name == "Yavin"    |
+                               name == "Yavin 4"  ~ "new_hope",
+                               name == "Bespin"   |
+                               name == "Dagobah"  |                                 
+                               name == "Hoth"     ~ "empire_strikes",                                
+                               name == "Endor"    ~ "return_jedi",
                                TRUE ~ NA_character_)) %>%
+  # sort the data by their distance from the sun
   arrange(au) %>%
-  mutate(degree = seq(from = 1, to = 360, length.out = n()))
-
-
-ggplot(data = planets_c, aes(x = degree, y = au)) +
-  geom_text(aes(x = 0, y = 0, label = "STAR"), color = "deeppink3") +
-  geom_text(aes(x = 0, y = .5, label = ".5 AU"), color = "deeppink3") +
-  geom_text(aes(x = 0, y = 1, label = "1 AU"), color = "deeppink3") +
-  geom_text(aes(x = 0, y = 1.5, label = "1.5 AU"), color = "deeppink3") +
-  geom_text(aes(x = 0, y = 2, label = "2 AU"), color = "deeppink3") +
-  geom_point(aes(size = radius), alpha = .6, color = "#00ddff") +
-  coord_polar(theta = "x") +
-  scale_size_continuous(range = c(1, 3)) +
-  scale_x_continuous(breaks = NULL) +
-  scale_y_continuous(limits = c(0,2)) +
-  my_theme() +
-  theme(axis.text = element_blank(),
-        axis.title = element_blank()) +
-  geom_text_repel(data = filter(planets_c, !is.na(orig_tril)),
-                  aes(label = name),
-                  color = "#00ddff",
-                  min.segment.length = 0,
-                  nudge_y = .5)
+  # add a column that arbitrarily assigns the planet a degree
+  mutate(degree = seq(from = 1, to = 360, length.out = n())) %>%
+  # plot the planets distance from the sun against their arbitrary degree
+  ggplot(aes(x = degree, y = au)) +
+  # add labels indicating y-axis units
+    geom_text(aes(x = 0, y =   0, label =   "STAR"), color = "deeppink4") +
+    geom_text(aes(x = 0, y =  .5, label =  ".5 AU"), color = "deeppink4") +
+    geom_text(aes(x = 0, y =   1, label =   "1 AU"), color = "deeppink4") +
+    geom_text(aes(x = 0, y = 1.5, label = "1.5 AU"), color = "deeppink4") +
+    geom_text(aes(x = 0, y =   2, label =   "2 AU"), color = "deeppink4") +
+    # add planet points; map size of the point to planet radius
+    geom_point(aes(size = radius), alpha = .6, color = "#00ddff") +
+    # make the coordinate polar
+    coord_polar(theta = "x") +
+    # set the limit of size values
+    scale_size_continuous(range = c(.5, 5)) +
+    # drop x-axis grid marks and breaks
+    scale_x_continuous(breaks = NULL) +
+    # set 2-axis limit
+    scale_y_continuous(limits = c(0,2)) +
+    # customize using my theme
+    my_theme() +
+    # drop axis text and axis titles
+    theme(axis.text  = element_blank(),
+          axis.title = element_blank()) +
+    # add text identifying only those planetss from the original trilogy
+    geom_text_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
+                    color              = "#00ddff",
+                    min.segment.length =         0,
+                    nudge_y            =        .5)
 ```
 
 #### Idea
