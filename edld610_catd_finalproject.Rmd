@@ -12,27 +12,23 @@ output:
 ---
 
 ```{r load_packages, include = FALSE}
-# install necessary packages
-#devtools::install_github("moldach/vapoRwave")
+# load necessary packages (if you do not have them, you will need to install them first)
+library(tidyverse) # for dataframe manipulation and plotting
+library(magrittr) # for updating an object that is piped into a function (using `%<>%`)
+library(here) # for finding the project folder
+library(repurrrsive) # contains the star wars datasets
+library(rlist) # for binding all lit elements by column (using `list.cbind`)
+library(ggrepel) # for adding geom_text labels that do not overlap
 
-# load necessary packages
-library(tidyverse)
-library(magrittr)
-library(here)
-library(repurrrsive)
-library(rlist)
-library(ggrepel)
-library(gghighlight)
-
-# add gravitational constant
+# add gravitational constant (i.e., 6.67408 * 10^-11)
 grav_constant <- 6.67408 * (10 ^ -11)
 
-# load my functions
-source(here("functions/my_theme.R"))
-source(here("functions/geom_saberhilt.R"))
-source(here("functions/geom_saberblade.R"))
+# load bespoke functions from the functions folder
+source(here("functions/my_theme.R")) # load my_theme
+source(here("functions/geom_saberhilt.R")) # load the function for creating the hilts of lightsabers
+source(here("functions/geom_saberblade.R")) # load the function for creating the blades of lightsabers
 
-# set figure output dimension
+# set figure output dimensions
 knitr::opts_chunk$set(fig.width  = 12, 
                       fig.height = 8)
 ```
