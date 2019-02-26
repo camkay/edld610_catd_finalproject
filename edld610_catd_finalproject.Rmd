@@ -4,8 +4,8 @@ author: "Cameron Kay"
 date: "2/3/2019"
 output:
   html_document:
-    highlight: espresso
-    theme: lumen
+    highlight: kate
+    theme: cosmo
     toc: yes
     toc_depth: 3
     toc_float: yes
@@ -34,8 +34,6 @@ knitr::opts_chunk$set(fig.width  = 12,
 ```
 
 ## The Data
-
-I would like to use three of the datasets from The Star Wars API (SWAPI): (1) the characters, (2) the planets, and (3) the starships. Fortunately, the `repurrrsive` package contains the Star Wars datasets.
 
 ### The People
 
@@ -194,20 +192,7 @@ people %>%
 
 ```
 
-#### Idea
-
-Although not a great data/ink ratio, I believe the above figure would be memorable in displaying the ages of the characters in Star Wars. I would like to add more design elements to the plot (e.g., a more detailed lightsaber hilt, a glow on top of the saber). It think it would also be informative to add some text labels showing the actual ages of characters beside the bars. Yoda is also an outlier, so it may be appropriate to eliminate him from the plot. 
-
-#### Intended Audience
-
-The intended audience for this visualization are fans of Star Wars and the general public.
-
-#### Intended Message
-
-Other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of the female characters is so young compared to that of the male characters. It seems the recent movies have taken both incidental (e.g., Carrier Fisher) and deliberate (e.g., Laura Dern) steps to include older women. Star Wars would certainly benefit from being more inclusive when it comes to casting. 
-
 ### The Starships
-
 ```{r visualization_2}
 # generate random x, y, and transparency data to use for plotting stars
 stars_data <- tibble(x     = sample(seq(from =  0, to =  4, by = .0001), 500),
@@ -259,18 +244,6 @@ starships %>%
     # customize using my theme
     my_theme()
 ```
-
-#### Idea
-
-Points and standard error bars have always looked like Tie Fighters to me, so I decided I would try to plot the length of a starship against the starship class. As would be expected yachts are the largest ships with assult starfighters being slightly larger than basic starfighters. Although I am quite happy with the plot, I believe the fonts and text elements could be greatly improved. Representing all ships as Tie Fighters also may be misleading. 
-
-#### Intended Audience
-
-Again, the intended audience for this visualization are people who like Star Wars. To appreciate the error bars some knowledge of statistics would likely be needed, as well.  
-
-#### Intended Message
-
-That starship lengths differ by class and that the length of a yacht starship is far more variable than other starship classes. 
 
 ### The Planets
 ```{r visualization_3, fig.height = 12, warning = FALSE}
@@ -355,15 +328,3 @@ planets %>%
                      min.segment.length =         0,
                      nudge_y            =       2.1)
 ``` 
-
-#### Idea
-
-As interesting as I found the data in the first two plots, I think several plots could be devoted to the planets dataset. Specifically, the visualizations could be framed around the common theme of astronomy, serving as an instructive tool for teaching concepts from astronomy (e.g., Keppler's third law, calculations of gravitational force). The present plot shows the relationship between a planet's surface water and its distance from the sun. I would like to add a solar system dataset to the Starwar's planets dataset and use facetwrap to provide a side by side comparison of fictional and non-fictional planets. 
-
-#### Intended Audience
-
-Fans of Star Wars or anyone who has an interest in astronomy or phyics.
-
-#### Intended Message
-
-Planets farther from the sun seem to have more surface water, which seems to be consistent with our solar system. 

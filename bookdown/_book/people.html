@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>2 The People | EDLD 610 Final Project: Visualizing Star Wars</title>
+  <meta name="description" content="2 The People | EDLD 610 Final Project: Visualizing Star Wars">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="2 The People | EDLD 610 Final Project: Visualizing Star Wars" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 The People | EDLD 610 Final Project: Visualizing Star Wars" />
+  
+  
+  
+
+<meta name="author" content="Cameron S. Kay">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="ships.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #f8f8f8; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+pre, code { background-color: #f8f8f8; }
+code > span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code > span.dt { color: #204a87; } /* DataType */
+code > span.dv { color: #0000cf; } /* DecVal */
+code > span.bn { color: #0000cf; } /* BaseN */
+code > span.fl { color: #0000cf; } /* Float */
+code > span.ch { color: #4e9a06; } /* Char */
+code > span.st { color: #4e9a06; } /* String */
+code > span.co { color: #8f5902; font-style: italic; } /* Comment */
+code > span.ot { color: #8f5902; } /* Other */
+code > span.al { color: #ef2929; } /* Alert */
+code > span.fu { color: #000000; } /* Function */
+code > span.er { color: #a40000; font-weight: bold; } /* Error */
+code > span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #000000; } /* Constant */
+code > span.sc { color: #000000; } /* SpecialChar */
+code > span.vs { color: #4e9a06; } /* VerbatimString */
+code > span.ss { color: #4e9a06; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #000000; } /* Variable */
+code > span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code > span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code > span.ex { } /* Extension */
+code > span.at { color: #c4a000; } /* Attribute */
+code > span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code > span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="people.html"><a href="people.html"><i class="fa fa-check"></i><b>2</b> The People</a><ul>
+<li class="chapter" data-level="2.1" data-path="people.html"><a href="people.html#the-data"><i class="fa fa-check"></i><b>2.1</b> The Data</a></li>
+<li class="chapter" data-level="2.2" data-path="people.html"><a href="people.html#the-visualization"><i class="fa fa-check"></i><b>2.2</b> The Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ships.html"><a href="ships.html"><i class="fa fa-check"></i><b>3</b> The Starships</a><ul>
+<li class="chapter" data-level="3.1" data-path="ships.html"><a href="ships.html#the-data-1"><i class="fa fa-check"></i><b>3.1</b> The Data</a></li>
+<li class="chapter" data-level="3.2" data-path="ships.html"><a href="ships.html#the-visualization-1"><i class="fa fa-check"></i><b>3.2</b> The Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="planets.html"><a href="planets.html"><i class="fa fa-check"></i><b>4</b> The Planets</a><ul>
+<li class="chapter" data-level="4.0.1" data-path="planets.html"><a href="planets.html#the-data-2"><i class="fa fa-check"></i><b>4.0.1</b> The Data</a></li>
+<li class="chapter" data-level="4.0.2" data-path="planets.html"><a href="planets.html#the-visualization-2"><i class="fa fa-check"></i><b>4.0.2</b> The Visualization</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">EDLD 610 Final Project: Visualizing Star Wars</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="people" class="section level1">
+<h1><span class="header-section-number">2</span> The People</h1>
+<div id="the-data" class="section level2">
+<h2><span class="header-section-number">2.1</span> The Data</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load and format data</span>
+people &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">t</span>(<span class="kw">list.cbind</span>(sw_people))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># convert the star wars people dataframe to a tibble</span>
+<span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># select only the columns between name and gender (inclusive)</span>
+<span class="st">  </span><span class="kw">select</span>(name<span class="op">:</span>gender) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># mutates columns that are lists to non-lists</span>
+<span class="st">  </span><span class="kw">mutate_if</span>(is.list, <span class="op">~</span>(<span class="kw">unlist</span>(.))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># mutate all columns and replaces the text &quot;unknown&quot; with &quot;NA&quot;</span>
+<span class="st">  </span><span class="kw">mutate_all</span>(<span class="op">~</span>(<span class="kw">na_if</span>(., <span class="st">&quot;unknown&quot;</span>))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># converts height and mass to numeric variables</span>
+<span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(height, mass), <span class="op">~</span>(<span class="kw">as.numeric</span>(.))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># extracts birth year and converts it to numeric; replace &quot;n/a&quot; values with </span>
+<span class="st">  </span><span class="co"># droid for hair_color and gender</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">birth_year =</span> <span class="kw">parse_number</span>(<span class="kw">as.character</span>(birth_year)),
+         <span class="dt">hair_color =</span> <span class="kw">if_else</span>(gender <span class="op">==</span><span class="st"> &quot;n/a&quot;</span>, <span class="st">&quot;droid&quot;</span>, hair_color),
+         <span class="dt">gender     =</span> <span class="kw">if_else</span>(gender <span class="op">==</span><span class="st"> &quot;n/a&quot;</span>, <span class="st">&quot;droid&quot;</span>, gender))
+
+<span class="co"># look at first ten rows of tidied dataet</span>
+<span class="kw">head</span>(people, <span class="dt">n =</span> 10L)</code></pre></div>
+<pre><code>## # A tibble: 10 x 8
+##    name      height  mass hair_color skin_color eye_color birth_year gender
+##    &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; 
+##  1 Luke Sky…    172    77 blond      fair       blue            19   male  
+##  2 C-3PO        167    75 droid      gold       yellow         112   droid 
+##  3 R2-D2         96    32 droid      white, bl… red             33   droid 
+##  4 Darth Va…    202   136 none       white      yellow          41.9 male  
+##  5 Leia Org…    150    49 brown      light      brown           19   female
+##  6 Owen Lars    178   120 brown, gr… light      blue            52   male  
+##  7 Beru Whi…    165    75 brown      light      blue            47   female
+##  8 R5-D4         97    32 droid      white, red red             NA   droid 
+##  9 Biggs Da…    183    84 black      light      brown           24   male  
+## 10 Obi-Wan …    182    77 auburn, w… fair       blue-gray       57   male</code></pre>
+</div>
+<div id="the-visualization" class="section level2">
+<h2><span class="header-section-number">2.2</span> The Visualization</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># people plot</span>
+people <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># filter for only females and males</span>
+<span class="st">  </span><span class="kw">filter</span>(gender <span class="op">==</span><span class="st"> &quot;female&quot;</span> <span class="op">|</span><span class="st"> </span>gender <span class="op">==</span><span class="st"> &quot;male&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># group by gender</span>
+<span class="st">  </span><span class="kw">group_by</span>(gender) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># calculate mean age and rounded mean age for geom_text</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">m_age   =</span> <span class="kw">mean</span>(birth_year, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
+            <span class="dt">m_age_r =</span> <span class="kw">round</span>(m_age, <span class="dv">2</span>),
+            <span class="dt">m_age_r =</span> <span class="kw">paste</span>(m_age_r, <span class="st">&quot;YEARS&quot;</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># convert genders to title case and gender to a factor</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">gender =</span> <span class="kw">str_to_title</span>(gender),
+         <span class="dt">gender =</span> <span class="kw">as.factor</span>(gender)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># plot gender vs age and fill by gender</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> gender, <span class="dt">y =</span> m_age, <span class="dt">fill =</span> gender)) <span class="op">+</span>
+<span class="st">    </span><span class="co"># add the lightsaber blades to the plot</span>
+<span class="st">    </span><span class="kw">geom_saberblade</span>() <span class="op">+</span>
+<span class="st">    </span><span class="co"># add the lightsaber hilts to the plot</span>
+<span class="st">    </span><span class="kw">geom_saberhilt</span>(<span class="dt">column =</span> <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_saberhilt</span>(<span class="dt">column =</span> <span class="dv">2</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># set colour and fill values (i.e., red and green)</span>
+<span class="st">    </span><span class="kw">scale_fill_manual</span>(<span class="dt">values   =</span> <span class="kw">c</span>(<span class="st">&quot;#0FFF00&quot;</span>, <span class="st">&quot;#FF0000&quot;</span>)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">scale_colour_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#0FFF00&quot;</span>, <span class="st">&quot;#FF0000&quot;</span>)) <span class="op">+</span>
+<span class="st">    </span><span class="co"># add text with the mean ages to the plot</span>
+<span class="st">    </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> m_age_r, <span class="dt">color =</span> gender), 
+              <span class="dt">size     =</span> <span class="dv">6</span>, 
+              <span class="dt">position =</span> <span class="kw">position_nudge</span>(<span class="dt">x =</span> <span class="op">-</span>.<span class="dv">09</span>, <span class="dt">y =</span> <span class="op">-</span><span class="dv">8</span>)) <span class="op">+</span>
+<span class="st">    </span><span class="co"># add labels</span>
+<span class="st">    </span><span class="kw">labs</span>(<span class="dt">title     =</span> <span class="st">&quot;Average age and gender&quot;</span>,
+           <span class="dt">y       =</span> <span class="st">&quot;Age (years)&quot;</span>,
+           <span class="dt">x       =</span> <span class="st">&quot;Gender&quot;</span>,
+           <span class="dt">legend  =</span> <span class="st">&quot;Gender&quot;</span>,
+           <span class="dt">caption =</span> <span class="st">&quot;Data from https://swapi.co.&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># customize using my theme</span>
+<span class="st">    </span><span class="kw">my_theme</span>() <span class="op">+</span>
+<span class="st">    </span><span class="co"># flip the coordinates</span>
+<span class="st">    </span><span class="kw">coord_flip</span>()</code></pre></div>
+<p><img src="_main_files/figure-html/person_vis_final-1.png" width="1152" /></p>
+<div id="idea" class="section level4">
+<h4><span class="header-section-number">2.2.0.1</span> Idea</h4>
+<p>Although not a great data/ink ratio, I believe the above figure would be memorable in displaying the ages of the characters in Star Wars. I would like to add more design elements to the plot (e.g., a more detailed lightsaber hilt, a glow on top of the saber). It think it would also be informative to add some text labels showing the actual ages of characters beside the bars. Yoda is also an outlier, so it may be appropriate to eliminate him from the plot.</p>
+</div>
+<div id="intended-audience" class="section level4">
+<h4><span class="header-section-number">2.2.0.2</span> Intended Audience</h4>
+<p>The intended audience for this visualization are fans of Star Wars and the general public.</p>
+</div>
+<div id="intended-message" class="section level4">
+<h4><span class="header-section-number">2.2.0.3</span> Intended Message</h4>
+<p>Other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of the female characters is so young compared to that of the male characters. It seems the recent movies have taken both incidental (e.g., Carrier Fisher) and deliberate (e.g., Laura Dern) steps to include older women. Star Wars would certainly benefit from being more inclusive when it comes to casting.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ships.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
