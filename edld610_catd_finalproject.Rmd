@@ -195,7 +195,7 @@ people %>%
     my_theme() +
     # flip the coordinates
     coord_flip()
-#love this viz. Perhaps change te title to "Average Age by Gender" ?
+#love this viz. Perhaps change the title to "Average Age by Gender" ?
 
 ```
 
