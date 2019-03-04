@@ -16,9 +16,13 @@ output:
 library(tidyverse) # for dataframe manipulation and plotting
 library(magrittr) # for updating an object that is piped into a function (using `%<>%`)
 library(here) # for finding the project folder
+#install.packages("repurrrsive")
+#install.packages("rlist")
 library(repurrrsive) # contains the star wars datasets
 library(rlist) # for binding all lit elements by column (using `list.cbind`)
 library(ggrepel) # for adding geom_text labels that do not overlap
+library(dplyr)
+
 
 # add gravitational constant (i.e., 6.67408 * 10^-11)
 grav_constant <- 6.67408 * (10 ^ -11)
@@ -57,7 +61,9 @@ people <- data.frame(t(list.cbind(sw_people))) %>%
          gender     = if_else(gender == "n/a", "droid", gender))
 
 # look at first ten rows of tidied dataet
-head(people, n = 10L)
+head(people, n = 10L) #msc: nice work presenting a snahpshot of your tidied data. I am going to add this to my project. 
+
+
 ```
 
 ### The Starships
@@ -189,6 +195,7 @@ people %>%
     my_theme() +
     # flip the coordinates
     coord_flip()
+#love this viz. Perhaps change the title to "Average Age by Gender" ?
 
 ```
 
@@ -243,6 +250,8 @@ starships %>%
                        expand = expand_scale(mult = c(0, 0))) + 
     # customize using my theme
     my_theme()
+
+
 ```
 
 ### The Planets
@@ -277,16 +286,16 @@ planets %>%
     # add labels indicating y-axis units and add star and earth
     geom_text(aes(x =   0, y = 0, label = "STAR"), 
               color = "deeppink3", 
-              size  = 7) +
+              size  = 5) + #changed size from 7 to 5, which makes the text more legible
     geom_text(aes(x = 270, y = 2, label = "2 AU"), 
               color = "deeppink3", 
-              size  = 7) +
+              size  = 5) +
     geom_text(aes(x = 270, y = 4, label = "4 AU"), 
               color = "deeppink3", 
-              size  = 7) +
+              size  = 5) +
     geom_text(aes(x = 270, y = 6, label = "6 AU"), 
               color = "deeppink3", 
-              size  = 7) +
+              size  = 5) +
     # add solar system planets
     geom_text(aes(x = 0, y = 1.00, label =   "EARTH"), 
       color = "deeppink3", 
@@ -298,7 +307,8 @@ planets %>%
       color = "deeppink3", 
       size  = 5) +
     # add planet points; map size of the point to planet radius
-    geom_point(aes(size = radius), alpha = .6, color = "#00ddff") +
+    # here I changed the alpha to .3 -- trying to see the planets more clearly. Could you plot only the planets you reference from the original trilogy? MSC
+    geom_point(aes(size = radius), alpha = .3, color = "#00ddff") + 
     # make the coordinate polar
     coord_polar(theta = "x") +
     # set the limit of size values
@@ -314,6 +324,7 @@ planets %>%
     # customize using my theme
     my_theme() +
     # drop axis text and axis titles and center title, subtitle, and caption
+    # Change size of title so that it could fit on black background
     theme(plot.title    = element_text(hjust = 0.5),
           plot.subtitle = element_text(hjust = 0.5),
           plot.caption  = element_text(hjust = 0.5),
@@ -324,7 +335,7 @@ planets %>%
     geom_label_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
                      color              = "#00ddff",
                      fill               =        NA,
-                     size               =         8,
+                     size               =         4, #changed to half the size so I could see the reference points MSC
                      min.segment.length =         0,
                      nudge_y            =       2.1)
 ``` 
