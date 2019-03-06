@@ -173,8 +173,8 @@ people %>%
     geom_saberhilt(column = 1) +
     geom_saberhilt(column = 2) +
     # set colour and fill values (i.e., red and green)
-    scale_fill_manual(values   = c("#0FFF00", "#FF0000")) +
-    scale_colour_manual(values = c("#0FFF00", "#FF0000")) +
+    scale_fill_manual(values   = c("#0FFF00", "#00f6ff")) +
+    scale_colour_manual(values = c("#0FFF00", "#00f6ff")) +
     # add text with the mean ages to the plot
     geom_text(aes(label = m_age_r, color = gender), 
               size     = 6, 
