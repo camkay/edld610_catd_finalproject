@@ -222,15 +222,19 @@ starships %>%
     # add error bars
     geom_errorbar(aes(ymin = len_m - (len_se * qnorm(.975)), 
                       ymax = len_m + (len_se * qnorm(.975))), 
-                  width = .5, colour = "grey30", lwd = 1.2) +
+                  width = .5, colour = "grey70", lwd = 1.25) +
+    geom_errorbar(aes(ymin = len_m - (len_se * qnorm(.975)), 
+                      ymax = len_m + (len_se * qnorm(.975))), 
+                  width = .5, colour = "grey30", lwd = 1) +
     # add stars 
     geom_point(data = stars_data, aes(x = x, y = y, alpha = trans), 
                colour = "white",
                size = .001) +
     # plot ship body points
-    geom_point(size = 6, colour = "grey30") +
-    geom_point(size = 3, colour = "grey10") +
-    geom_point(size = 4, colour = "grey60", shape = 13) +
+    geom_point(size = 6.25, colour = "grey70") +
+    geom_point(size = 6.00, colour = "grey30") +
+    geom_point(size = 3.00, colour = "grey10") +
+    geom_point(size = 4.00, colour = "grey60", shape = 13) +
     # flip the coordinates
     coord_flip() +
     # add labels
