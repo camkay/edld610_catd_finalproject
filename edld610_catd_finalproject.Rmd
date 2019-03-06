@@ -33,6 +33,10 @@ knitr::opts_chunk$set(fig.width  = 12,
                       fig.height = 8)
 ```
 
+# AE
+
+I really like the way you use annotations (#) in your code to specify what all of your commands are doing each step of the way. It makes it super easy for someone not using or familiar with your dataset to keep up and understand your data manipulations and visualizations. This is a practice I'd like to incorporate more into my own coding. You've even specified what all your loaded packages are being used to do. Super mindful!
+
 ## The Data
 
 ### The People
@@ -59,6 +63,10 @@ people <- data.frame(t(list.cbind(sw_people))) %>%
 # look at first ten rows of tidied dataet
 head(people, n = 10L)
 ```
+
+# AE
+
+Even your spacing in the `if_else` statement above is excellent. I like that everything on the right side of the equals sign is aligned at the same position on its respective line.
 
 ### The Starships
 
@@ -147,13 +155,17 @@ planets <- data.frame(t(list.cbind(sw_planets))) %>%
 head(planets, n = 10L) 
 ```
 
+# AE
+
+For your final portfolio submission, I would add some information to contextualize the visualizations you provide here. While your code does a good job explaining each step you're taking to massage your data into its desired format, I don't currently have a good understanding of what you are seeking to show through the data. 
+
 ## The Visualizations
 
 ### The People
 
 ```{r visualization_1}
 # people plot
-people %>%
+(people2 <- people %>%
   # filter for only females and males
   filter(gender == "female" | gender == "male") %>%
   # group by gender
@@ -188,9 +200,19 @@ people %>%
     # customize using my theme
     my_theme() +
     # flip the coordinates
-    coord_flip()
+    coord_flip())
 
 ```
+
+# AE
+
+The code chunk above presented an error that said "column 'gender' can't be used as a grouping variable because it's a list." To remedy this, I assigned your visualization to a new object I called people2. That seemed to do the trick, as it returned your visualization with no errors. Whew, an easy fix!
+
+As for the visualization itself, I'm a big fan of the lightsaber aesthetic! However, I don't know if this is the most interesting or illustrative visualization, given your dataset. First, it's unclear from the visualization alone where you are drawing your population. I know that this is a comparison of male and female characters in Star Wars, but this information is not present in the visualization itself. I would indicate that in the title: "Average age of all Star Wars characters by gender"? At the very least, I would change the title from the one you currently have. You aren't presenting your audience with average age *and* gender. You're giving them age data grouped *by* gender.
+
+It's interesting that there is what I assume to be a significant difference in average age between male and female Star Wars characters. This seems to be driven mainly by a major outlier: Yoda, the 896 year-old Jedi master! Such information could be informative and entertaining to show. You might actually want to complement the mean age visualization with another visualization that depicts the distribution of raw ages of each character by gender. The "Yoda effect" makes for a hilarious and unique takeaway from your data.
+
+Finally, this might be a real knit-pick, but I'm not the biggest fan of the black and hot pink color palette you've used around your plot. The bolded font of the labels is also a bit hard to look at. I would experiment with the palette and labels a bit. 
 
 ### The Starships
 ```{r visualization_2}
@@ -248,6 +270,14 @@ starships %>%
     # customize using my theme
     my_theme()
 ```
+
+# AE
+
+This visualization is *super* creative! What a memorable plot. The repurposing of starships as error bars is absolutely brilliant. Fantastic work, dude. Using a randomized distribution of white points to put stars in the background is also *way* cool. Very impressed by this.
+
+Again, just make sure your title indicates with clarity what your audience is seeing. Be sure to let people know these are from Star Wars. Also, I wonder if it would be neat to specify what Episodes each of three starships appeared in... 
+
+Finally, the bolded hot pink still bothers me. The inside of the plot looks so great, but I feel the outside comprises it.
 
 ### The Planets
 ```{r visualization_3, fig.height = 12, warning = FALSE}
@@ -332,3 +362,9 @@ planets %>%
                      min.segment.length =         0,
                      nudge_y            =       2.1)
 ``` 
+
+# AE
+
+Again, a very cool visualization. However, this one needs a lot of work. I feel like a visualization like this almost *has* to be interactive. I instinctively started clicking and dragging on the plot to see if it would move. It's just that there is so much information being communicated in a relatively small space. There should be a way to alter your field of view when looking at this to change the visual perspective. Otherwise, there is too much visual stimuli to take in at once, which makes it difficult to glean insights from the data. More specifically, there is a lot of labeling text to indicate each of the planets. However, with each of the blue circles clumped so close together, that labeling information becomes almost meaningless. This viz has a lot of potential, but I think it requires some interactivity to work as intended. 
+
+Additionally, I see you have AU units included in the plot. Is there a way to better translate to a general audience what an astrological unit really means? Or is this meant for a more specialist community that would understand?
