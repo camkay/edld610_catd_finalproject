@@ -169,9 +169,8 @@ sol_sys <- tibble(
   radius         = c(   2439.5,    6052,    6378,   3396,     71492)
 )
 
-#combine the planets and solar sytem data into one dataset
+#combine the star war's planets and solar system data into one dataset
 planets <- bind_rows(planets, sol_sys)
-
 
 # look at first ten rows of tidied dataet
 head(planets, n = 10L) 
@@ -282,12 +281,17 @@ starships %>%
 ### The Planets
 ```{r visualization_3, fig.height = 12, warning = FALSE}
 # create function for calculating x axis locations during the time it takes
-# bespin to make one rotation. The slices have to be numerous to obscure the
-# geom_points jumping back at the end of the year
+# bespin to make one rotation. There has to be enough slices to obscure the
+# geom_points jumping back at the end of Bespin's year
 orbit_slice <- function(planet = NULL) {
+  # grab orbital period of planet of interest
   temp <- planets$orbital_period[which(planets$name == planet)]
-  rep(seq(from = 0, to = 5110, length.out = (511*(temp/5110))), 
-      length.out = 511)
+  # calculate 511 x-axis point for that planet throughout Bespin' year
+  rep(c(seq(from       = 0, 
+            to         = 5110, 
+            length.out = (1000 * (temp / 5110))), 
+        NA),
+      length.out = 1000)
 }
 
 # calculate locations on the x-axis for each planets during the time it takes
@@ -304,17 +308,15 @@ orbital_degrees <- tibble(
   "Earth"      = orbit_slice("Earth"),
   "Mars"       = orbit_slice("Mars"),
   "Jupiter"    = orbit_slice("Jupiter"),
-  "days_count" = 1:511
+  "days_count" = 1:1000
 )
-
-
 
 # gather days into a column and the planet names into another column
 orbital_degrees %<>%
   gather(key = "name", value = "days", -days_count)
 
 # planets plot
-plot3 <- planets %>%
+planets_plot <- planets %>%
   # select only variables of interest
   select(name, au, radius, orbital_period, orig_tril, solar_system) %>%
   # drop planets that do not have (1) a name, (2) a distance from the sun (i.e.
@@ -352,7 +354,7 @@ plot3 <- planets %>%
               size      =  5) +
     # make the coordinate polar
     coord_polar(theta = "x") +
-    # add transsition following days
+    # add transition according to days
     transition_time(days_count) +
     # set the limit of size values
     scale_size_continuous(range = c(.5, 10)) +
@@ -364,7 +366,7 @@ plot3 <- planets %>%
     scale_colour_manual(values = c("#02fff6", "#ff5d00")) +
     # add labels
     labs(title    = "Distance of Star War's Planets from their Host Stars",
-         subtitle = "Day: {(frame_time*10)}", 
+         subtitle = "Days: {frame_time*5.11}", 
          caption  = "Data from https://swapi.co.") + 
     # customize using my theme
     my_theme() +
@@ -376,9 +378,9 @@ plot3 <- planets %>%
           axis.title    = element_blank(),
           plot.margin   = unit(c(1, 7, 1, 7), "cm"))
 
-# animate plot
-animate(plot3, 
-        duration = 60,
+# animate plot with a one-minute duration and 24 frames per second
+animate(planets_plot, 
+        duration = 50,
         fps = 24)
 
 ``` 
