@@ -32,6 +32,9 @@ source(here("functions/geom_saberblade.R")) # load the function for creating the
 # set figure output dimensions
 knitr::opts_chunk$set(fig.width  = 12, 
                       fig.height = 8)
+
+# set gganimate dimensions
+gganimatedev_args = list(width = 2000, height = 2000)
 ```
 
 ## The Data
@@ -159,7 +162,7 @@ planets <- data.frame(t(list.cbind(sw_planets))) %>%
 
 # create dataset for planets in the solar system
 sol_sys <- tibble(
-  name           = c("Mercury", "Earth", "Venus", "Mars", "Jupiter"),
+  name           = c("Mercury", "Venus", "Earth", "Mars", "Jupiter"),
   orbital_period = c(       88,     225,     365,    687,      4330),
   au             = c(      .39,     .72,       1,   1.52,      5.20),
   solar_system   = c(     TRUE,    TRUE,    TRUE,   TRUE,      TRUE),
@@ -304,6 +307,8 @@ orbital_degrees <- tibble(
   "days_count" = 1:511
 )
 
+
+
 # gather days into a column and the planet names into another column
 orbital_degrees %<>%
   gather(key = "name", value = "days", -days_count)
@@ -321,27 +326,30 @@ plot3 <- planets %>%
          # au < 2,
          radius != 0.00) %>%
   left_join(orbital_degrees, by = "name") %>%
+  #drop mercury for moving too quickly
+  filter(orbital_period > 100) %>%
   # plot the planets distance from the sun against their arbitrary degree
   ggplot(aes(x = days, y = au, color = solar_system)) +
     # add labels indicating y-axis units and add star and earth
     geom_text(aes(x =   0, y = 0, label = "STAR"), 
               color = "deeppink3", 
-              size  = 7) +
+              size  = 5) +
     geom_text(aes(x = max(days) * 3/4, y = 2, label = "2 AU"), 
               color = "deeppink3", 
-              size  = 7) +
+              size  = 5) +
     geom_text(aes(x = max(days) * 3/4, y = 4, label = "4 AU"), 
               color = "deeppink3", 
-              size  = 7) +
+              size  = 5) +
     geom_text(aes(x = max(days) * 3/4, y = 6, label = "6 AU"), 
               color = "deeppink3", 
-              size  = 7) +
+              size  = 5) +
     # add planet points; map size of the point to planet radius
     geom_point(aes(size = radius), alpha = .6) +
     # add planet text
     geom_text(aes(label = name), 
               position  = position_nudge(y = 1.1), 
-              alpha     = .7) +
+              alpha     = .7,
+              size      =  5) +
     # make the coordinate polar
     coord_polar(theta = "x") +
     # add transsition following days
@@ -366,7 +374,7 @@ plot3 <- planets %>%
           plot.caption  = element_text(hjust = 0.5),
           axis.text     = element_blank(),
           axis.title    = element_blank(),
-          plot.margin   = unit(c(1, 2, 1, 2), "cm")) #+
+          plot.margin   = unit(c(1, 7, 1, 7), "cm")) #+
     #geom_label_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
     #                 color              = "#00ddff",
     #                 fill               =        NA,
@@ -374,8 +382,10 @@ plot3 <- planets %>%
     #                 min.segment.length =         0,
     #                 nudge_y            =       2.1)
 
+
+
 animate(plot3, 
-        duration = 50,
+        duration = 60,
         fps = 24)
 
 
