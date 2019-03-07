@@ -374,19 +374,11 @@ plot3 <- planets %>%
           plot.caption  = element_text(hjust = 0.5),
           axis.text     = element_blank(),
           axis.title    = element_blank(),
-          plot.margin   = unit(c(1, 7, 1, 7), "cm")) #+
-    #geom_label_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
-    #                 color              = "#00ddff",
-    #                 fill               =        NA,
-    #                 size               =         8,
-    #                 min.segment.length =         0,
-    #                 nudge_y            =       2.1)
+          plot.margin   = unit(c(1, 7, 1, 7), "cm"))
 
-
-
+# animate plot
 animate(plot3, 
         duration = 60,
         fps = 24)
-
 
 ``` 
