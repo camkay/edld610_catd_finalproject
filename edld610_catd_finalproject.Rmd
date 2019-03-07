@@ -19,6 +19,7 @@ library(here) # for finding the project folder
 library(repurrrsive) # contains the star wars datasets
 library(rlist) # for binding all lit elements by column (using `list.cbind`)
 library(ggrepel) # for adding geom_text labels that do not overlap
+library(gganimate) # for animating the plot
 
 # add gravitational constant (i.e., 6.67408 * 10^-11)
 grav_constant <- 6.67408 * (10 ^ -11)
@@ -141,7 +142,33 @@ planets <- data.frame(t(list.cbind(sw_planets))) %>%
          # calculate planet mass (ish)
          mass            = (g * (radius^2)) / grav_constant,
          # calculate planet area
-         area            = pi * (radius^2))
+         area            = pi * (radius^2),
+         # create column indicating whether the planet is in the solar system
+         solar_system    = rep(FALSE, n()),
+         # create a new variable indicating whether a planet was in the original 
+         # trilogy
+         orig_tril = case_when(name == "Alderaan" |
+                               name == "Tatooine" |
+                               name == "Yavin"    |
+                               name == "Yavin 4"  ~ "new_hope",
+                               name == "Bespin"   |
+                               name == "Dagobah"  |                     
+                               name == "Hoth"     ~ "empire_strikes",    
+                               name == "Endor"    ~ "return_jedi",
+                               TRUE ~ NA_character_))
+
+# create dataset for planets in the solar system
+sol_sys <- tibble(
+  name           = c("Mercury", "Earth", "Venus", "Mars", "Jupiter"),
+  orbital_period = c(       88,     225,     365,    687,      4330),
+  au             = c(      .39,     .72,       1,   1.52,      5.20),
+  solar_system   = c(     TRUE,    TRUE,    TRUE,   TRUE,      TRUE),
+  radius         = c(   2439.5,    6052,    6378,   3396,     71492)
+)
+
+#combine the planets and solar sytem data into one dataset
+planets <- bind_rows(planets, sol_sys)
+
 
 # look at first ten rows of tidied dataet
 head(planets, n = 10L) 
@@ -251,69 +278,85 @@ starships %>%
 
 ### The Planets
 ```{r visualization_3, fig.height = 12, warning = FALSE}
+# create function for calculating x axis locations during the time it takes
+# bespin to make one rotation. The slices have to be numerous to obscure the
+# geom_points jumping back at the end of the year
+orbit_slice <- function(planet = NULL) {
+  temp <- planets$orbital_period[which(planets$name == planet)]
+  rep(seq(from = 0, to = 5110, length.out = (511*(temp/5110))), 
+      length.out = 511)
+}
+
+# calculate locations on the x-axis for each planets during the time it takes
+# bespin to make one rotation. 
+orbital_degrees <- tibble(
+  "Alderaan"   = orbit_slice("Alderaan"),
+  "Hoth"       = orbit_slice("Hoth"),
+  "Dagobah"    = orbit_slice("Dagobah"),
+  "Bespin"     = orbit_slice("Bespin"),
+  "Endor"      = orbit_slice("Endor"),
+  "Tatooine"   = orbit_slice("Tatooine"),
+  "Mercury"    = orbit_slice("Mercury"),
+  "Venus"      = orbit_slice("Venus"),
+  "Earth"      = orbit_slice("Earth"),
+  "Mars"       = orbit_slice("Mars"),
+  "Jupiter"    = orbit_slice("Jupiter"),
+  "days_count" = 1:511
+)
+
+# gather days into a column and the planet names into another column
+orbital_degrees %<>%
+  gather(key = "name", value = "days", -days_count)
+
 # planets plot
-planets %>%
+plot3 <- planets %>%
   # select only variables of interest
-  select(name, au, radius) %>%
+  select(name, au, radius, orbital_period, orig_tril, solar_system) %>%
   # drop planets that do not have (1) a name, (2) a distance from the sun (i.e.
   # an AU), (3) an AU less than 2, and (4) a radius greater than 0.
   filter(!is.na(name),
          !is.na(au),
+         !is.na(orbital_period),
+         !is.na(orig_tril) | solar_system == TRUE,
          # au < 2,
          radius != 0.00) %>%
-  # create a new variable indicating whether a planet was in the original 
-  # trilogy
-  mutate(orig_tril = case_when(name == "Alderaan" |
-                               name == "Tatooine" |
-                               name == "Yavin"    |
-                               name == "Yavin 4"  ~ "new_hope",
-                               name == "Bespin"   |
-                               name == "Dagobah"  |                                 
-                               name == "Hoth"     ~ "empire_strikes",                                
-                               name == "Endor"    ~ "return_jedi",
-                               TRUE ~ NA_character_)) %>%
-  # sort the data by their distance from the sun
-  arrange(au) %>%
-  # add a column that arbitrarily assigns the planet a degree
-  mutate(degree = seq(from = 1, to = 360, length.out = n())) %>%
+  left_join(orbital_degrees, by = "name") %>%
   # plot the planets distance from the sun against their arbitrary degree
-  ggplot(aes(x = degree, y = au)) +
+  ggplot(aes(x = days, y = au, color = solar_system)) +
     # add labels indicating y-axis units and add star and earth
     geom_text(aes(x =   0, y = 0, label = "STAR"), 
               color = "deeppink3", 
               size  = 7) +
-    geom_text(aes(x = 270, y = 2, label = "2 AU"), 
+    geom_text(aes(x = max(days) * 3/4, y = 2, label = "2 AU"), 
               color = "deeppink3", 
               size  = 7) +
-    geom_text(aes(x = 270, y = 4, label = "4 AU"), 
+    geom_text(aes(x = max(days) * 3/4, y = 4, label = "4 AU"), 
               color = "deeppink3", 
               size  = 7) +
-    geom_text(aes(x = 270, y = 6, label = "6 AU"), 
+    geom_text(aes(x = max(days) * 3/4, y = 6, label = "6 AU"), 
               color = "deeppink3", 
               size  = 7) +
-    # add solar system planets
-    geom_text(aes(x = 0, y = 1.00, label =   "EARTH"), 
-      color = "deeppink3", 
-      size  = 5) +
-    geom_text(aes(x = 0, y = 1.52, label =    "MARS"), 
-      color = "deeppink3", 
-      size  = 5) +
-    geom_text(aes(x = 0, y = 5.20, label = "JUPITER"), 
-      color = "deeppink3", 
-      size  = 5) +
     # add planet points; map size of the point to planet radius
-    geom_point(aes(size = radius), alpha = .6, color = "#00ddff") +
+    geom_point(aes(size = radius), alpha = .6) +
+    # add planet text
+    geom_text(aes(label = name), 
+              position  = position_nudge(y = 1.1), 
+              alpha     = .7) +
     # make the coordinate polar
     coord_polar(theta = "x") +
+    # add transsition following days
+    transition_time(days_count) +
     # set the limit of size values
     scale_size_continuous(range = c(.5, 10)) +
     # drop x-axis grid marks and breaks
     scale_x_continuous(breaks = NULL) +
     # set 2-axis limit
     scale_y_continuous(limits = c(0,7)) +
+    # set the colours
+    scale_colour_manual(values = c("#02fff6", "#ff5d00")) +
     # add labels
     labs(title    = "Distance of Star War's Planets from their Host Stars",
-         subtitle = "in Astronomical Units (AU)", 
+         subtitle = "Day: {(frame_time*10)}", 
          caption  = "Data from https://swapi.co.") + 
     # customize using my theme
     my_theme() +
@@ -323,12 +366,17 @@ planets %>%
           plot.caption  = element_text(hjust = 0.5),
           axis.text     = element_blank(),
           axis.title    = element_blank(),
-          plot.margin   = unit(c(1, 2, 1, 2), "cm")) +
-    # add text identifying only those planetss from the original trilogy
-    geom_label_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
-                     color              = "#00ddff",
-                     fill               =        NA,
-                     size               =         8,
-                     min.segment.length =         0,
-                     nudge_y            =       2.1)
+          plot.margin   = unit(c(1, 2, 1, 2), "cm")) #+
+    #geom_label_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
+    #                 color              = "#00ddff",
+    #                 fill               =        NA,
+    #                 size               =         8,
+    #                 min.segment.length =         0,
+    #                 nudge_y            =       2.1)
+
+animate(plot3, 
+        duration = 50,
+        fps = 24)
+
+
 ``` 
