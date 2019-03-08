@@ -34,7 +34,7 @@ knitr::opts_chunk$set(fig.width  = 12,
                       fig.height = 8)
 
 # set gganimate dimensions
-gganimatedev_args = list(width = 2000, height = 2000)
+#gganimatedev_args = list(width = 2000, height = 2000)
 ```
 
 ## The Data
@@ -183,8 +183,9 @@ head(planets, n = 10L)
 ```{r visualization_1}
 # people plot
 people %>%
-  # filter for only females and males
-  filter(gender == "female" | gender == "male") %>%
+  # filter for only females and males and drop the outlier (yoda)
+  filter(gender == "female" | gender == "male",
+         name   != "Yoda") %>%
   # group by gender
   group_by(gender) %>%
   # calculate mean age and rounded mean age for geom_text
@@ -289,9 +290,9 @@ orbit_slice <- function(planet = NULL) {
   # calculate 511 x-axis point for that planet throughout Bespin' year
   rep(c(seq(from       = 0, 
             to         = 5110, 
-            length.out = (1000 * (temp / 5110))), 
+            length.out = (510 * (temp / 5110))), 
         NA),
-      length.out = 1000)
+      length.out = 510)
 }
 
 # calculate locations on the x-axis for each planets during the time it takes
@@ -308,7 +309,7 @@ orbital_degrees <- tibble(
   "Earth"      = orbit_slice("Earth"),
   "Mars"       = orbit_slice("Mars"),
   "Jupiter"    = orbit_slice("Jupiter"),
-  "days_count" = 1:1000
+  "days_count" = 1:510
 )
 
 # gather days into a column and the planet names into another column
@@ -328,21 +329,22 @@ planets_plot <- planets %>%
          # au < 2,
          radius != 0.00) %>%
   left_join(orbital_degrees, by = "name") %>%
-  #drop mercury for moving too quickly
-  filter(orbital_period > 100) %>%
+  #drop mercury and alderaan
+  filter(name != "Mercury", # mercury for orbiting too quickly
+         name != "Alderaan") %>% # alderaan for esssentially being earth 2.0
   # plot the planets distance from the sun against their arbitrary degree
   ggplot(aes(x = days, y = au, color = solar_system)) +
     # add labels indicating y-axis units and add star and earth
-    geom_text(aes(x =   0, y = 0, label = "STAR"), 
+    geom_text(aes(x =   0,        y = 0, label = "STAR"), 
               color = "deeppink3", 
               size  = 5) +
-    geom_text(aes(x = max(days) * 3/4, y = 2, label = "2 AU"), 
+    geom_text(aes(x = 5110 * 3/4, y = 2, label = "2 AU"), 
               color = "deeppink3", 
               size  = 5) +
-    geom_text(aes(x = max(days) * 3/4, y = 4, label = "4 AU"), 
+    geom_text(aes(x = 5110 * 3/4, y = 4, label = "4 AU"), 
               color = "deeppink3", 
               size  = 5) +
-    geom_text(aes(x = max(days) * 3/4, y = 6, label = "6 AU"), 
+    geom_text(aes(x = 5110 * 3/4, y = 6, label = "6 AU"), 
               color = "deeppink3", 
               size  = 5) +
     # add planet points; map size of the point to planet radius
@@ -366,7 +368,7 @@ planets_plot <- planets %>%
     scale_colour_manual(values = c("#02fff6", "#ff5d00")) +
     # add labels
     labs(title    = "Distance of Star War's Planets from their Host Stars",
-         subtitle = "Days: {frame_time*5.11}", 
+         subtitle = "Days: {frame_time*10}", 
          caption  = "Data from https://swapi.co.") + 
     # customize using my theme
     my_theme() +
@@ -380,7 +382,7 @@ planets_plot <- planets %>%
 
 # animate plot with a one-minute duration and 24 frames per second
 animate(planets_plot, 
-        duration = 50,
-        fps = 24)
+        duration = 30,
+        fps = 30)
 
 ``` 
