@@ -265,28 +265,14 @@ starships %>%
     geom_point(size = 6.00, colour = "grey30") +
     geom_point(size = 3.00, colour = "grey10") +
     geom_point(size = 4.00, colour = "grey60", shape = 13) +
-    # add text for means
-    geom_text(aes(label = paste("M =", round(len_m, 2))),
-              size  = 6,
-              color = "deeppink2",
-              vjust = 3.4) +
-    # add text for 95CI
-    geom_text(aes(label = paste("95% CI[", 
-                                round(len_m - (len_se * qnorm(.975)), 2),
-                                ", ",
-                                round(len_m + (len_se * qnorm(.975)), 2),
-                                "]",
-                                sep = "")),
-              size  = 6,
-              color = "deeppink2",
-              vjust = 5) +
     # flip the coordinates
     coord_flip() +
     # add labels
-    labs(title   = "Average Length of Starship by Ship Class",
-         y       = "Average Length in Meters",
-         x       = "Class",
-         caption = "Data from https://swapi.co.") + 
+    labs(title    = "Average Length of Starship by Ship Class",
+         subtitle = "Mean length indicated by ship body.\nConfidence interval (95%) indicated by wings.",
+         y        = "Average Length in Meters",
+         x        = "Class",
+         caption  = "Data from https://swapi.co.") + 
     # set y-axis limits and do not show value beyond limits of y-axis
     scale_y_continuous(limits = c(0,80), 
                        expand = expand_scale(mult = c(0, 0))) + 
