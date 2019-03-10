@@ -106,10 +106,9 @@ orbit_slice <- function(planet = NULL) {
   # grab orbital period of planet of interest
   temp <- planets$orbital_period[which(planets$name == planet)]
   # calculate 511 x-axis point for that planet throughout Bespin' year
-  rep(c(seq(from       = 0, 
+  rep(seq(from         = 0, 
             to         = 5110, 
-            length.out = (5110 * (temp / 5110))), 
-        NA),
+            length.out = (5110 * (temp / 5110))),
       length.out = 5110)
 }
 
@@ -184,7 +183,7 @@ planets_plot <- planets %>%
     # make the coordinate polar
     coord_polar(theta = "x") +
     # add transition according to days
-    transition_time(days_count) +
+    transition_manual(days_count) +
     # set the limit of size values
     scale_size_continuous(range = c(.5, 10)) +
     # drop x-axis grid marks and breaks
@@ -197,7 +196,7 @@ planets_plot <- planets %>%
                         labels = c("Solar System", "Star Wars")) +
     # add labels
     labs(title    = "Distance from Host Star and Orbital Period",
-         subtitle =                         "Days: {frame_time}", 
+         subtitle =                         "Days: {current_frame}", 
          caption  =                "Data from https://swapi.co.") +
     # customize using my theme
     my_theme() +
@@ -216,8 +215,8 @@ planets_plot <- planets %>%
 
 # animate plot with a duration of 55 and a fps of  58
 animate(planets_plot, 
-        duration = 55,
-        fps      = 48)
+        nframes = 2640,
+        fps     =   48)
 ``` 
 
 #### Idea
