@@ -32,9 +32,6 @@ source(here("functions/geom_saberblade.R")) # load the function for creating the
 # set figure output dimensions
 knitr::opts_chunk$set(fig.width  = 12, 
                       fig.height = 8)
-
-# set gganimate dimensions
-#gganimatedev_args = list(width = 2000, height = 2000)
 ```
 
 ## The Data
