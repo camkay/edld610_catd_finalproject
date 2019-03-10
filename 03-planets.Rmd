@@ -108,9 +108,9 @@ orbit_slice <- function(planet = NULL) {
   # calculate 511 x-axis point for that planet throughout Bespin' year
   rep(c(seq(from       = 0, 
             to         = 5110, 
-            length.out = (510 * (temp / 5110))), 
+            length.out = (5100 * (temp / 5110))), 
         NA),
-      length.out = 510)
+      length.out = 5100)
 }
 
 # calculate locations on the x-axis for each planets during the time it takes
@@ -127,7 +127,7 @@ orbital_degrees <- tibble(
   "Earth"      = orbit_slice("Earth"),
   "Mars"       = orbit_slice("Mars"),
   "Jupiter"    = orbit_slice("Jupiter"),
-  "days_count" = 1:510
+  "days_count" = 1:5100
 )
 
 # gather days into a column and the planet names into another column
@@ -166,11 +166,12 @@ planets_plot <- planets %>%
               color = "deeppink3", 
               size  = 5) +
     # add label for describing 1 AU
-    annotate(geom  =                   "text", 
+    annotate(geom  =                   "label", 
              x     =             5110 * 1 / 2,
              y     =                        7,
              label = "1 AU = ~150,000,000 km", 
              color =              "deeppink2",
+             fill  =                  "black",
              size  =                        5) +
     # add planet points; map size of the point to planet radius
     geom_point(aes(size = radius), alpha = .6) +
@@ -192,11 +193,11 @@ planets_plot <- planets %>%
     scale_y_continuous(limits = c(0, 7)) +
     # set the colours
     scale_colour_manual(name   = "Star System",
-                        values = c("#02fff6", "#ffbc02"),
+                        values = c("#02fff6", "#ff7b00"),
                         labels = c("Solar System", "Star Wars")) +
     # add labels
     labs(title    = "Distance from Host Star and Orbital Period",
-         subtitle =                      "Days: {frame_time*10}", 
+         subtitle =                      "Days: {frame_time}", 
          caption  =                "Data from https://swapi.co.") +
     # customize using my theme
     my_theme() +
@@ -215,9 +216,10 @@ planets_plot <- planets %>%
 
 # animate plot with a one-minute duration and 24 frames per second
 animate(planets_plot, 
-        duration = 1,
-        fps      = 2)
+        duration = 3,
+        fps      = 1)
 
+#5548
 ``` 
 
 #### Idea
