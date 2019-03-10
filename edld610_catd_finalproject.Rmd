@@ -265,10 +265,14 @@ starships %>%
     geom_point(size = 6.00, colour = "grey30") +
     geom_point(size = 3.00, colour = "grey10") +
     geom_point(size = 4.00, colour = "grey60", shape = 13) +
+    # add text for means
+    geom_text(aes(label = starship_class),
+              color = "deeppink2",
+              face = "bold") +
     # flip the coordinates
     coord_flip() +
     # add labels
-    labs(title   = "Average length of starship by ship class",
+    labs(title   = "Average Length of Starship by Ship Class",
          y       = "Average Length in Meters",
          x       = "Class",
          caption = "Data from https://swapi.co.") + 
@@ -276,7 +280,9 @@ starships %>%
     scale_y_continuous(limits = c(0,80), 
                        expand = expand_scale(mult = c(0, 0))) + 
     # customize using my theme
-    my_theme()
+    my_theme() +
+    theme(plot.margin  = unit(c(1, 1, 1, 1), "cm"),
+          axis.title.y = element_text(vjust = 5))
 ```
 
 ### The Planets
@@ -347,6 +353,13 @@ planets_plot <- planets %>%
     geom_text(aes(x = 5110 * 3 / 4, y = 6, label = "6 AU"), 
               color = "deeppink3", 
               size  = 5) +
+    # add label for describing 1 AU
+    annotate(geom  =                   "text", 
+             x     =             5110 * 1 / 2,
+             y     =                        7,
+             label = "1 AU = ~150,000,000 km", 
+             color =              "deeppink2",
+             size  =                        5) +
     # add planet points; map size of the point to planet radius
     geom_point(aes(size = radius), alpha = .6) +
     # add planet text; also suppress its legend
@@ -373,13 +386,6 @@ planets_plot <- planets %>%
     labs(title    = "Distance from Host Star and Orbital Period",
          subtitle =                      "Days: {frame_time*10}", 
          caption  =                "Data from https://swapi.co.") +
-    # add label for describing 1 AU
-    annotate(geom  =                   "text", 
-             x     =             5110 * 1 / 2,
-             y     =                        7,
-             label = "1 AU = ~150,000,000 km", 
-             color =              "deeppink2",
-             size  =                        5) +
     # customize using my theme
     my_theme() +
     # drop axis text and axis titles and center title, subtitle, and caption
@@ -388,14 +394,16 @@ planets_plot <- planets %>%
           plot.caption    = element_text(hjust = 0.5),
           axis.text       = element_blank(),
           axis.title      = element_blank(),
-          plot.margin     = unit(c(1, 7, 1, 7), "cm"),
+          plot.margin     = unit(c(1, 5, 1, 7), "cm"),
           legend.position = "right") +
-    # drop radius legend
-    guides(size = FALSE)
+    # drop radius legend and change the size of the legend points
+    guides(size = FALSE,
+           colour = guide_legend(override.aes = list(size  = 5,
+                                                     alpha = 1)))
 
 # animate plot with a one-minute duration and 24 frames per second
 animate(planets_plot, 
         duration = 1,
-        fps = 2)
+        fps      = 2)
 
 ``` 
