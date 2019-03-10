@@ -1,5 +1,32 @@
 # The People {#people}
 
+```{r people_initial_setup, include = FALSE}
+# load necessary packages (if you do not have them, you will need to install them first)
+library(tidyverse) # for dataframe manipulation and plotting
+library(magrittr) # for updating an object that is piped into a function (using `%<>%`)
+library(here) # for finding the project folder
+library(repurrrsive) # contains the star wars datasets
+library(rlist) # for binding all lit elements by column (using `list.cbind`)
+library(ggrepel) # for adding geom_text labels that do not overlap
+library(gganimate) # for animating the plot
+
+# add gravitational constant (i.e., 6.67408 * 10^-11)
+grav_constant <- 6.67408 * (10 ^ -11)
+
+# load bespoke functions from the functions folder
+source(here("functions/my_theme.R")) # load my_theme
+source(here("functions/geom_saberhilt.R")) # load the function for creating the hilts of lightsabers
+source(here("functions/geom_saberblade.R")) # load the function for creating the blades of lightsabers
+
+# set figure output dimensions
+knitr::opts_chunk$set(fig.width  = 12, 
+                      fig.height = 8)
+
+# how to build this book
+# 1. install the `bookdown` packages: install.packages("bookdown")
+# 2. Navigate to the RStudio pane that has the environment in it. There should be the following tabs: (1) "Environment", (2) "History", (3) "Connection", (4) "Build", and (5) "Git". Select "Build" and click the button that says "Build Book"
+```
+
 ## The Data
 
 ```{r load_person_data, warning = FALSE}

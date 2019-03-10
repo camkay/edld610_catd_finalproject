@@ -11,7 +11,7 @@ output:
 
 # Introduction
 
-```{r initial_setup, include = FALSE}
+```{r index_initial_setup, include = FALSE}
 # load necessary packages (if you do not have them, you will need to install them first)
 library(tidyverse) # for dataframe manipulation and plotting
 library(magrittr) # for updating an object that is piped into a function (using `%<>%`)
@@ -42,8 +42,8 @@ Welcome! This portfolio shows the construction of three different visualizations
 of the Star Wars universe. The [first visualization][The People] shows the relationship between
 average character age and gender. The [second visualization][The Starships] reveals how starship
 classes differ in terms of length. The [third visualization][The Planets] shows the 
-distance of Star War's planet from their host stars, with planets from our solar
-system included for easy comparison.
+distance of Star War's planet from their host stars and animates their orbital periods. Planets from our solar
+system are included for easy comparison.
 
 All the data is from the `repurrrsive` package. The `repurrrsive` package includes 
 various datasets to assist in the teaching of R. The Star Wars dataset is 
