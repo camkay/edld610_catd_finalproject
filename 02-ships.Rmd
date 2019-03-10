@@ -75,27 +75,46 @@ starships %>%
     # add error bars
     geom_errorbar(aes(ymin = len_m - (len_se * qnorm(.975)), 
                       ymax = len_m + (len_se * qnorm(.975))), 
-                  width = .5, colour = "grey30", lwd = 1.2) +
+                  width = .5, colour = "grey70", lwd = 1.25) +
+    geom_errorbar(aes(ymin = len_m - (len_se * qnorm(.975)), 
+                      ymax = len_m + (len_se * qnorm(.975))), 
+                  width = .5, colour = "grey30", lwd = 1) +
     # add stars 
     geom_point(data = stars_data, aes(x = x, y = y, alpha = trans), 
                colour = "white",
                size = .001) +
     # plot ship body points
-    geom_point(size = 6, colour = "grey30") +
-    geom_point(size = 3, colour = "grey10") +
-    geom_point(size = 4, colour = "grey60", shape = 13) +
+    geom_point(size = 6.70, colour = "grey70") +
+    geom_point(size = 6.40, colour = "grey30") +
+    geom_point(size = 4.40, colour = "grey10") +
+    geom_point(size = 3.40, colour = "grey60", shape = 8) +
+    geom_point(size = 4.40, colour = "grey60", shape = 1) +
+    geom_point(size = 2.00, colour = "grey60") +
+    geom_point(size = 1.50, colour = "grey10") +
+    geom_point(size = 0.20, colour = "grey60", 
+               position = position_nudge(x = -0.09, y = -0.5)) +
+    geom_point(size = 0.20, colour = "grey60", 
+             position = position_nudge(x = -0.09, y = 0.5)) +
+
+    geom_point(size = 0.10, colour = "grey10", 
+               position = position_nudge(x = -0.09, y = -0.5)) +
+    geom_point(size = 0.10, colour = "grey10", 
+             position = position_nudge(x = -0.09, y = 0.5)) +
     # flip the coordinates
     coord_flip() +
     # add labels
-    labs(title   = "Average length of starship by ship class",
-         y       = "Average Length in Meters",
-         x       = "Class",
-         caption = "Data from https://swapi.co.") + 
+    labs(title    = "Average Length of Starship by Ship Class",
+         subtitle = "Mean length indicated by ship body.\nConfidence interval (95%) indicated by wings.",
+         y        = "Average Length in Meters",
+         x        = "Class",
+         caption  = "Data from https://swapi.co.") + 
     # set y-axis limits and do not show value beyond limits of y-axis
     scale_y_continuous(limits = c(0,80), 
                        expand = expand_scale(mult = c(0, 0))) + 
     # customize using my theme
-    my_theme()
+    my_theme() +
+    theme(plot.margin  = unit(c(1, 1, 1, 1), "cm"),
+          axis.title.y = element_text(vjust = 5))
 ```
 
 #### Idea
