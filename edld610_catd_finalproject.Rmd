@@ -261,10 +261,22 @@ starships %>%
                colour = "white",
                size = .001) +
     # plot ship body points
-    geom_point(size = 6.25, colour = "grey70") +
-    geom_point(size = 6.00, colour = "grey30") +
-    geom_point(size = 3.00, colour = "grey10") +
-    geom_point(size = 4.00, colour = "grey60", shape = 13) +
+    geom_point(size = 6.70, colour = "grey70") +
+    geom_point(size = 6.40, colour = "grey30") +
+    geom_point(size = 4.40, colour = "grey10") +
+    geom_point(size = 3.40, colour = "grey60", shape = 8) +
+    geom_point(size = 4.40, colour = "grey60", shape = 1) +
+    geom_point(size = 2.00, colour = "grey60") +
+    geom_point(size = 1.50, colour = "grey10") +
+    geom_point(size = 0.20, colour = "grey60", 
+               position = position_nudge(x = -0.09, y = -0.5)) +
+    geom_point(size = 0.20, colour = "grey60", 
+             position = position_nudge(x = -0.09, y = 0.5)) +
+
+    geom_point(size = 0.10, colour = "grey10", 
+               position = position_nudge(x = -0.09, y = -0.5)) +
+    geom_point(size = 0.10, colour = "grey10", 
+             position = position_nudge(x = -0.09, y = 0.5)) +
     # flip the coordinates
     coord_flip() +
     # add labels
@@ -399,8 +411,8 @@ planets_plot <- planets %>%
                                                      alpha = 1)))
 
 # animate plot with a one-minute duration and 24 frames per second
-animate(planets_plot, 
-        duration = 1,
-        fps      = 2)
+#animate(planets_plot, 
+#        duration = 1,
+#        fps      = 2)
 
 ``` 
