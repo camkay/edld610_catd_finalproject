@@ -19,6 +19,7 @@ library(here) # for finding the project folder
 library(repurrrsive) # contains the star wars datasets
 library(rlist) # for binding all lit elements by column (using `list.cbind`)
 library(ggrepel) # for adding geom_text labels that do not overlap
+library(gganimate) # for animating the plot
 
 # add gravitational constant (i.e., 6.67408 * 10^-11)
 grav_constant <- 6.67408 * (10 ^ -11)
