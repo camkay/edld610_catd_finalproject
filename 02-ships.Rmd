@@ -104,7 +104,7 @@ starships %>%
     coord_flip() +
     # add labels
     labs(title    = "Average Length of Starship by Ship Class",
-         subtitle = "Mean length indicated by ship body.\nConfidence interval (95%) indicated by wings.",
+         subtitle = "Mean length indicated by ship body position\nConfidence interval (95%) indicated by wing span",
          y        = "Average Length in Meters",
          x        = "Class",
          caption  = "Data from https://swapi.co.") + 
