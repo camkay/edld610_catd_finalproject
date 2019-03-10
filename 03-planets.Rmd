@@ -108,9 +108,9 @@ orbit_slice <- function(planet = NULL) {
   # calculate 511 x-axis point for that planet throughout Bespin' year
   rep(c(seq(from       = 0, 
             to         = 5110, 
-            length.out = (5100 * (temp / 5110))), 
+            length.out = (5110 * (temp / 5110))), 
         NA),
-      length.out = 5100)
+      length.out = 5110)
 }
 
 # calculate locations on the x-axis for each planets during the time it takes
@@ -127,7 +127,7 @@ orbital_degrees <- tibble(
   "Earth"      = orbit_slice("Earth"),
   "Mars"       = orbit_slice("Mars"),
   "Jupiter"    = orbit_slice("Jupiter"),
-  "days_count" = 1:5100
+  "days_count" = 1:5110
 )
 
 # gather days into a column and the planet names into another column
@@ -197,7 +197,7 @@ planets_plot <- planets %>%
                         labels = c("Solar System", "Star Wars")) +
     # add labels
     labs(title    = "Distance from Host Star and Orbital Period",
-         subtitle =                      "Days: {frame_time}", 
+         subtitle =                         "Days: {frame_time}", 
          caption  =                "Data from https://swapi.co.") +
     # customize using my theme
     my_theme() +
@@ -214,12 +214,10 @@ planets_plot <- planets %>%
            colour = guide_legend(override.aes = list(size  = 5,
                                                      alpha = 1)))
 
-# animate plot with a one-minute duration and 24 frames per second
+# animate plot with a duration of 55 and a fps of  58
 animate(planets_plot, 
-        duration = 3,
-        fps      = 1)
-
-#5548
+        duration = 55,
+        fps      = 48)
 ``` 
 
 #### Idea
