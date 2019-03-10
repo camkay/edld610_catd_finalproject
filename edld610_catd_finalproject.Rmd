@@ -210,7 +210,7 @@ people %>%
               size     = 6, 
               position = position_nudge(x = -.09, y = -8)) +
     # add labels
-    labs(title     = "Average age and gender",
+    labs(title     = "Average Age of Star Wars Characters by Gender",
            y       = "Age (years)",
            x       = "Gender",
            legend  = "Gender",
@@ -335,25 +335,26 @@ planets_plot <- planets %>%
   # plot the planets distance from the sun against their arbitrary degree
   ggplot(aes(x = days, y = au, color = solar_system)) +
     # add labels indicating y-axis units and add star and earth
-    geom_text(aes(x =   0,        y = 0, label = "STAR"), 
+    geom_text(aes(x =   0,          y = 0, label = "STAR"), 
               color = "deeppink3", 
               size  = 5) +
-    geom_text(aes(x = 5110 * 3/4, y = 2, label = "2 AU"), 
+    geom_text(aes(x = 5110 * 3 / 4, y = 2, label = "2 AU"), 
               color = "deeppink3", 
               size  = 5) +
-    geom_text(aes(x = 5110 * 3/4, y = 4, label = "4 AU"), 
+    geom_text(aes(x = 5110 * 3 / 4, y = 4, label = "4 AU"), 
               color = "deeppink3", 
               size  = 5) +
-    geom_text(aes(x = 5110 * 3/4, y = 6, label = "6 AU"), 
+    geom_text(aes(x = 5110 * 3 / 4, y = 6, label = "6 AU"), 
               color = "deeppink3", 
               size  = 5) +
     # add planet points; map size of the point to planet radius
     geom_point(aes(size = radius), alpha = .6) +
-    # add planet text
-    geom_text(aes(label = name), 
-              position  = position_nudge(y = 1.1), 
-              alpha     = .7,
-              size      =  5) +
+    # add planet text; also suppress its legend
+    geom_text(aes(label   = name), 
+              position    = position_nudge(y = 1.1), 
+              alpha       = .7,
+              size        =  5,
+              show.legend = FALSE) +
     # make the coordinate polar
     coord_polar(theta = "x") +
     # add transition according to days
@@ -363,26 +364,38 @@ planets_plot <- planets %>%
     # drop x-axis grid marks and breaks
     scale_x_continuous(breaks = NULL) +
     # set 2-axis limit
-    scale_y_continuous(limits = c(0,7)) +
+    scale_y_continuous(limits = c(0, 7)) +
     # set the colours
-    scale_colour_manual(values = c("#02fff6", "#ff5d00")) +
+    scale_colour_manual(name   = "Star System",
+                        values = c("#02fff6", "#ffbc02"),
+                        labels = c("Solar System", "Star Wars")) +
     # add labels
-    labs(title    = "Distance of Star War's Planets from their Host Stars",
-         subtitle = "Days: {frame_time*10}", 
-         caption  = "Data from https://swapi.co.") + 
+    labs(title    = "Distance from Host Star and Orbital Period",
+         subtitle =                      "Days: {frame_time*10}", 
+         caption  =                "Data from https://swapi.co.") +
+    # add label for describing 1 AU
+    annotate(geom  =                   "text", 
+             x     =             5110 * 1 / 2,
+             y     =                        7,
+             label = "1 AU = ~150,000,000 km", 
+             color =              "deeppink2",
+             size  =                        5) +
     # customize using my theme
     my_theme() +
     # drop axis text and axis titles and center title, subtitle, and caption
-    theme(plot.title    = element_text(hjust = 0.5),
-          plot.subtitle = element_text(hjust = 0.5),
-          plot.caption  = element_text(hjust = 0.5),
-          axis.text     = element_blank(),
-          axis.title    = element_blank(),
-          plot.margin   = unit(c(1, 7, 1, 7), "cm"))
+    theme(plot.title      = element_text(hjust = 0.5),
+          plot.subtitle   = element_text(hjust = 0.5),
+          plot.caption    = element_text(hjust = 0.5),
+          axis.text       = element_blank(),
+          axis.title      = element_blank(),
+          plot.margin     = unit(c(1, 7, 1, 7), "cm"),
+          legend.position = "right") +
+    # drop radius legend
+    guides(size = FALSE)
 
 # animate plot with a one-minute duration and 24 frames per second
 animate(planets_plot, 
-        duration = 30,
-        fps = 30)
+        duration = 1,
+        fps = 2)
 
 ``` 
