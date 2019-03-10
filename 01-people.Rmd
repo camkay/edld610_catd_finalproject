@@ -27,11 +27,12 @@ head(people, n = 10L)
 
 ## The Visualization
 
-```{r person_vis_final, warning = FALSE}
+```{r visualization_1}
 # people plot
 people %>%
-  # filter for only females and males
-  filter(gender == "female" | gender == "male") %>%
+  # filter for only females and males and drop the outlier (yoda)
+  filter(gender == "female" | gender == "male",
+         name   != "Yoda") %>%
   # group by gender
   group_by(gender) %>%
   # calculate mean age and rounded mean age for geom_text
@@ -49,18 +50,19 @@ people %>%
     geom_saberhilt(column = 1) +
     geom_saberhilt(column = 2) +
     # set colour and fill values (i.e., red and green)
-    scale_fill_manual(values   = c("#0FFF00", "#FF0000")) +
-    scale_colour_manual(values = c("#0FFF00", "#FF0000")) +
+    scale_fill_manual(values   = c("#0FFF00", "#00f6ff")) +
+    scale_colour_manual(values = c("#0FFF00", "#00f6ff")) +
     # add text with the mean ages to the plot
     geom_text(aes(label = m_age_r, color = gender), 
               size     = 6, 
               position = position_nudge(x = -.09, y = -8)) +
     # add labels
-    labs(title     = "Average age and gender",
-           y       = "Age (years)",
-           x       = "Gender",
-           legend  = "Gender",
-           caption = "Data from https://swapi.co.") +
+    labs(title    = "Average Age of Characters by Gender",
+         subtitle = "Excluding Yoda (for obvious reasons)",
+         y        = "Age (years)",
+         x        = "Gender",
+         legend   = "Gender",
+         caption  = "Data from https://swapi.co.") +
     # customize using my theme
     my_theme() +
     # flip the coordinates
