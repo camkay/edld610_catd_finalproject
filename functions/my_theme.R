@@ -9,7 +9,7 @@ my_theme <- function() {
         plot.title            = element_text(face     = "bold", 
                                              size     = 25, 
                                              colour   = "deeppink2"), 
-        plot.subtitle         = element_text(face     = "bold", 
+        plot.subtitle         = element_text(face     = "plain", 
                                              size     = 20, 
                                              colour   = "deeppink2"), 
         axis.title            = element_text(face     = "bold", 
