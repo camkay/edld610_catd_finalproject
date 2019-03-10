@@ -266,9 +266,20 @@ starships %>%
     geom_point(size = 3.00, colour = "grey10") +
     geom_point(size = 4.00, colour = "grey60", shape = 13) +
     # add text for means
-    geom_text(aes(label = starship_class),
+    geom_text(aes(label = paste("M =", round(len_m, 2))),
+              size  = 6,
               color = "deeppink2",
-              face = "bold") +
+              vjust = 3.4) +
+    # add text for 95CI
+    geom_text(aes(label = paste("95% CI[", 
+                                round(len_m - (len_se * qnorm(.975)), 2),
+                                ", ",
+                                round(len_m + (len_se * qnorm(.975)), 2),
+                                "]",
+                                sep = "")),
+              size  = 6,
+              color = "deeppink2",
+              vjust = 5) +
     # flip the coordinates
     coord_flip() +
     # add labels
