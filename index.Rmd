@@ -79,7 +79,7 @@ datatable(people)
 
 *** 
 
-In order to get the people data into the correct format for our visualization, we first made a `tibble` of the data from `repurrrsive`'s `sw_people` dataset. We selected only those columns of interest and unlisted the columns (most of [SWAPI](https://swapi.co)'s data is stored in lists of lists). We then converted the variables to the correct variable types and replaced "n/a" with more meaningful values. We also used `parse_number` to extract the characters' ages from their birth year. Although the number actually refers to how many years before or after the battle of Yavin a character was born, all characters that had data for `birth_year` were born before the Battle of Yavin. Therefore, the result of `parse_number` provided all of the characters' ages at the Battle of Yavin, which occured at the end of A New Hope. 
+In order to get the people data into the correct format for our visualization, I first made a `tibble` of the data from `repurrrsive`'s `sw_people` dataset. I selected only those columns of interest and unlisted the columns (most of [SWAPI](https://swapi.co)'s data is stored in lists of lists). I then converted the variables to the correct variable types and replaced "n/a" with more meaningful values. I also used `parse_number` to extract the characters' ages from their birth year. Although the number actually refers to how many years before or after the battle of Yavin a character was born, all characters that had data for `birth_year` were born before the Battle of Yavin. Therefore, the result of `parse_number` provided all of the characters' ages at the Battle of Yavin, which occured at the end of A New Hope. 
 
 ### The Starships Data
 
@@ -127,7 +127,7 @@ datatable(starships)
 
 *** 
 
-To get the data into the correct format for the starship visualization, we again created a `tibble` of the data from `repurrrsive`'s `sw_starships` dataset and unlisted the columns that were stored as lists. We converted all numeric variables to be numeric. Consumables (i.e., the amount of food and life-preserving resources the ship can hold) was stored in a rather odd format: the variable had both a number and a unit (e.g., 1 month, 3 years, 1 week, 5 days...). To address this, I `separate`d the number from the unit and then converted the unit to the number of days it represented. I then multiplied the number and the unit together, to provide the number of days the starship had consumables for. 
+To get the data into the correct format for the starship visualization, I again created a `tibble` of the data from `repurrrsive`'s `sw_starships` dataset and unlisted the columns that were stored as lists. I converted all numeric variables to be numeric. Consumables (i.e., the amount of food and life-preserving resources the ship can hold) was stored in a rather odd format: the variable had both a number and a unit (e.g., 1 month, 3 years, 1 week, 5 days...). To address this, I `separate`d the number from the unit and then converted the unit to the number of days it represented. I then multiplied the number and the unit together, to provide the number of days the starship had consumables for. 
 
 ### The Planets Data
 
@@ -262,7 +262,20 @@ people %>%
 
 *** 
 
-Something somethign something. 
+#### The Idea
+
+At its most basic, the plot to the left was intended to illustrate how the age of characters in the Starwars universe differ by gender. However, other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of the female characters is so young compared to that of the male characters. It seems the recent movies have taken both incidental (e.g., Carrier Fisher) and deliberate (e.g., Laura Dern) steps to include older women. Star Wars would certainly benefit from being more inclusive when it comes to casting. 
+
+#### Intended Audience
+
+The intended audience for this visualization are fans of Star Wars and the general public.
+
+#### Description of Version One
+
+I refer to this first attempt as the LEGO&reg; Star Wars version of this plot, owing mostly to the simplistic design of the lightsaber[^1] hilt. Despite its evidence simplicitly, this code is likely the most complex of the lightsaber versions; all of the code for creating the hilt was included with the main `ggplot2` coding chunk and I rewrote the code for each of the hilts. I also created the aura in the main `ggplot2` coding chunk by call `geom_col` six times and decreasing the alpha and increasing the width on each additional call. 
+
+[^1]: In accordance with the spelling choices of `ggplot2`, this should actually be "lightsabre".
+
 
 ### Version Two
 
