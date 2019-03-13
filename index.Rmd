@@ -347,13 +347,13 @@ people %>%
 
 #### Description of Version Three
 
+I like to think of this version as the [How to Draw A Horse](https://knowyourmeme.com/photos/572093-how-to-draw-an-owl) version, given its massive improvement over the previous plot. 
+
 Also following the advice of [Daniel Anderson](https://github.com/datalorax) I `coord_flip`ed the plot, which drastically improved the look of the lightsabers. I assume the improvement is due to some innate preference towards landscape orientation over portrait orientation, but, in any case, it allows the plot to more neatly fit on a computer screen.
 
 [Daniel](https://github.com/datalorax) also suggeted I add annotations, which I added in the form of the means provided slightly below the blades. To achieved this, I used `position_nudge(x = -.09, y = -8)` to move the `geom_text` labels away from the actual means of the two groups.
 
 I also created a simple black and pink (specifically deeppink2) theme to a separate function script that I also sourced at the beginning of the document and added to this plot. In the theme script, I also bolded the title, the axes titles, the axis text, and the caption. I also customized the major grid lines and completely removed the minor gridliens. Finally, I automatically suppressed the legend using `legend.position = "none"`. I did customize the legend to be consistent with the rest of the theme in case I decided the include a legend, which I did in [visualization 3][The Planets].
-
-
 
 ### Version Four
 
@@ -403,7 +403,13 @@ people %>%
 
 *** 
 
-Something something something. 
+In the (current) final plot of the peoples ages, I followed the advice of [Jon Rochelle](https://github.com/jrochel2) and [Maria Schweer-Collins](https://github.com/schweercollins) to change the color of the lightsaber for males from red, as it would seem to imply that this was representing the average age of male characters who had also succumbed to the Dark Side. I was initially weary of using blue to represent males as I usually try to avoid using the conventional colors to represent men and women. In this case, I think the use of blue is excusable. 
+
+Also as noted by [Andrew Edelblum](https://github.com/AndrewEdelblum), Yoda is a major outlier at 896 years old. The only character who would seem to be even close to Yoda was Jabba Desilijic Tiure at 600 years old, but Jabba is hermaphroditic and, therefore, dropped from the plot. In order to address Yoda's age, I simply dropped him from the plot and noted in the plot's subtitle that he was excluded. I did consider including a point to indicate where he was on the plot, but that would require an x-axis that spanned to around 900, which would seem to obscure the intended message of the plot.
+
+[Andrew](https://github.com/AndrewEdelblum) and [Maria](https://github.com/schweercollins) also suggested that the title should inlude "age *by* gender" rather than "age *and* gender". They were completely correct, and I make the corresponding changes. 
+
+Finally, I switched to using title case for the title and adjusted the x-axis limits using `scale_y_continuous` (scale_*y* since the coordinates were flipped).
 
 # The Starships {.storyboard data-icon="fa-space-shuttle"}
 
