@@ -262,7 +262,7 @@ people %>%
 
 *** 
 
-#### The Idea
+#### Intended Message
 
 At its most basic, the plot to the left was intended to illustrate how the age of characters in the Starwars universe differ by gender. However, other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of the female characters is so young compared to that of the male characters. It seems the recent movies have taken both incidental (e.g., Carrier Fisher) and deliberate (e.g., Laura Dern) steps to include older women. Star Wars would certainly benefit from being more inclusive when it comes to casting. 
 
@@ -403,6 +403,8 @@ people %>%
 
 *** 
 
+### Description of Version 4
+
 In the (current) final plot of the peoples ages, I followed the advice of [Jon Rochelle](https://github.com/jrochel2) and [Maria Schweer-Collins](https://github.com/schweercollins) to change the color of the lightsaber for males from red, as it would seem to imply that this was representing the average age of male characters who had also succumbed to the Dark Side. I was initially weary of using blue to represent males as I usually try to avoid using the conventional colors to represent men and women. In this case, I think the use of blue is excusable. 
 
 Also as noted by [Andrew Edelblum](https://github.com/AndrewEdelblum), Yoda is a major outlier at 896 years old. The only character who would seem to be even close to Yoda was Jabba Desilijic Tiure at 600 years old, but Jabba is hermaphroditic and, therefore, dropped from the plot. In order to address Yoda's age, I simply dropped him from the plot and noted in the plot's subtitle that he was excluded. I did consider including a point to indicate where he was on the plot, but that would require an x-axis that spanned to around 900, which would seem to obscure the intended message of the plot.
@@ -441,7 +443,17 @@ starships %>%
 
 *** 
 
-Something somethign something. 
+#### Intended Message
+
+Overall, the plot is aimed as illustrating how starships from Star Wars differ in size. Specifically, Yachts are the largest ships with assault starfighters being slightly larger than basic starfighters. Yachts also have the most variable sizes among all of the starships. 
+
+#### Intended Audience
+
+Although the audience for this plot are generally the same as the previous plot (i.e., the general public and fans of Star Wars), I believe this one is skewed far more towards Star Wars fans and could, potentially, be of little interest to the general public. 
+
+#### Description of Version One
+
+Points and standard error bars have always looked like Tie Fighters to me, so I decided I would try to plot the length of a starship by starship class (i.e., Starfighters, Assault Starfighters, and Yachts). I excluded any class that only had one ship type in the dataset (e.g,, Star Destroyers). To achieve the look I was going for, I plotted the error bar using `geom_errorbar` and then plotted a black `geom_point` for the ships hull and a grey `geom_point` of shape 13 for the ships window. 
 
 ### Version Two
 ```{r starships_viz_v2}
