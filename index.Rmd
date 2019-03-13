@@ -305,9 +305,11 @@ people %>%
 
 #### Description of Version Two
 
-For the second plot, I removed all the code forcreating the hilts the blades and saved them in separate functions that are sourced at the beginning of the document. These functions are essentially just lists of geom_*s. The `geom_saberhilt` function takes one argument (i.e., `column`), which  simply tells the function which column to make the hilt for and adjusts its position accordingly.
+For the second verion, I removed all the code forcreating the hilts the blades and saved them in separate functions that are sourced at the beginning of the document. These functions are essentially just lists of geom_*s. The `geom_saberhilt` function takes one argument (i.e., `column`), which  simply tells the function which column to make the hilt for and adjusts its position accordingly. In total, each hilt is made up of eight separate rectangles. I added a black color (i.e., outline) to make the separate component of the hilt pop. 
 
 I also dropped the droid lightsaber from this plot. It seemed to be distracting from the intended message of the plot. 
+
+Following the advice of Daniel Anderson (AKA [datalorax](https://github.com/datalorax)) I dropped the legend, as it was completely redundant with the x-axis of the plot. 
 
 Finally, I added the ends of the blades using geom_point. As is clear from the plot, there are some size problems in comparing the end of the blades to the blade themselves. This primarly stems from the width of `geom_col` being relative to the size of the plot and `geom_point` being absolute.
 
@@ -327,7 +329,6 @@ people %>%
     geom_saberblade() +
     scale_fill_manual(values = c("#0FFF00", "#FF0000")) +
     scale_colour_manual(values = c("#0FFF00", "#FF0000")) +
-    scale_size_continuous(aes(label = )) +
     geom_saberhilt(column = 1) +
     geom_saberhilt(column = 2) +
     geom_text(aes(label = m_age_r, color = gender), 
@@ -344,7 +345,14 @@ people %>%
 
 ***
 
-Something something osmethin g. 
+#### Description of Version Three
+
+Also following the advice of [Daniel Anderson](https://github.com/datalorax) I `coord_flip`ed the plot, which drastically improved the look of the lightsabers. I assume the improvement is due to some innate preference towards landscape orientation over portrait orientation, but, in any case, it allows the plot to more neatly fit on a computer screen.
+
+[Daniel](https://github.com/datalorax) also suggeted I add annotations, which I added in the form of the means provided slightly below the blades. To achieved this, I used `position_nudge(x = -.09, y = -8)` to move the `geom_text` labels away from the actual means of the two groups.
+
+I also created a simple black and pink (specifically deeppink2) theme to a separate function script that I also sourced at the beginning of the document and added to this plot. In the theme script, I also bolded the title, the axes titles, the axis text, and the caption. I also customized the major grid lines and completely removed the minor gridliens. Finally, I automatically suppressed the legend using `legend.position = "none"`. I did customize the legend to be consistent with the rest of the theme in case I decided the include a legend, which I did in [visualization 3][The Planets].
+
 
 
 ### Version Four
@@ -377,7 +385,7 @@ people %>%
     # add text with the mean ages to the plot
     geom_text(aes(label = m_age_r, color = gender), 
               size     = 6, 
-              position = position_nudge(x = -.09, y = -8)) +
+              position = position_nudge(x = -.09, y = -6)) +
     # customize y-axis
     scale_y_continuous(breaks = c(0, 20, 40, 60)) +
     # add labels
