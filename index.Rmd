@@ -484,6 +484,7 @@ starships %>%
                  size = .001) +
       coord_flip() +
       theme_bw() +
+      theme(panel.background = element_rect(fill = "#000000")) +
       labs(title = "Average length of starship by ship class",
            y = "Average Length in Meters",
            x = "Ship class",
@@ -492,7 +493,13 @@ starships %>%
 ```
 
 ***
-Something something something. 
+#### Description of Version Two
+
+For the second version, I changed the ships wings and the hull to a dark gray to more accurately reflect the look of a tie fighter. I also added a black `geom_point` between the window frame and the hull points to add the windows.
+
+In this stage, I also created random data to represent stars in the plot. To do this, I randomly `sample`d (without replacement) 500 values between the x-axis limits of 0 and 4, 500 values between the y-axis limits of 0 and 80, and 500 values between alpha values of .1 and .9. I simply plotted these in white using `geom_point`.
+
+To show the stars in this version, I retroactively added in a black background. The original plot had used the `new_retro` theme from the [vapoRwave](https://github.com/moldach/vapoRwave) package by Matthew Oldach ([moldach](https://github.com/moldach)). Unfortunately, that theme used fonts that drastically limited reproducability.
 
 ### Version Three
 ```{r starships_viz_v3}
