@@ -72,7 +72,7 @@ datatable(people)
 
 *** 
 
-In order to get the people data into the correct format for our visualization, we first made a `tibble` of the data from `repurrrsive`'s `sw_people` dataset. We selected only those columns of interest and unlisted the columns (most of [SWAPI](https://swapi.co)'s data is stored in lists of lists). We then converted the variables to the correct variable types and replaced "n/a" with more meaningful values. 
+In order to get the people data into the correct format for our visualization, we first made a `tibble` of the data from `repurrrsive`'s `sw_people` dataset. We selected only those columns of interest and unlisted the columns (most of [SWAPI](https://swapi.co)'s data is stored in lists of lists). We then converted the variables to the correct variable types and replaced "n/a" with more meaningful values. We also used `parse_number` to extract the characters' ages from their birth year. Although the number actually refers to how many years before or after the battle of Yavin a character was born, all characters that had data for `birth_year` were born before the Battle of Yavin. Therefore, the result of `parse_number` provided all of the characters' ages at the Battle of Yavin, which occured at the end of A New Hope. 
 
 ### The Starships Data
 
@@ -120,7 +120,7 @@ datatable(starships)
 
 *** 
 
-Something something something
+To get the data into the correct format for the starship visualization, we again created a `tibble` of the data from `repurrrsive`'s `sw_starships` dataset and unlisted the columns that were stored as lists. We converted all numeric variables to be numeric. Consumables (i.e., the amount of food and life-preserving resources the ship can hold) was stored in a rather odd format: the variable had both a number and a unit (e.g., 1 month, 3 years, 1 week, 5 days...). To address this, I `separate`d the number from the unit and then converted the unit to the number of days it represented. I then multiplied the number and the unit together, to provide the number of days the starship had consumables for. 
 
 ### The Planets Data
 
@@ -759,7 +759,7 @@ plot3 <- planets %>%
     #                 nudge_y            =       2.1)
 animate(plot3, 
         duration = 55,
-        fps = 1)
+        fps = 10)
 ```
 
 *** 
@@ -885,9 +885,9 @@ planets_plot <- planets %>%
                                                      alpha = 1)))
 
 # animate plot with a duration of 55 and a fps of  48
-#animate(planets_plot, 
-#        nframes = 55,
-#        fps     = 1)
+animate(planets_plot, 
+        nframes = 48 * 55,
+        fps     = 48)
 
 #2640
 #48
