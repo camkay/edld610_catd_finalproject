@@ -403,7 +403,7 @@ people %>%
 
 *** 
 
-### Description of Version 4
+#### Description of Version 4
 
 In the (current) final plot of the peoples ages, I followed the advice of [Jon Rochelle](https://github.com/jrochel2) and [Maria Schweer-Collins](https://github.com/schweercollins) to change the color of the lightsaber for males from red, as it would seem to imply that this was representing the average age of male characters who had also succumbed to the Dark Side. I was initially weary of using blue to represent males as I usually try to avoid using the conventional colors to represent men and women. In this case, I think the use of blue is excusable. 
 
@@ -449,7 +449,7 @@ Overall, the plot is aimed as illustrating how starships from Star Wars differ i
 
 #### Intended Audience
 
-Although the audience for this plot are generally the same as the previous plot (i.e., the general public and fans of Star Wars), I believe this one is skewed far more towards Star Wars fans and could, potentially, be of little interest to the general public. 
+Although the audience for this plot are generally the same as the previous plot (i.e., the general public and fans of Star Wars), I believe this one is skewed far more towards Star Wars fans and also those who are knowledgable enough about statistics to be able to interpret the error bar. 
 
 #### Description of Version One
 
@@ -554,7 +554,10 @@ starships %>%
 ```
 
 ***
-Something something something. 
+
+#### Description of Version Three
+
+Version 3 involved mostly minor appearence changes. I added `my_theme` to make the theme consistent with my other visualizations and made the size of the ships' bodies larger to be more consistent with an actual (fictional) tie fighter. I also added a `\n` between "assault" and "starfighter" in the y-axis labels so that "Assault Starfighter" did not take up substantially more space than the other labels.
 
 ### Version Four
 
@@ -603,15 +606,6 @@ starships %>%
     geom_point(size = 4.40, colour = "grey60", shape = 1) +
     geom_point(size = 2.00, colour = "grey60") +
     geom_point(size = 1.50, colour = "grey10") +
-    geom_point(size = 0.20, colour = "grey60", 
-               position = position_nudge(x = -0.09, y = -0.5)) +
-    geom_point(size = 0.20, colour = "grey60", 
-             position = position_nudge(x = -0.09, y = 0.5)) +
-
-    geom_point(size = 0.10, colour = "grey10", 
-               position = position_nudge(x = -0.09, y = -0.5)) +
-    geom_point(size = 0.10, colour = "grey10", 
-             position = position_nudge(x = -0.09, y = 0.5)) +
     # flip the coordinates
     coord_flip() +
     # add labels
@@ -631,7 +625,16 @@ starships %>%
 
 *** 
 
-Something something something.
+#### Description of Version Four
+
+In this version of the starship plot, I completely reworked the body of the starship to more accurately reflect the look of a tie fighter. I did this by adding three additional `geom_point` layers. 
+
+Following [Jon's](https://github.com/jrochel2) advice, I also added a thin layer of light gray around the ships body to make the fighters pop from the starry background.
+
+I did consider dropping the "class" y-axis title, because it seemed to intuitive to me, but then I realized it might not be as clear to others. Instead, I shifted the y-axis title away from the y-axis labels using `axis.title.y = element_text(vjust = 5)` so it didn't look as cramped. I also increased the plot magin on the right so the text wasn't right up against the plot border. 
+
+Following [Maria](https://github.com/schweercollins)'s advice, I also attempted to plot the mean and standard error of each ship as text on the plot, but it was hard to find an appropriate space to put them. One would imagine immediately underneath the ships would be good, but given the difference width of the starship wings it leaves a large gap for the large ship. Instead I added subtitles that descrirbes what the starships represent. 
+
 
 # The Planets {.storyboard data-icon="fa-globe-asia"}
 
@@ -660,7 +663,17 @@ planets %>%
 
 *** 
 
-Something somethign something. 
+#### Idea
+
+As interesting as I found the data in the first two plots, I think several plots could be devoted to the planets dataset. Specifically, the visualizations could be framed around the common theme of astronomy, serving as an instructive tool for teaching concepts from astronomy (e.g., Keppler's third law, calculations of gravitational force). The present plot shows the relationship between a planet's surface water and its distance from the sun. I would like to add a solar system dataset to the Starwar's planets dataset and use facetwrap to provide a side by side comparison of fictional and non-fictional planets. 
+
+#### Intended Audience
+
+Fans of Star Wars or anyone who has an interest in astronomy or phyics.
+
+#### Intended Message
+
+Planets farther from the sun seem to have more surface water, which seems to be consistent with our solar system. 
 
 ### Version Two
 

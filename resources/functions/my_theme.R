@@ -33,7 +33,7 @@ my_theme <- function() {
         panel.background      = element_rect(fill     = "#000000"),
              
         # plot     
-        plot.background       = element_rect(colour   = "000000", 
+        plot.background       = element_rect(colour   = "#000000", 
                                              fill     = "#111111"), 
         panel.border          = element_rect(colour   = "deeppink2"),
         plot.margin           = unit(c(.5, .5, .5, .5), "cm"),
