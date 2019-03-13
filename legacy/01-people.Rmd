@@ -1,0 +1,110 @@
+# The People {#people}
+
+```{r people_initial_setup, include = FALSE}
+# load necessary packages (if you do not have them, you will need to install them first)
+library(tidyverse) # for dataframe manipulation and plotting
+library(magrittr) # for updating an object that is piped into a function (using `%<>%`)
+library(here) # for finding the project folder
+library(repurrrsive) # contains the star wars datasets
+library(rlist) # for binding all lit elements by column (using `list.cbind`)
+library(ggrepel) # for adding geom_text labels that do not overlap
+library(gganimate) # for animating the plot
+
+# add gravitational constant (i.e., 6.67408 * 10^-11)
+grav_constant <- 6.67408 * (10 ^ -11)
+
+# load bespoke functions from the functions folder
+source(here("functions/my_theme.R")) # load my_theme
+source(here("functions/geom_saberhilt.R")) # load the function for creating the hilts of lightsabers
+source(here("functions/geom_saberblade.R")) # load the function for creating the blades of lightsabers
+
+# set figure output dimensions
+knitr::opts_chunk$set(fig.width  = 12, 
+                      fig.height = 8)
+
+# how to build this book
+# 1. install the `bookdown` packages: install.packages("bookdown")
+# 2. Navigate to the RStudio pane that has the environment in it. There should be the following tabs: (1) "Environment", (2) "History", (3) "Connection", (4) "Build", and (5) "Git". Select "Build" and click the button that says "Build Book"
+```
+
+## The Data
+
+```{r load_person_data, warning = FALSE}
+# load and format data
+people <- data.frame(t(list.cbind(sw_people))) %>%
+  # convert the star wars people dataframe to a tibble
+  as_tibble() %>%
+  # select only the columns between name and gender (inclusive)
+  select(name:gender) %>%
+  # mutates columns that are lists to non-lists
+  mutate_if(is.list, ~(unlist(.))) %>%
+  # mutate all columns and replaces the text "unknown" with "NA"
+  mutate_all(~(na_if(., "unknown"))) %>%
+  # converts height and mass to numeric variables
+  mutate_at(vars(height, mass), ~(as.numeric(.))) %>%
+  # extracts birth year and converts it to numeric; replace "n/a" values with 
+  # droid for hair_color and gender
+  mutate(birth_year = parse_number(as.character(birth_year)),
+         hair_color = if_else(gender == "n/a", "droid", hair_color),
+         gender     = if_else(gender == "n/a", "droid", gender))
+
+# look at first ten rows of tidied dataet
+head(people, n = 10L)
+```
+
+## The Visualization
+
+```{r visualization_1}
+# people plot
+people %>%
+  # filter for only females and males and drop the outlier (yoda)
+  filter(gender == "female" | gender == "male",
+         name   != "Yoda") %>%
+  # group by gender
+  group_by(gender) %>%
+  # calculate mean age and rounded mean age for geom_text
+  summarise(m_age   = mean(birth_year, na.rm = TRUE),
+            m_age_r = round(m_age, 2),
+            m_age_r = paste(m_age_r, "YEARS")) %>%
+  # convert genders to title case and gender to a factor
+  mutate(gender = str_to_title(gender),
+         gender = as.factor(gender)) %>%
+  # plot gender vs age and fill by gender
+  ggplot(aes(x = gender, y = m_age, fill = gender)) +
+    # add the lightsaber blades to the plot
+    geom_saberblade() +
+    # add the lightsaber hilts to the plot
+    geom_saberhilt(column = 1) +
+    geom_saberhilt(column = 2) +
+    # set colour and fill values (i.e., red and green)
+    scale_fill_manual(values   = c("#0FFF00", "#00f6ff")) +
+    scale_colour_manual(values = c("#0FFF00", "#00f6ff")) +
+    # add text with the mean ages to the plot
+    geom_text(aes(label = m_age_r, color = gender), 
+              size     = 6, 
+              position = position_nudge(x = -.09, y = -8)) +
+    # add labels
+    labs(title    = "Average Age of Characters by Gender",
+         subtitle = "Excluding Yoda (for obvious reasons)",
+         y        = "Age (years)",
+         x        = "Gender",
+         legend   = "Gender",
+         caption  = "Data from https://swapi.co.") +
+    # customize using my theme
+    my_theme() +
+    # flip the coordinates
+    coord_flip()
+
+```
+
+#### Idea
+
+Although not a great data/ink ratio, I believe the above figure would be memorable in displaying the ages of the characters in Star Wars. I would like to add more design elements to the plot (e.g., a more detailed lightsaber hilt, a glow on top of the saber). It think it would also be informative to add some text labels showing the actual ages of characters beside the bars. Yoda is also an outlier, so it may be appropriate to eliminate him from the plot. 
+
+#### Intended Audience
+
+The intended audience for this visualization are fans of Star Wars and the general public.
+
+#### Intended Message
+
+Other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of the female characters is so young compared to that of the male characters. It seems the recent movies have taken both incidental (e.g., Carrier Fisher) and deliberate (e.g., Laura Dern) steps to include older women. Star Wars would certainly benefit from being more inclusive when it comes to casting. 

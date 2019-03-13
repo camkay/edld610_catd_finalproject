@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>4 The Planets | EDLD 610 Final Project: Visualizing Star Wars</title>
+  <meta name="description" content="4 The Planets | EDLD 610 Final Project: Visualizing Star Wars">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="4 The Planets | EDLD 610 Final Project: Visualizing Star Wars" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 The Planets | EDLD 610 Final Project: Visualizing Star Wars" />
+  
+  
+  
+
+<meta name="author" content="Cameron S. Kay">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="ships.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="people.html"><a href="people.html"><i class="fa fa-check"></i><b>2</b> The People</a><ul>
+<li class="chapter" data-level="2.1" data-path="people.html"><a href="people.html#the-data"><i class="fa fa-check"></i><b>2.1</b> The Data</a></li>
+<li class="chapter" data-level="2.2" data-path="people.html"><a href="people.html#the-visualization"><i class="fa fa-check"></i><b>2.2</b> The Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ships.html"><a href="ships.html"><i class="fa fa-check"></i><b>3</b> The Starships</a><ul>
+<li class="chapter" data-level="3.1" data-path="ships.html"><a href="ships.html#the-data-1"><i class="fa fa-check"></i><b>3.1</b> The Data</a></li>
+<li class="chapter" data-level="3.2" data-path="ships.html"><a href="ships.html#the-visualization-1"><i class="fa fa-check"></i><b>3.2</b> The Visualization</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="planets.html"><a href="planets.html"><i class="fa fa-check"></i><b>4</b> The Planets</a><ul>
+<li class="chapter" data-level="4.0.1" data-path="planets.html"><a href="planets.html#the-data-2"><i class="fa fa-check"></i><b>4.0.1</b> The Data</a></li>
+<li class="chapter" data-level="4.0.2" data-path="planets.html"><a href="planets.html#the-visualization-2"><i class="fa fa-check"></i><b>4.0.2</b> The Visualization</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">EDLD 610 Final Project: Visualizing Star Wars</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="planets" class="section level1">
+<h1><span class="header-section-number">4</span> The Planets</h1>
+<div id="the-data-2" class="section level3">
+<h3><span class="header-section-number">4.0.1</span> The Data</h3>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load and format data</span>
+planets &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="kw">t</span>(<span class="kw">list.cbind</span>(sw_planets))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># convert star wars planets dataset to a tibble</span>
+<span class="st">  </span><span class="kw">as.tibble</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># retain only columns between name and population (inclusive)</span>
+<span class="st">  </span><span class="kw">select</span>(name<span class="op">:</span>population) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># mutate columns that are lists to non-lists</span>
+<span class="st">  </span><span class="kw">mutate_if</span>(is.list, <span class="op">~</span>(<span class="kw">unlist</span>(.))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># mutate all columns, replacing &quot;unknown&quot; with &quot;NA&quot;  </span>
+<span class="st">  </span><span class="kw">mutate_all</span>(<span class="op">~</span>(<span class="kw">na_if</span>(., <span class="st">&quot;unknown&quot;</span>))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># convert numeric columns to type numeric</span>
+<span class="st">  </span><span class="kw">mutate_at</span>(<span class="kw">vars</span>(rotation_period,
+                 orbital_period,
+                 diameter,
+                 surface_water,
+                 population),
+            <span class="op">~</span>(<span class="kw">as.numeric</span>(.))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># calculate values of interest</span>
+<span class="st">  </span><span class="kw">mutate</span>(
+         <span class="co"># make surface water a proportion</span>
+         <span class="dt">surface_water   =</span> surface_water <span class="op">/</span><span class="st"> </span><span class="dv">100</span>,
+         <span class="co"># calculate population in millions</span>
+         <span class="dt">population_mils =</span> population <span class="op">/</span><span class="st"> </span><span class="dv">1000000</span>,
+         <span class="co"># calculate a planet&#39;s distance from the sun (Kepler&#39;s 3rd law)</span>
+         <span class="dt">au              =</span> (((orbital_period <span class="op">/</span><span class="st"> </span><span class="dv">365</span>) <span class="op">^</span><span class="st"> </span><span class="dv">2</span>) <span class="op">^</span><span class="st"> </span>(<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>)),
+         <span class="co"># convert gravity to a number</span>
+         <span class="dt">gravity         =</span> <span class="kw">parse_number</span>(<span class="kw">as.character</span>(gravity)),
+         <span class="co"># calculate the force of gravity</span>
+         <span class="dt">g               =</span> gravity <span class="op">*</span><span class="st"> </span><span class="fl">9.8</span>, 
+         <span class="co"># calculate radius</span>
+         <span class="dt">radius          =</span> diameter <span class="op">/</span><span class="st"> </span><span class="dv">2</span>, 
+         <span class="co"># calculate planet mass (ish)</span>
+         <span class="dt">mass            =</span> (g <span class="op">*</span><span class="st"> </span>(radius<span class="op">^</span><span class="dv">2</span>)) <span class="op">/</span><span class="st"> </span>grav_constant,
+         <span class="co"># calculate planet area</span>
+         <span class="dt">area            =</span> pi <span class="op">*</span><span class="st"> </span>(radius<span class="op">^</span><span class="dv">2</span>),
+         <span class="co"># create column indicating whether the planet is in the solar system</span>
+         <span class="dt">solar_system    =</span> <span class="kw">rep</span>(<span class="ot">FALSE</span>, <span class="kw">n</span>()),
+         <span class="co"># create a new variable indicating whether a planet was in the original </span>
+         <span class="co"># trilogy</span>
+         <span class="dt">orig_tril =</span> <span class="kw">case_when</span>(name <span class="op">==</span><span class="st"> &quot;Alderaan&quot;</span> <span class="op">|</span>
+<span class="st">                               </span>name <span class="op">==</span><span class="st"> &quot;Tatooine&quot;</span> <span class="op">|</span>
+<span class="st">                               </span>name <span class="op">==</span><span class="st"> &quot;Yavin&quot;</span>    <span class="op">|</span>
+<span class="st">                               </span>name <span class="op">==</span><span class="st"> &quot;Yavin 4&quot;</span>  <span class="op">~</span><span class="st"> &quot;new_hope&quot;</span>,
+                               name <span class="op">==</span><span class="st"> &quot;Bespin&quot;</span>   <span class="op">|</span>
+<span class="st">                               </span>name <span class="op">==</span><span class="st"> &quot;Dagobah&quot;</span>  <span class="op">|</span><span class="st">                     </span>
+<span class="st">                               </span>name <span class="op">==</span><span class="st"> &quot;Hoth&quot;</span>     <span class="op">~</span><span class="st"> &quot;empire_strikes&quot;</span>,    
+                               name <span class="op">==</span><span class="st"> &quot;Endor&quot;</span>    <span class="op">~</span><span class="st"> &quot;return_jedi&quot;</span>,
+                               <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>))
+
+<span class="co"># create dataset for planets in the solar system</span>
+sol_sys &lt;-<span class="st"> </span><span class="kw">tibble</span>(
+  <span class="dt">name           =</span> <span class="kw">c</span>(<span class="st">&quot;Mercury&quot;</span>, <span class="st">&quot;Venus&quot;</span>, <span class="st">&quot;Earth&quot;</span>, <span class="st">&quot;Mars&quot;</span>, <span class="st">&quot;Jupiter&quot;</span>),
+  <span class="dt">orbital_period =</span> <span class="kw">c</span>(       <span class="dv">88</span>,     <span class="dv">225</span>,     <span class="dv">365</span>,    <span class="dv">687</span>,      <span class="dv">4330</span>),
+  <span class="dt">au             =</span> <span class="kw">c</span>(      <span class="fl">.39</span>,     <span class="fl">.72</span>,       <span class="dv">1</span>,   <span class="fl">1.52</span>,      <span class="fl">5.20</span>),
+  <span class="dt">solar_system   =</span> <span class="kw">c</span>(     <span class="ot">TRUE</span>,    <span class="ot">TRUE</span>,    <span class="ot">TRUE</span>,   <span class="ot">TRUE</span>,      <span class="ot">TRUE</span>),
+  <span class="dt">radius         =</span> <span class="kw">c</span>(   <span class="fl">2439.5</span>,    <span class="dv">6052</span>,    <span class="dv">6378</span>,   <span class="dv">3396</span>,     <span class="dv">71492</span>)
+)
+
+<span class="co">#combine the star war&#39;s planets and solar system data into one dataset</span>
+planets &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(planets, sol_sys)
+
+<span class="co"># look at first ten rows of tidied dataet</span>
+<span class="kw">head</span>(planets, <span class="dt">n =</span> 10L) </code></pre>
+<pre><code>## # A tibble: 10 x 17
+##    name  rotation_period orbital_period diameter climate gravity terrain
+##    &lt;chr&gt;           &lt;dbl&gt;          &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;  
+##  1 Alde…              24            364    12500 temper…    1    grassl…
+##  2 Yavi…              24           4818    10200 temper…    1    jungle…
+##  3 Hoth               23            549     7200 frozen     1.1  tundra…
+##  4 Dago…              23            341     8900 murky     NA    swamp,…
+##  5 Besp…              12           5110   118000 temper…    1.5  gas gi…
+##  6 Endor              18            402     4900 temper…    0.85 forest…
+##  7 Naboo              26            312    12120 temper…    1    grassy…
+##  8 Coru…              24            368    12240 temper…    1    citysc…
+##  9 Kami…              27            463    19720 temper…    1    ocean  
+## 10 Geon…              30            256    11370 temper…    0.9  rock, …
+## # … with 10 more variables: surface_water &lt;dbl&gt;, population &lt;dbl&gt;,
+## #   population_mils &lt;dbl&gt;, au &lt;dbl&gt;, g &lt;dbl&gt;, radius &lt;dbl&gt;, mass &lt;dbl&gt;,
+## #   area &lt;dbl&gt;, solar_system &lt;lgl&gt;, orig_tril &lt;chr&gt;</code></pre>
+</div>
+<div id="the-visualization-2" class="section level3">
+<h3><span class="header-section-number">4.0.2</span> The Visualization</h3>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create function for calculating x axis locations during the time it takes</span>
+<span class="co"># bespin to make one rotation. There has to be enough slices to obscure the</span>
+<span class="co"># geom_points jumping back at the end of Bespin&#39;s year</span>
+orbit_slice &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">planet =</span> <span class="ot">NULL</span>) {
+  <span class="co"># grab orbital period of planet of interest</span>
+  temp &lt;-<span class="st"> </span>planets<span class="op">$</span>orbital_period[<span class="kw">which</span>(planets<span class="op">$</span>name <span class="op">==</span><span class="st"> </span>planet)]
+  <span class="co"># calculate 511 x-axis point for that planet throughout Bespin&#39; year</span>
+  <span class="kw">rep</span>(<span class="kw">seq</span>(<span class="dt">from         =</span> <span class="dv">0</span>, 
+            <span class="dt">to         =</span> <span class="dv">5110</span>, 
+            <span class="dt">length.out =</span> (<span class="dv">5110</span> <span class="op">*</span><span class="st"> </span>(temp <span class="op">/</span><span class="st"> </span><span class="dv">5110</span>))),
+      <span class="dt">length.out =</span> <span class="dv">5110</span>)
+}
+
+<span class="co"># calculate locations on the x-axis for each planets during the time it takes</span>
+<span class="co"># bespin to make one rotation. </span>
+orbital_degrees &lt;-<span class="st"> </span><span class="kw">tibble</span>(
+  <span class="st">&quot;Alderaan&quot;</span>   =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Alderaan&quot;</span>),
+  <span class="st">&quot;Hoth&quot;</span>       =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Hoth&quot;</span>),
+  <span class="st">&quot;Dagobah&quot;</span>    =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Dagobah&quot;</span>),
+  <span class="st">&quot;Bespin&quot;</span>     =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Bespin&quot;</span>),
+  <span class="st">&quot;Endor&quot;</span>      =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Endor&quot;</span>),
+  <span class="st">&quot;Tatooine&quot;</span>   =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Tatooine&quot;</span>),
+  <span class="st">&quot;Mercury&quot;</span>    =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Mercury&quot;</span>),
+  <span class="st">&quot;Venus&quot;</span>      =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Venus&quot;</span>),
+  <span class="st">&quot;Earth&quot;</span>      =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Earth&quot;</span>),
+  <span class="st">&quot;Mars&quot;</span>       =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Mars&quot;</span>),
+  <span class="st">&quot;Jupiter&quot;</span>    =<span class="st"> </span><span class="kw">orbit_slice</span>(<span class="st">&quot;Jupiter&quot;</span>),
+  <span class="st">&quot;days_count&quot;</span> =<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5110</span>
+)
+
+<span class="co"># gather days into a column and the planet names into another column</span>
+orbital_degrees <span class="op">%&lt;&gt;%</span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">&quot;name&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;days&quot;</span>, <span class="op">-</span>days_count)
+
+<span class="co"># planets plot</span>
+planets_plot &lt;-<span class="st"> </span>planets <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># select only variables of interest</span>
+<span class="st">  </span><span class="kw">select</span>(name, au, radius, orbital_period, orig_tril, solar_system) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># drop planets that do not have (1) a name, (2) a distance from the sun (i.e.</span>
+<span class="st">  </span><span class="co"># an AU), (3) an AU less than 2, and (4) a radius greater than 0.</span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(name),
+         <span class="op">!</span><span class="kw">is.na</span>(au),
+         <span class="op">!</span><span class="kw">is.na</span>(orbital_period),
+         <span class="op">!</span><span class="kw">is.na</span>(orig_tril) <span class="op">|</span><span class="st"> </span>solar_system <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>,
+         <span class="co"># au &lt; 2,</span>
+         radius <span class="op">!=</span><span class="st"> </span><span class="fl">0.00</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>(orbital_degrees, <span class="dt">by =</span> <span class="st">&quot;name&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co">#drop mercury and alderaan</span>
+<span class="st">  </span><span class="kw">filter</span>(name <span class="op">!=</span><span class="st"> &quot;Mercury&quot;</span>, <span class="co"># mercury for orbiting too quickly</span>
+         name <span class="op">!=</span><span class="st"> &quot;Alderaan&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alderaan for esssentially being earth 2.0</span>
+<span class="st">  </span><span class="co"># plot the planets distance from the sun against their arbitrary degree</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> days, <span class="dt">y =</span> au, <span class="dt">color =</span> solar_system)) <span class="op">+</span>
+<span class="st">    </span><span class="co"># add labels indicating y-axis units and add star and earth</span>
+<span class="st">    </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">x =</span>   <span class="dv">0</span>,          <span class="dt">y =</span> <span class="dv">0</span>, <span class="dt">label =</span> <span class="st">&quot;STAR&quot;</span>), 
+              <span class="dt">color =</span> <span class="st">&quot;deeppink3&quot;</span>, 
+              <span class="dt">size  =</span> <span class="dv">5</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">5110</span> <span class="op">*</span><span class="st"> </span><span class="dv">3</span> <span class="op">/</span><span class="st"> </span><span class="dv">4</span>, <span class="dt">y =</span> <span class="dv">2</span>, <span class="dt">label =</span> <span class="st">&quot;2 AU&quot;</span>), 
+              <span class="dt">color =</span> <span class="st">&quot;deeppink3&quot;</span>, 
+              <span class="dt">size  =</span> <span class="dv">5</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">5110</span> <span class="op">*</span><span class="st"> </span><span class="dv">3</span> <span class="op">/</span><span class="st"> </span><span class="dv">4</span>, <span class="dt">y =</span> <span class="dv">4</span>, <span class="dt">label =</span> <span class="st">&quot;4 AU&quot;</span>), 
+              <span class="dt">color =</span> <span class="st">&quot;deeppink3&quot;</span>, 
+              <span class="dt">size  =</span> <span class="dv">5</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="dv">5110</span> <span class="op">*</span><span class="st"> </span><span class="dv">3</span> <span class="op">/</span><span class="st"> </span><span class="dv">4</span>, <span class="dt">y =</span> <span class="dv">6</span>, <span class="dt">label =</span> <span class="st">&quot;6 AU&quot;</span>), 
+              <span class="dt">color =</span> <span class="st">&quot;deeppink3&quot;</span>, 
+              <span class="dt">size  =</span> <span class="dv">5</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># add label for describing 1 AU</span>
+<span class="st">    </span><span class="kw">annotate</span>(<span class="dt">geom  =</span>                   <span class="st">&quot;label&quot;</span>, 
+             <span class="dt">x     =</span>             <span class="dv">5110</span> <span class="op">*</span><span class="st"> </span><span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span>,
+             <span class="dt">y     =</span>                        <span class="dv">7</span>,
+             <span class="dt">label =</span> <span class="st">&quot;1 AU = ~150,000,000 km&quot;</span>, 
+             <span class="dt">color =</span>              <span class="st">&quot;deeppink2&quot;</span>,
+             <span class="dt">fill  =</span>                  <span class="st">&quot;black&quot;</span>,
+             <span class="dt">size  =</span>                        <span class="dv">5</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># add planet points; map size of the point to planet radius</span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size =</span> radius), <span class="dt">alpha =</span> <span class="fl">.6</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># add planet text; also suppress its legend</span>
+<span class="st">    </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label   =</span> name), 
+              <span class="dt">position    =</span> <span class="kw">position_nudge</span>(<span class="dt">y =</span> <span class="fl">1.1</span>), 
+              <span class="dt">alpha       =</span> <span class="fl">.7</span>,
+              <span class="dt">size        =</span>  <span class="dv">5</span>,
+              <span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># make the coordinate polar</span>
+<span class="st">    </span><span class="kw">coord_polar</span>(<span class="dt">theta =</span> <span class="st">&quot;x&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># add transition according to days</span>
+<span class="st">    </span><span class="kw">transition_manual</span>(days_count) <span class="op">+</span>
+<span class="st">    </span><span class="co"># set the limit of size values</span>
+<span class="st">    </span><span class="kw">scale_size_continuous</span>(<span class="dt">range =</span> <span class="kw">c</span>(.<span class="dv">5</span>, <span class="dv">10</span>)) <span class="op">+</span>
+<span class="st">    </span><span class="co"># drop x-axis grid marks and breaks</span>
+<span class="st">    </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="ot">NULL</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># set 2-axis limit</span>
+<span class="st">    </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">7</span>)) <span class="op">+</span>
+<span class="st">    </span><span class="co"># set the colours</span>
+<span class="st">    </span><span class="kw">scale_colour_manual</span>(<span class="dt">name   =</span> <span class="st">&quot;Star System&quot;</span>,
+                        <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#02fff6&quot;</span>, <span class="st">&quot;#ff7b00&quot;</span>),
+                        <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Solar System&quot;</span>, <span class="st">&quot;Star Wars&quot;</span>)) <span class="op">+</span>
+<span class="st">    </span><span class="co"># add labels</span>
+<span class="st">    </span><span class="kw">labs</span>(<span class="dt">title    =</span> <span class="st">&quot;Distance from Host Star and Orbital Period&quot;</span>,
+         <span class="dt">subtitle =</span>                         <span class="st">&quot;Days: {current_frame}&quot;</span>, 
+         <span class="dt">caption  =</span>                <span class="st">&quot;Data from https://swapi.co.&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># customize using my theme</span>
+<span class="st">    </span><span class="kw">my_theme</span>() <span class="op">+</span>
+<span class="st">    </span><span class="co"># drop axis text and axis titles and center title, subtitle, and caption</span>
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.title      =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>),
+          <span class="dt">plot.subtitle   =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>),
+          <span class="dt">plot.caption    =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.5</span>),
+          <span class="dt">axis.text       =</span> <span class="kw">element_blank</span>(),
+          <span class="dt">axis.title      =</span> <span class="kw">element_blank</span>(),
+          <span class="dt">plot.margin     =</span> <span class="kw">unit</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">7</span>), <span class="st">&quot;cm&quot;</span>),
+          <span class="dt">legend.position =</span> <span class="st">&quot;right&quot;</span>) <span class="op">+</span>
+<span class="st">    </span><span class="co"># drop radius legend and change the size of the legend points</span>
+<span class="st">    </span><span class="kw">guides</span>(<span class="dt">size =</span> <span class="ot">FALSE</span>,
+           <span class="dt">colour =</span> <span class="kw">guide_legend</span>(<span class="dt">override.aes =</span> <span class="kw">list</span>(<span class="dt">size  =</span> <span class="dv">5</span>,
+                                                     <span class="dt">alpha =</span> <span class="dv">1</span>)))
+
+<span class="co"># animate plot with a duration of 55 and a fps of  58</span>
+<span class="kw">animate</span>(planets_plot, 
+        <span class="dt">nframes =</span> <span class="dv">2640</span>,
+        <span class="dt">fps     =</span>   <span class="dv">48</span>)</code></pre>
+<p><img src="_main_files/figure-html/visualization_3-1.gif" /><!-- --></p>
+<div id="idea-2" class="section level4">
+<h4><span class="header-section-number">4.0.2.1</span> Idea</h4>
+<p>As interesting as I found the data in the first two plots, I think several plots could be devoted to the planets dataset. Specifically, the visualizations could be framed around the common theme of astronomy, serving as an instructive tool for teaching concepts from astronomy (e.g., Keppler’s third law, calculations of gravitational force). The present plot shows the relationship between a planet’s surface water and its distance from the sun. I would like to add a solar system dataset to the Starwar’s planets dataset and use facetwrap to provide a side by side comparison of fictional and non-fictional planets.</p>
+</div>
+<div id="intended-audience-2" class="section level4">
+<h4><span class="header-section-number">4.0.2.2</span> Intended Audience</h4>
+<p>Fans of Star Wars or anyone who has an interest in astronomy or phyics.</p>
+</div>
+<div id="intended-message-2" class="section level4">
+<h4><span class="header-section-number">4.0.2.3</span> Intended Message</h4>
+<p>Planets farther from the sun seem to have more surface water, which seems to be consistent with our solar system.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ships.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

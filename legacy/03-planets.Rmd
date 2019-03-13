@@ -1,0 +1,232 @@
+# The Planets {#planets}
+
+```{r planets_initial_setup, include = FALSE}
+# load necessary packages (if you do not have them, you will need to install them first)
+library(tidyverse) # for dataframe manipulation and plotting
+library(magrittr) # for updating an object that is piped into a function (using `%<>%`)
+library(here) # for finding the project folder
+library(repurrrsive) # contains the star wars datasets
+library(rlist) # for binding all lit elements by column (using `list.cbind`)
+library(ggrepel) # for adding geom_text labels that do not overlap
+library(gganimate) # for animating the plot
+
+# add gravitational constant (i.e., 6.67408 * 10^-11)
+grav_constant <- 6.67408 * (10 ^ -11)
+
+# load bespoke functions from the functions folder
+source(here("functions/my_theme.R")) # load my_theme
+source(here("functions/geom_saberhilt.R")) # load the function for creating the hilts of lightsabers
+source(here("functions/geom_saberblade.R")) # load the function for creating the blades of lightsabers
+
+# set figure output dimensions
+knitr::opts_chunk$set(fig.width  = 12, 
+                      fig.height = 8)
+
+# how to build this book
+# 1. install the `bookdown` packages: install.packages("bookdown")
+# 2. Navigate to the RStudio pane that has the environment in it. There should be the following tabs: (1) "Environment", (2) "History", (3) "Connection", (4) "Build", and (5) "Git". Select "Build" and click the button that says "Build Book"
+```
+
+
+### The Data
+
+```{r load_planets_data, warning = FALSE}
+# load and format data
+planets <- data.frame(t(list.cbind(sw_planets))) %>%
+  # convert star wars planets dataset to a tibble
+  as.tibble() %>%
+  # retain only columns between name and population (inclusive)
+  select(name:population) %>%
+  # mutate columns that are lists to non-lists
+  mutate_if(is.list, ~(unlist(.))) %>%
+  # mutate all columns, replacing "unknown" with "NA"  
+  mutate_all(~(na_if(., "unknown"))) %>%
+  # convert numeric columns to type numeric
+  mutate_at(vars(rotation_period,
+                 orbital_period,
+                 diameter,
+                 surface_water,
+                 population),
+            ~(as.numeric(.))) %>%
+  # calculate values of interest
+  mutate(
+         # make surface water a proportion
+         surface_water   = surface_water / 100,
+         # calculate population in millions
+         population_mils = population / 1000000,
+         # calculate a planet's distance from the sun (Kepler's 3rd law)
+         au              = (((orbital_period / 365) ^ 2) ^ (1/3)),
+         # convert gravity to a number
+         gravity         = parse_number(as.character(gravity)),
+         # calculate the force of gravity
+         g               = gravity * 9.8, 
+         # calculate radius
+         radius          = diameter / 2, 
+         # calculate planet mass (ish)
+         mass            = (g * (radius^2)) / grav_constant,
+         # calculate planet area
+         area            = pi * (radius^2),
+         # create column indicating whether the planet is in the solar system
+         solar_system    = rep(FALSE, n()),
+         # create a new variable indicating whether a planet was in the original 
+         # trilogy
+         orig_tril = case_when(name == "Alderaan" |
+                               name == "Tatooine" |
+                               name == "Yavin"    |
+                               name == "Yavin 4"  ~ "new_hope",
+                               name == "Bespin"   |
+                               name == "Dagobah"  |                     
+                               name == "Hoth"     ~ "empire_strikes",    
+                               name == "Endor"    ~ "return_jedi",
+                               TRUE ~ NA_character_))
+
+# create dataset for planets in the solar system
+sol_sys <- tibble(
+  name           = c("Mercury", "Venus", "Earth", "Mars", "Jupiter"),
+  orbital_period = c(       88,     225,     365,    687,      4330),
+  au             = c(      .39,     .72,       1,   1.52,      5.20),
+  solar_system   = c(     TRUE,    TRUE,    TRUE,   TRUE,      TRUE),
+  radius         = c(   2439.5,    6052,    6378,   3396,     71492)
+)
+
+#combine the star war's planets and solar system data into one dataset
+planets <- bind_rows(planets, sol_sys)
+
+# look at first ten rows of tidied dataet
+head(planets, n = 10L) 
+```
+
+
+### The Visualization
+```{r visualization_3, fig.height = 12, warning = FALSE}
+# create function for calculating x axis locations during the time it takes
+# bespin to make one rotation. There has to be enough slices to obscure the
+# geom_points jumping back at the end of Bespin's year
+orbit_slice <- function(planet = NULL) {
+  # grab orbital period of planet of interest
+  temp <- planets$orbital_period[which(planets$name == planet)]
+  # calculate 511 x-axis point for that planet throughout Bespin' year
+  rep(seq(from         = 0, 
+            to         = 5110, 
+            length.out = (5110 * (temp / 5110))),
+      length.out = 5110)
+}
+
+# calculate locations on the x-axis for each planets during the time it takes
+# bespin to make one rotation. 
+orbital_degrees <- tibble(
+  "Alderaan"   = orbit_slice("Alderaan"),
+  "Hoth"       = orbit_slice("Hoth"),
+  "Dagobah"    = orbit_slice("Dagobah"),
+  "Bespin"     = orbit_slice("Bespin"),
+  "Endor"      = orbit_slice("Endor"),
+  "Tatooine"   = orbit_slice("Tatooine"),
+  "Mercury"    = orbit_slice("Mercury"),
+  "Venus"      = orbit_slice("Venus"),
+  "Earth"      = orbit_slice("Earth"),
+  "Mars"       = orbit_slice("Mars"),
+  "Jupiter"    = orbit_slice("Jupiter"),
+  "days_count" = 1:5110
+)
+
+# gather days into a column and the planet names into another column
+orbital_degrees %<>%
+  gather(key = "name", value = "days", -days_count)
+
+# planets plot
+planets_plot <- planets %>%
+  # select only variables of interest
+  select(name, au, radius, orbital_period, orig_tril, solar_system) %>%
+  # drop planets that do not have (1) a name, (2) a distance from the sun (i.e.
+  # an AU), (3) an AU less than 2, and (4) a radius greater than 0.
+  filter(!is.na(name),
+         !is.na(au),
+         !is.na(orbital_period),
+         !is.na(orig_tril) | solar_system == TRUE,
+         # au < 2,
+         radius != 0.00) %>%
+  left_join(orbital_degrees, by = "name") %>%
+  #drop mercury and alderaan
+  filter(name != "Mercury", # mercury for orbiting too quickly
+         name != "Alderaan") %>% # alderaan for esssentially being earth 2.0
+  # plot the planets distance from the sun against their arbitrary degree
+  ggplot(aes(x = days, y = au, color = solar_system)) +
+    # add labels indicating y-axis units and add star and earth
+    geom_text(aes(x =   0,          y = 0, label = "STAR"), 
+              color = "deeppink3", 
+              size  = 5) +
+    geom_text(aes(x = 5110 * 3 / 4, y = 2, label = "2 AU"), 
+              color = "deeppink3", 
+              size  = 5) +
+    geom_text(aes(x = 5110 * 3 / 4, y = 4, label = "4 AU"), 
+              color = "deeppink3", 
+              size  = 5) +
+    geom_text(aes(x = 5110 * 3 / 4, y = 6, label = "6 AU"), 
+              color = "deeppink3", 
+              size  = 5) +
+    # add label for describing 1 AU
+    annotate(geom  =                   "label", 
+             x     =             5110 * 1 / 2,
+             y     =                        7,
+             label = "1 AU = ~150,000,000 km", 
+             color =              "deeppink2",
+             fill  =                  "black",
+             size  =                        5) +
+    # add planet points; map size of the point to planet radius
+    geom_point(aes(size = radius), alpha = .6) +
+    # add planet text; also suppress its legend
+    geom_text(aes(label   = name), 
+              position    = position_nudge(y = 1.1), 
+              alpha       = .7,
+              size        =  5,
+              show.legend = FALSE) +
+    # make the coordinate polar
+    coord_polar(theta = "x") +
+    # add transition according to days
+    transition_manual(days_count) +
+    # set the limit of size values
+    scale_size_continuous(range = c(.5, 10)) +
+    # drop x-axis grid marks and breaks
+    scale_x_continuous(breaks = NULL) +
+    # set 2-axis limit
+    scale_y_continuous(limits = c(0, 7)) +
+    # set the colours
+    scale_colour_manual(name   = "Star System",
+                        values = c("#02fff6", "#ff7b00"),
+                        labels = c("Solar System", "Star Wars")) +
+    # add labels
+    labs(title    = "Distance from Host Star and Orbital Period",
+         subtitle =                         "Days: {current_frame}", 
+         caption  =                "Data from https://swapi.co.") +
+    # customize using my theme
+    my_theme() +
+    # drop axis text and axis titles and center title, subtitle, and caption
+    theme(plot.title      = element_text(hjust = 0.5),
+          plot.subtitle   = element_text(hjust = 0.5),
+          plot.caption    = element_text(hjust = 0.5),
+          axis.text       = element_blank(),
+          axis.title      = element_blank(),
+          plot.margin     = unit(c(1, 5, 1, 7), "cm"),
+          legend.position = "right") +
+    # drop radius legend and change the size of the legend points
+    guides(size = FALSE,
+           colour = guide_legend(override.aes = list(size  = 5,
+                                                     alpha = 1)))
+
+# animate plot with a duration of 55 and a fps of  58
+animate(planets_plot, 
+        nframes = 2640,
+        fps     =   48)
+``` 
+
+#### Idea
+
+As interesting as I found the data in the first two plots, I think several plots could be devoted to the planets dataset. Specifically, the visualizations could be framed around the common theme of astronomy, serving as an instructive tool for teaching concepts from astronomy (e.g., Keppler's third law, calculations of gravitational force). The present plot shows the relationship between a planet's surface water and its distance from the sun. I would like to add a solar system dataset to the Starwar's planets dataset and use facetwrap to provide a side by side comparison of fictional and non-fictional planets. 
+
+#### Intended Audience
+
+Fans of Star Wars or anyone who has an interest in astronomy or phyics.
+
+#### Intended Message
+
+Planets farther from the sun seem to have more surface water, which seems to be consistent with our solar system. 
