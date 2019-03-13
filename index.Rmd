@@ -303,7 +303,13 @@ people %>%
 
 *** 
 
-Something something something. 
+#### Description of Version Two
+
+For the second plot, I removed all the code forcreating the hilts the blades and saved them in separate functions that are sourced at the beginning of the document. These functions are essentially just lists of geom_*s. The `geom_saberhilt` function takes one argument (i.e., `column`), which  simply tells the function which column to make the hilt for and adjusts its position accordingly.
+
+I also dropped the droid lightsaber from this plot. It seemed to be distracting from the intended message of the plot. 
+
+Finally, I added the ends of the blades using geom_point. As is clear from the plot, there are some size problems in comparing the end of the blades to the blade themselves. This primarly stems from the width of `geom_col` being relative to the size of the plot and `geom_point` being absolute.
 
 ### Version Three
 
