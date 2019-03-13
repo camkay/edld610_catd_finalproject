@@ -254,9 +254,73 @@ people %>%
 
 Something somethign something. 
 
-### Verion Three
+### Version Two
+
+```{r people_viz_v2}
+people %>%
+  filter(gender == "male" | gender == "female") %>%
+  group_by(gender) %>%
+  summarise(m_age = mean(birth_year, na.rm = TRUE)) %>%
+  mutate(gender = str_to_title(gender),
+         gender = as.factor(gender)) %>%
+  ggplot(aes(x = gender, y = m_age, fill = gender)) +
+    geom_saberblade() +
+    scale_fill_manual(values = c("#0FFF00", "#FF0000")) +
+    scale_color_manual(values = c("#0FFF00", "#FF0000")) +
+    geom_saberhilt(column = 1) +
+    geom_saberhilt(column = 2) +
+    theme_bw() +
+    labs(title = "Average age and gender",
+           y = "Age (years)",
+           x = "Gender",
+           legend = "Gender",
+           caption = "Data from https://swapi.co.") +
+    theme(legend.position = "none", panel.grid.major.x =                   element_blank())
+```
+
+*** 
+
+Something something something. 
+
+### Version Three
 
 ```{r people_viz_v3}
+# people plot
+people %>%
+  filter(gender == "male" | gender == "female") %>%
+  group_by(gender) %>%
+  summarise(m_age   = mean(birth_year, na.rm = TRUE),
+            m_age_r = round(m_age, 2),
+            m_age_r = paste(m_age_r, "YEARS")) %>%
+  mutate(gender = str_to_title(gender),
+         gender = as.factor(gender)) %>%
+  ggplot(aes(x = gender, y = m_age, fill = gender)) +
+    geom_saberblade() +
+    scale_fill_manual(values = c("#0FFF00", "#FF0000")) +
+    scale_colour_manual(values = c("#0FFF00", "#FF0000")) +
+    scale_size_continuous(aes(label = )) +
+    geom_saberhilt(column = 1) +
+    geom_saberhilt(column = 2) +
+    geom_text(aes(label = m_age_r, color = gender), 
+              size = 6, 
+              position = position_nudge(x = -.09, y = -8)) +
+    labs(title = "Average age and gender",
+           y = "Age (years)",
+           x = "Gender",
+           legend = "Gender",
+           caption = "Data from https://swapi.co.") +
+    my_theme() +
+    coord_flip()
+```
+
+***
+
+Something something osmethin g. 
+
+
+### Version Four
+
+```{r people_viz_v4}
 # people plot
 people %>%
   # filter for only females and males and drop the outlier (yoda)
@@ -285,6 +349,8 @@ people %>%
     geom_text(aes(label = m_age_r, color = gender), 
               size     = 6, 
               position = position_nudge(x = -.09, y = -8)) +
+    # customize y-axis
+    scale_y_continuous(breaks = c(0, 20, 40, 60)) +
     # add labels
     labs(title    = "Average Age of Characters by Gender",
          subtitle = "Excluding Yoda (for obvious reasons)",
