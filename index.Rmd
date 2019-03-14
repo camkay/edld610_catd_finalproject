@@ -663,17 +663,17 @@ planets %>%
 
 *** 
 
-#### Idea
+#### Intended Message
 
-As interesting as I found the data in the first two plots, I think several plots could be devoted to the planets dataset. Specifically, the visualizations could be framed around the common theme of astronomy, serving as an instructive tool for teaching concepts from astronomy (e.g., Keppler's third law, calculations of gravitational force). The present plot shows the relationship between a planet's surface water and its distance from the sun. I would like to add a solar system dataset to the Starwar's planets dataset and use facetwrap to provide a side by side comparison of fictional and non-fictional planets. 
+In the original version of this plot, I intended to illustrate that as a planet gets further from its star the amount of surface water decreases. This did seem to be the case, but I became more interested in the size of planets, orbital periods, and the distance of planets from their stars. In the end, the intent of the plot became illustrating that planets farther from the sun are both larger and orbit slower (and this holds in the Star Wars universe. )
 
 #### Intended Audience
 
-Fans of Star Wars or anyone who has an interest in astronomy or phyics.
+Again, those interested in Star Wars would likely enjoy this plot; some general background in astronomy would also help interpretation. 
 
-#### Intended Message
+#### Description of Version One
 
-Planets farther from the sun seem to have more surface water, which seems to be consistent with our solar system. 
+The first version of this plot used the Star Wars colors (black and yellow) to show the relationship between the amount of water on a planey and the distance of those units from the star. This relationship was illustrated using `geom_smooth` with the `method` set to `lm` and `geom_point`. Size was also mapped to the radii of the planets. It was simple plot. 
 
 ### Version Two
 
@@ -681,13 +681,14 @@ Planets farther from the sun seem to have more surface water, which seems to be 
 # planets plot
 planets %>%
   # select only variables of interest
-  select(name, au, radius) %>%
+  select(name, au, radius, solar_system) %>%
   # drop planets that do not have (1) a name, (2) a distance from the sun (i.e.
   # an AU), (3) an AU less than 2, and (4) a radius greater than 0.
   filter(!is.na(name),
          !is.na(au),
-         au < 2,
-         radius != 0.00) %>%
+         # au < 2,
+         radius       != 0.00,
+         solar_system == FALSE) %>%
   # create a new variable indicating whether a planet was in the original 
   # trilogy
   mutate(orig_tril = case_when(name == "Alderaan" |
@@ -705,37 +706,68 @@ planets %>%
   mutate(degree = seq(from = 1, to = 360, length.out = n())) %>%
   # plot the planets distance from the sun against their arbitrary degree
   ggplot(aes(x = degree, y = au)) +
-  # add labels indicating y-axis units
-    geom_text(aes(x = 0, y =   0, label =   "STAR"), color = "deeppink4") +
-    geom_text(aes(x = 0, y =  .5, label =  ".5 AU"), color = "deeppink4") +
-    geom_text(aes(x = 0, y =   1, label =   "1 AU"), color = "deeppink4") +
-    geom_text(aes(x = 0, y = 1.5, label = "1.5 AU"), color = "deeppink4") +
-    geom_text(aes(x = 0, y =   2, label =   "2 AU"), color = "deeppink4") +
+    # add labels indicating y-axis units and add star and earth
+    geom_text(aes(x =   0, y = 0, label = "STAR"), 
+              color = "deeppink3", 
+              size  = 7) +
+    geom_text(aes(x = 270, y = 2, label = "2 AU"), 
+              color = "deeppink3", 
+              size  = 7) +
+    geom_text(aes(x = 270, y = 4, label = "4 AU"), 
+              color = "deeppink3", 
+              size  = 7) +
+    geom_text(aes(x = 270, y = 6, label = "6 AU"), 
+              color = "deeppink3", 
+              size  = 7) +
+    # add solar system planets
+    geom_text(aes(x = 0, y = 1.00, label =   "EARTH"), 
+      color = "deeppink3", 
+      size  = 5) +
+    geom_text(aes(x = 0, y = 1.52, label =    "MARS"), 
+      color = "deeppink3", 
+      size  = 5) +
+    geom_text(aes(x = 0, y = 5.20, label = "JUPITER"), 
+      color = "deeppink3", 
+      size  = 5) +
     # add planet points; map size of the point to planet radius
     geom_point(aes(size = radius), alpha = .6, color = "#00ddff") +
     # make the coordinate polar
     coord_polar(theta = "x") +
     # set the limit of size values
-    scale_size_continuous(range = c(.5, 5)) +
+    scale_size_continuous(range = c(.5, 10)) +
     # drop x-axis grid marks and breaks
     scale_x_continuous(breaks = NULL) +
     # set 2-axis limit
-    scale_y_continuous(limits = c(0,2)) +
+    scale_y_continuous(limits = c(0,7)) +
+    # add labels
+    labs(title    = "Distance of Star War's Planets from their Host Stars",
+         subtitle = "in Astronomical Units (AU)", 
+         caption  = "Data from https://swapi.co.") + 
     # customize using my theme
     my_theme() +
-    # drop axis text and axis titles
-    theme(axis.text  = element_blank(),
-          axis.title = element_blank()) +
+    # drop axis text and axis titles and center title, subtitle, and caption
+    theme(plot.title    = element_text(hjust = 0.5),
+          plot.subtitle = element_text(hjust = 0.5),
+          plot.caption  = element_text(hjust = 0.5),
+          axis.text     = element_blank(),
+          axis.title    = element_blank(),
+          plot.margin   = unit(c(1, 2, 1, 2), "cm")) +
     # add text identifying only those planetss from the original trilogy
-    geom_text_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
-                    color              = "#00ddff",
-                    min.segment.length =         0,
-                    nudge_y            =        .5)
+    geom_label_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
+                     color              = "#00ddff",
+                     fill               =        NA,
+                     size               =         8,
+                     min.segment.length =         0,
+                     nudge_y            =       2.1)
 ```
 
 *** 
 
-Something somethign something. 
+#### Description of Version Two
+
+For the second plot, I dropped the interest in the amount of surface water the planet had and instead used `coord_polar` to see a top down version of a star system, with the planets arbitrarily arranged around their host star. As can be gleened from the plot, it does seem that large planets (in this case, Bespin) are farther from their host stars.
+
+I also added my theme to this plot to make it consistent and used ggrepel to repel text labels for the planets from the orginal series. 
 
 ### Version Three
 
@@ -832,15 +864,18 @@ plot3 <- planets %>%
     #                 size               =         8,
     #                 min.segment.length =         0,
     #                 nudge_y            =       2.1)
-#animate(plot3, 
-#        duration = 55,
-#        fps = 10)
+animate(plot3, 
+        duration = 55,
+        fps      = 10)
 ```
 
 *** 
 
-Something somethign something. 
+#### Description of Version Two
 
+Although not interactive (as per [Andrew](https://github.com/AndrewEdelblum)'s) suggetiong, I animated the plot to add in another dimension of information. Namely, we can now see the orbital period of the planets. I also added the solar system plaents rather than jusst having them as labels on the plot to allow for easier comparison.
+
+In order to have planetss continue rotating once they had completed their rotation, for example isntead of endor dissapearing from the plot after 402 days, I made a function called `orbital_slice` to generate the position of each planet at 511 time points during Bespin's 5110 day orbit. 
 
 ### Version Four
 
@@ -960,14 +995,15 @@ planets_plot <- planets %>%
                                                      alpha = 1)))
 
 # animate plot with a duration of 55 and a fps of  48
-#animate(planets_plot, 
-#        nframes = 48 * 55,
-#        fps     = 48)
+animate(planets_plot, 
+        nframes = 48 * 55,
+        fps     = 48)
 
-#2640
-#48
 ``` 
 
+#### Description of Version Four
+
+A
 
 *** 
 
