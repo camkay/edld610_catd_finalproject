@@ -871,11 +871,13 @@ animate(plot3,
 
 *** 
 
-#### Description of Version Two
+#### Description of Version Three
 
 Although not interactive (as per [Andrew](https://github.com/AndrewEdelblum)'s) suggetiong, I animated the plot to add in another dimension of information. Namely, we can now see the orbital period of the planets. I also added the solar system plaents rather than jusst having them as labels on the plot to allow for easier comparison.
 
 In order to have planetss continue rotating once they had completed their rotation, for example isntead of endor dissapearing from the plot after 402 days, I made a function called `orbital_slice` to generate the position of each planet at 511 time points during Bespin's 5110 day orbit. 
+
+I also followed [Maria](https://github.com/schweercollins)'s advice and droped all the planets that are not in the original trilogy. 
 
 ### Version Four
 
@@ -1001,10 +1003,12 @@ animate(planets_plot,
 
 ``` 
 
-#### Description of Version Four
-
-A
-
 *** 
 
-Something something something.
+#### Description of Version Four
+
+A problem with using `transition_time` from the `gganimate` package with repating orbit data is that at the end of each planet's orbit, it attempts to go from its current place on the x-axis at 5110 days back to zero. At slow enough speeds you can see at the end of each orbit the planet actually has to back track all the  way around the graph. I attempted to insert and NA in the data, so that it would briefly dissapear, but this presented two problems. First, I needed incredibly high number of slices so that it did not dissapear for two long, it was causing flickering in the points. 
+
+To combat this, I switched from using `transition_time` to using `transition_manual`. I still had to use a large number of slices. but the effect was far smoother and no flickering occured. A side benefit, which I found really rewarding, is that now the days counts up by 1s instead of 10s. I had used 10s in the previous plot becasue I wanted to deal with less data and animating the tweens was resource intensive.
+
+I also added a translation from AUs to kms. 
