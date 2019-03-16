@@ -263,17 +263,17 @@ people %>%
 
 #### Intended Message
 
-At its most basic, the plot to the left was intended to illustrate how the age of characters in the Starwars universe differ by gender. However, other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of the female characters is so young compared to that of the male characters. It seems the recent movies have taken both incidental (e.g., Carrier Fisher) and deliberate (e.g., Laura Dern) steps to include older women. Star Wars would certainly benefit from being more inclusive when it comes to casting. 
+At its most basic, the plot to the left was intended to illustrate how the ages of characters in the Starwars universe differ by gender. Other than wanting to convey the average difference in ages among genders in the Star Wars universe, I think it is important to consider that the mean age of the female characters is so young compared to that of the male characters. It seems the recent movies have taken both incidental (e.g., Carrie Fisher) and deliberate (e.g., Laura Dern) steps to include older women. Star Wars would certainly benefit from being more inclusive when it comes to casting. 
 
 #### Intended Audience
 
-The intended audience for this visualization are fans of Star Wars and the general public.
+The intended audience for this visualization are fans of Star Wars and the general public. No advanced statistical knowledge would be required to interperet it. 
 
 #### Description of Version One
 
-I refer to this first attempt as the LEGO&reg; Star Wars version of this plot, owing mostly to the simplistic design of the lightsaber[^1] hilt. Despite its evidence simplicitly, this code is likely the most complex of the lightsaber versions; all of the code for creating the hilt was included with the main `ggplot2` coding chunk and I rewrote the code for each of the hilts. I also created the aura in the main `ggplot2` coding chunk by call `geom_col` six times and decreasing the alpha and increasing the width on each additional call. 
+I refer to this first attempt as the LEGO&reg; Star Wars version of this plot, owing mostly to the simplistic design of the lightsaber[^1] hilt. Despite its evident simplicitly, the code is likely the most complex of all of the versions of this plot. The code for creating the hilt was included in the plotting code (rather than simply calling a function) and I repeated the code to generate the hilt for each lightsaber. I also included the code to create the blade and blade aura in the main `ggplot` code chunk, requiring the inclusion of six separate `geom_col` layers with decreased alpha and increased width for each additional call. 
 
-[^1]: In accordance with the spelling choices of `ggplot2`, this should actually be "lightsabre".
+[^1]: Which, in the `ggplot2` universe, would be "lightsabre".
 
 
 ### Version Two
@@ -287,30 +287,31 @@ people %>%
          gender = as.factor(gender)) %>%
   ggplot(aes(x = gender, y = m_age, fill = gender)) +
     geom_saberblade() +
-    scale_fill_manual(values = c("#0FFF00", "#FF0000")) +
+    scale_fill_manual(values =  c("#0FFF00", "#FF0000")) +
     scale_color_manual(values = c("#0FFF00", "#FF0000")) +
     geom_saberhilt(column = 1) +
     geom_saberhilt(column = 2) +
     theme_bw() +
-    labs(title = "Average age and gender",
-           y = "Age (years)",
-           x = "Gender",
-           legend = "Gender",
+    labs(title     = "Average age and gender",
+           y       = "Age (years)",
+           x       = "Gender",
+           legend  = "Gender",
            caption = "Data from https://swapi.co.") +
-    theme(legend.position = "none", panel.grid.major.x =                   element_blank())
+    theme(legend.position    = "none", 
+          panel.grid.major.x = element_blank())
 ```
 
 *** 
 
 #### Description of Version Two
 
-For the second verion, I removed all the code forcreating the hilts the blades and saved them in separate functions that are sourced at the beginning of the document. These functions are essentially just lists of geom_*s. The `geom_saberhilt` function takes one argument (i.e., `column`), which  simply tells the function which column to make the hilt for and adjusts its position accordingly. In total, each hilt is made up of eight separate rectangles. I added a black color (i.e., outline) to make the separate component of the hilt pop. 
+For the second version, I removed all the code for creating the hilts and the blades from the `ggplot` code chunk. Instead, I saved them in separate scripts that are sourced at the beginning of the `R Markdown` document used to deploy this dashboard. Each function is essentially just a `list` with multiple `geom_*`s inside of it. The `geom_saberhilt` function takes one argument (i.e., `column`), which simply tells the function which column to make the hilt for and adjusts its position accordingly. In total, each hilt is made up of eight separate rectangles. I added a black outline to make the separate component of the hilt pop. 
 
 I also dropped the droid lightsaber from this plot. It seemed to be distracting from the intended message of the plot. 
 
-Following the advice of Daniel Anderson (AKA [datalorax](https://github.com/datalorax)) I dropped the legend, as it was completely redundant with the x-axis of the plot. 
+Following the advice of [Daniel Anderson](http://www.datalorax.com) (AKA [datalorax](https://github.com/datalorax)) I dropped the legend, as it was completely redundant with the x-axis of the plot. 
 
-Finally, I added the ends of the blades using geom_point. As is clear from the plot, there are some size problems in comparing the end of the blades to the blade themselves. This primarly stems from the width of `geom_col` being relative to the size of the plot and `geom_point` being absolute.
+For the second version, I also added the ends of the blades using geom_point. As is clear from the plot, there is a size discrepancy between the end of the blades and the blades themselves. This primarily stems from the width of `geom_col` being relative to the size of the plot and `geom_point` being absolute.
 
 ### Version Three
 
@@ -346,13 +347,13 @@ people %>%
 
 #### Description of Version Three
 
-I like to think of this version as the [How to Draw A Horse](https://knowyourmeme.com/photos/572093-how-to-draw-an-owl) version, given its massive improvement over the previous plot. 
+I like to think of this version of the plot as the [How to Draw A Horse](https://knowyourmeme.com/photos/572093-how-to-draw-an-owl) version, given its massive improvement over the previous plot. 
 
-Also following the advice of [Daniel Anderson](https://github.com/datalorax) I `coord_flip`ed the plot, which drastically improved the look of the lightsabers. I assume the improvement is due to some innate preference towards landscape orientation over portrait orientation, but, in any case, it allows the plot to more neatly fit on a computer screen.
+Again following the advice of [Daniel Anderson](https://github.com/datalorax), I used `coord_flip` to flip the x- and y-axes, drastically improving the look of the lightsabers. I assume the improvement is due partially to some innate preference for landscape orientation over portrait orientation, but, in any case, it allows the plot to neatly fit on a computer screen.
 
-[Daniel](https://github.com/datalorax) also suggeted I add annotations, which I added in the form of the means provided slightly below the blades. To achieved this, I used `position_nudge(x = -.09, y = -8)` to move the `geom_text` labels away from the actual means of the two groups.
+[Daniel](https://github.com/datalorax) also suggested I add annotations, which I added in the form of the means provided slightly below the blades. To achieve this, I used `position_nudge(x = -.09, y = -8)` to move the `geom_text` labels slightly below and slightly to the left of the actual means of the two groups.
 
-I also created a simple black and pink (specifically deeppink2) theme to a separate function script that I also sourced at the beginning of the document and added to this plot. In the theme script, I also bolded the title, the axes titles, the axis text, and the caption. I also customized the major grid lines and completely removed the minor gridliens. Finally, I automatically suppressed the legend using `legend.position = "none"`. I did customize the legend to be consistent with the rest of the theme in case I decided the include a legend, which I did in [visualization 3][The Planets].
+I also created a simple black and pink (specifically "deeppink2") theme in a separate function script that I sourced at the beginning of the `R Markdown` document and added to this plot. The theme also bolds titles, axis titles, axis text, and captions. I also customized the major grid lines and completely removed the minor gridlines. Finally, I automatically suppressed the legend using `legend.position = "none"`. I did customize the legend to be consistent with the rest of the theme in case I decided to include it (e.g., [visualization 3][The Planets]).
 
 ### Version Four
 
@@ -404,13 +405,13 @@ people %>%
 
 #### Description of Version 4
 
-In the (current) final plot of the peoples ages, I followed the advice of [Jon Rochelle](https://github.com/jrochel2) and [Maria Schweer-Collins](https://github.com/schweercollins) to change the color of the lightsaber for males from red, as it would seem to imply that this was representing the average age of male characters who had also succumbed to the Dark Side. I was initially weary of using blue to represent males as I usually try to avoid using the conventional colors to represent men and women. In this case, I think the use of blue is excusable. 
+In the (current) final plot of the characters' ages, I followed the advice of [Jon Rochelle](https://github.com/jrochel2) and [Maria Schweer-Collins](https://github.com/schweercollins) and changed the color of the lightsaber for males from red to blue. They suggested that the red colour would imply that this was representing the average age of male characters who had also succumbed to the Dark Side. I was initially wary of using blue to represent males as I usually try to avoid using the conventional colors to represent women and men, but I think in this case the use of blue is far less confusing. 
 
-Also as noted by [Andrew Edelblum](https://github.com/AndrewEdelblum), Yoda is a major outlier at 896 years old. The only character who would seem to be even close to Yoda was Jabba Desilijic Tiure at 600 years old, but Jabba is hermaphroditic and, therefore, dropped from the plot. In order to address Yoda's age, I simply dropped him from the plot and noted in the plot's subtitle that he was excluded. I did consider including a point to indicate where he was on the plot, but that would require an x-axis that spanned to around 900, which would seem to obscure the intended message of the plot.
+As noted by [Andrew Edelblum](https://github.com/AndrewEdelblum), Yoda is a major outlier at 896 years old. The only character who would seem to be even close to Yoda's age was Jabba Desilijic Tiure at 600 years old, but Jabba is hermaphroditic and was not included in the plot. In order to address Yoda's age, I simply dropped him from the plot and noted in the plot's subtitle that he was excluded. I did consider including a point to indicate where he was on the plot, but that would require an x-axis that spanned to around 900, which would seem to obscure any difference between the female and male lightsabers. 
 
-[Andrew](https://github.com/AndrewEdelblum) and [Maria](https://github.com/schweercollins) also suggested that the title should inlude "age *by* gender" rather than "age *and* gender". They were completely correct, and I make the corresponding changes. 
+[Andrew](https://github.com/AndrewEdelblum) and [Maria](https://github.com/schweercollins) also suggested that the title should read "age *by* gender" rather than "age *and* gender". They were completely correct, and I made the corresponding change.
 
-Finally, I switched to using title case for the title and adjusted the x-axis limits using `scale_y_continuous` (scale_*y* since the coordinates were flipped).
+Finally, I switched from using title case for the title and adjusted the x-axis limits using `scale_y_continuous` (scale_*y* since the coordinates were flipped).
 
 # The Starships {.storyboard data-icon="fa-space-shuttle"}
 
@@ -444,15 +445,15 @@ starships %>%
 
 #### Intended Message
 
-Overall, the plot is aimed as illustrating how starships from Star Wars differ in size. Specifically, Yachts are the largest ships with assault starfighters being slightly larger than basic starfighters. Yachts also have the most variable sizes among all of the starships. 
+Overall, this plot is aimed at illustrating how starships from Star Wars differ in size. Specifically, I was trying to illustrate that Yachts are, by far, the largest ships with assault starfighters being slightly larger than basic starfighters. Yachts also have the most variable sizes among all of the starships. 
 
 #### Intended Audience
 
-Although the audience for this plot are generally the same as the previous plot (i.e., the general public and fans of Star Wars), I believe this one is skewed far more towards Star Wars fans and also those who are knowledgable enough about statistics to be able to interpret the error bar. 
+Although the audience for this plot is generally the same as the previous plot (i.e., fans of Star Wars), I believe this plot is skewed far more towards those who are knowledgable enough about statistics to be able to interpret error bars. 
 
 #### Description of Version One
 
-Points and standard error bars have always looked like Tie Fighters to me, so I decided I would try to plot the length of a starship by starship class (i.e., Starfighters, Assault Starfighters, and Yachts). I excluded any class that only had one ship type in the dataset (e.g,, Star Destroyers). To achieve the look I was going for, I plotted the error bar using `geom_errorbar` and then plotted a black `geom_point` for the ships hull and a grey `geom_point` of shape 13 for the ships window. 
+Points and standard error bars have always looked like [Tie Fighters](https://en.wikipedia.org/wiki/TIE_fighter) to me, so I decided I would try to plot the length of a starship by starship class (i.e., Starfighters, Assault Starfighters, and Yachts). I excluded any class that only had one ship type in the dataset (e.g., Star Destroyers). To achieve the look I was going for, I plotted an error bar using `geom_errorbar` and then plotted a black `geom_point` for the ships hull and a grey, shape-13 `geom_point` for the ships' windows. 
 
 ### Version Two
 ```{r starships_viz_v2}
@@ -494,11 +495,11 @@ starships %>%
 ***
 #### Description of Version Two
 
-For the second version, I changed the ships wings and the hull to a dark gray to more accurately reflect the look of a tie fighter. I also added a black `geom_point` between the window frame and the hull points to add the windows.
+For the second version, I changed the ships' wings and hulls to a dark gray to more accurately reflect the look of a Tie Fighter. I also added a black `geom_point` between the windows' frames and the hulls to give the impression of glass.
 
-In this stage, I also created random data to represent stars in the plot. To do this, I randomly `sample`d (without replacement) 500 values between the x-axis limits of 0 and 4, 500 values between the y-axis limits of 0 and 80, and 500 values between alpha values of .1 and .9. I simply plotted these in white using `geom_point`.
+In this stage, I also created random data to represent stars in the plot. To do this, I used `sample` (without replacement) to pick 500 values between the x-axis limits of 0 and 4, 500 values between the y-axis limits of 0 and 80, and 500 transparency values between .1 and .9. I then simply plotted these points in white using `geom_point`, mapping the x-axis to x, the y-axis to y, and the alpha to the transparency values.
 
-To show the stars in this version, I retroactively added in a black background. The original plot had used the `new_retro` theme from the [vapoRwave](https://github.com/moldach/vapoRwave) package by Matthew Oldach ([moldach](https://github.com/moldach)). Unfortunately, that theme used fonts that drastically limited reproducability.
+To show the stars in this version, I retroactively added in a black background. The original plot had used the `new_retro` theme from the [vapoRwave](https://github.com/moldach/vapoRwave) package by Matthew Oldach [Matthew Oldach](https://github.com/moldach). Unfortunately, that theme used fonts that drastically limited reproducibility and was part of the impetus behind me creating my own theme. 
 
 ### Version Three
 ```{r starships_viz_v3}
@@ -556,7 +557,7 @@ starships %>%
 
 #### Description of Version Three
 
-Version 3 involved mostly minor appearence changes. I added `my_theme` to make the theme consistent with my other visualizations and made the size of the ships' bodies larger to be more consistent with an actual (fictional) tie fighter. I also added a `\n` between "assault" and "starfighter" in the y-axis labels so that "Assault Starfighter" did not take up substantially more space than the other labels.
+Version 3 involved mostly minor appearance changes. I added `my_theme` to make the theme consistent with my other visualizations and made the size of the ships' bodies larger to be more consistent with actual (fictional) Tie Fighters. I also added a `\n` between "Assault" and "Starfighter" in the y-axis labels so that "Assault Starfighter" did not take up substantially more horizontal space than the other labels.
 
 ### Version Four
 
@@ -626,14 +627,13 @@ starships %>%
 
 #### Description of Version Four
 
-In this version of the starship plot, I completely reworked the body of the starship to more accurately reflect the look of a tie fighter. I did this by adding three additional `geom_point` layers. 
+In this version of the starship plot, I completely reworked the body of the starships to more accurately reflect the look of Tie Fighters. I did this by adding three additional `geom_point` layers. In the end the body of the ship comprised (1) a large light gray layer to outline the hulls, (2) a slightly smaller dark gray layer to represent the hulls, (3) a black layer to represent the annular windows, (4) a light gray asterisk layer to represent the radial window frames, (5) a light gray layer to represent the outer window frame, (6) a light gray layer to represent the inner window frames, and (7) a black layer to represent the center windows.
 
-Following [Jon's](https://github.com/jrochel2) advice, I also added a thin layer of light gray around the ships body to make the fighters pop from the starry background.
+As hinted at above and as per [Jon's](https://github.com/jrochel2) advice, I also added a thin layer of light gray around the ships body and wings to make the Tie Fighters pop from the starry background.
 
-I did consider dropping the "class" y-axis title, because it seemed to intuitive to me, but then I realized it might not be as clear to others. Instead, I shifted the y-axis title away from the y-axis labels using `axis.title.y = element_text(vjust = 5)` so it didn't look as cramped. I also increased the plot magin on the right so the text wasn't right up against the plot border. 
+I did consider dropping the "class" y-axis title because the y-axis labels seemed intuitive to me; ultimately, I decided that the title might be helpful in aiding comprehension. Instead, I shifted the y-axis title away from the y-axis labels using `axis.title.y = element_text(vjust = 5)` so it wouldn't look as cramped. I also increased the plot margin on the right side of the plot so the text wasn't right up against the plot border. 
 
-Following [Maria](https://github.com/schweercollins)'s advice, I also attempted to plot the mean and standard error of each ship as text on the plot, but it was hard to find an appropriate space to put them. One would imagine immediately underneath the ships would be good, but given the difference width of the starship wings it leaves a large gap for the large ship. Instead I added subtitles that descrirbes what the starships represent. 
-
+Following [Maria](https://github.com/schweercollins)'s advice, I also attempted to plot the mean and standard error of each ship as text on the plot, but it was hard to find an appropriate space to put them. One would imagine immediately underneath the ships would look good, but, given the differing width of the starships' wings, it ended up looking awkward. Instead, I added subtitles describing what the wings and the hull represent.
 
 # The Planets {.storyboard data-icon="fa-globe-asia"}
 
@@ -664,15 +664,15 @@ planets %>%
 
 #### Intended Message
 
-In the original version of this plot, I intended to illustrate that as a planet gets further from its star the amount of surface water decreases. This did seem to be the case, but I became more interested in the size of planets, orbital periods, and the distance of planets from their stars. In the end, the intent of the plot became illustrating that planets farther from the sun are both larger and orbit slower (and this holds in the Star Wars universe. )
+In the original version of this plot, I intended to illustrate that as a planet gets further from its star the amount of surface water decreases. This did seem to be the case, but I became more interested in the size of planets, orbital periods, and the distance of planets from their stars. In the end, the intent of the plot became illustrating that planets farther from their stars are both larger and orbit slower than those closer to their stars (and that this holds for planets in the Star Wars universe).
 
 #### Intended Audience
 
-Again, those interested in Star Wars would likely enjoy this plot; some general background in astronomy would also help interpretation. 
+Again, those interested in Star Wars would likely enjoy this plot. A general background in astronomy would also be helpful in interpreting the plot, but would not seem to be necessary. 
 
 #### Description of Version One
 
-The first version of this plot used the Star Wars colors (black and yellow) to show the relationship between the amount of water on a planey and the distance of those units from the star. This relationship was illustrated using `geom_smooth` with the `method` set to `lm` and `geom_point`. Size was also mapped to the radii of the planets. It was simple plot. 
+The first version of this plot used the Star Wars colors (black and yellow) to show the relationship between the amount of water on a planet and the distance of those planets from their host stars. This relationship was illustrated using `geom_smooth` with the `method` set to `lm`. The planets were represented using `geom_point` and point size was mapped to the radii of the planets.
 
 ### Version Two
 
@@ -764,9 +764,11 @@ planets %>%
 
 #### Description of Version Two
 
-For the second plot, I dropped the interest in the amount of surface water the planet had and instead used `coord_polar` to see a top down version of a star system, with the planets arbitrarily arranged around their host star. As can be gleened from the plot, it does seem that large planets (in this case, Bespin) are farther from their host stars.
+For the second plot, I dropped the interest in the amount of surface water the planet had and instead used `coord_polar` to show a top-down version of a star system with planets arbitrarily arranged around a star. As can be gleaned from the plot, it does seem that large planets (in this case, Bespin) are farther from their host stars than smaller planets.
 
-I also added my theme to this plot to make it consistent and used ggrepel to repel text labels for the planets from the orginal series. 
+I used a number of `geom_text` layers to add where solar system planets would sit on the plot for easy comparison. I also suppressed all axis labels and used `geom_text` to inset the axis labels inside the plot, rather than having them float outside the plot. Using `geom_label_repel` I added non-overlapping labels for the planets that appeared in the original trilogy. 
+
+In a final step, I added my theme to this plot to make it consistent with the other plots. I also changed the color of the points to better complement the theme. 
 
 ### Version Three
 
@@ -872,11 +874,11 @@ animate(plot3,
 
 #### Description of Version Three
 
-Although not interactive (as per [Andrew](https://github.com/AndrewEdelblum)'s) suggetiong, I animated the plot to add in another dimension of information. Namely, we can now see the orbital period of the planets. I also added the solar system plaents rather than jusst having them as labels on the plot to allow for easier comparison.
+Following [Maria](https://github.com/schweercollins)'s advice, I dropped all the planets that are not in the original trilogy. This vastly simplified the plot and seemed to make it far easier to comprehend. Making it slightly more busy (but vastly aiding comparison) I also added the solar system planets as their own points, rather than having them represented by text.
 
-In order to have planetss continue rotating once they had completed their rotation, for example isntead of endor dissapearing from the plot after 402 days, I made a function called `orbital_slice` to generate the position of each planet at 511 time points during Bespin's 5110 day orbit. 
+Although not interactive (as per [Andrew](https://github.com/AndrewEdelblum)'s excellent suggestion), I animated the plot using `transition_time` from [Thomas Pedersen](https://github.com/thomasp85)'s [gganimate](https://github.com/thomasp85/gganimate). I believe the animation effectively illustrates the orbital period of the planets in an easily interpretable way. I also added a subtitle to show the number of days that pass, ranging from 0 to 5110 (i.e., the length of Bespin's orbit)
 
-I also followed [Maria](https://github.com/schweercollins)'s advice and droped all the planets that are not in the original trilogy. 
+In order to have planets with orbits less than 5110 days continue orbiting once they had completed their orbit, I made a function called `orbital_slice` to generate the position of each planet at 511 time points during Bespin's 5110-day orbit. However, this presented a major problem: Once a planet had finished its orbit, instead of continuing forward from 359 degrees to 0 degrees, it would orbit backwards, returning to 0, before it continued forward again.
 
 ### Version Four
 
@@ -977,7 +979,7 @@ planets_plot <- planets %>%
                         values = c("#02fff6", "#ff7b00"),
                         labels = c("Solar System", "Star Wars")) +
     # add labels
-    labs(title    = "Distance from Host Star and Orbital Period",
+    labs(title    = "The Orbital Periods and Distances from Host Stars of Planets",
          subtitle =                         "Days: {current_frame}", 
          caption  =                "Data from https://swapi.co.") +
     # customize using my theme
@@ -1006,8 +1008,10 @@ animate(planets_plot,
 
 #### Description of Version Four
 
-A problem with using `transition_time` from the `gganimate` package with repating orbit data is that at the end of each planet's orbit, it attempts to go from its current place on the x-axis at 5110 days back to zero. At slow enough speeds you can see at the end of each orbit the planet actually has to back track all the  way around the graph. I attempted to insert and NA in the data, so that it would briefly dissapear, but this presented two problems. First, I needed incredibly high number of slices so that it did not dissapear for two long, it was causing flickering in the points. 
+As noted in the description of the previous plot, a major problem with using `transition_time` with repeating orbital data is that each planet, at the end of its orbit, will travel backwards from 359 degrees to 0 degrees. My first solution was to insert an `NA` in the data; the planet would briefly disappear at 359 degrees and then reappear at 0 degrees. However, even at an incredibly high number of slices, the flickering of the planets was noticeable. 
 
-To combat this, I switched from using `transition_time` to using `transition_manual`. I still had to use a large number of slices. but the effect was far smoother and no flickering occured. A side benefit, which I found really rewarding, is that now the days counts up by 1s instead of 10s. I had used 10s in the previous plot becasue I wanted to deal with less data and animating the tweens was resource intensive.
+My solution came when I switched from using `transition_time` to using `transition_manual`. I still had to use a large number of slices since I am manually creating the movement from one frame to the next but the effect was far smoother and no flickering occurred.
 
-I also added a translation from AUs to kms. 
+For this plot, I also ended up having to drop "Alderaan"; it was orbiting at the same speed and at the same distance from its star as the Earth. I decided that the Earth was a far more important point of comparison than Alderaan. 
+
+Finally, to increase interpretability, I added a `geom_label`, inset in the plot, describing the number of kilometers that an AU represents, and a legend describing what color of planets come from the Solar System universe and what color of planets come from the Star Wars universe. 
