@@ -309,7 +309,7 @@ For the second version, I removed all the code for creating the hilts and the bl
 
 I also dropped the droid lightsaber from this plot. It seemed to be distracting from the intended message of the plot. 
 
-Following the advice of [Daniel Anderson](http://www.datalorax.com) (AKA [datalorax](https://github.com/datalorax)) I dropped the legend, as it was completely redundant with the x-axis of the plot. 
+Following the advice of [Daniel Anderson](http://www.datalorax.com) (AKA [datalorax](https://github.com/datalorax)), I dropped the legend, as it was completely redundant with the x-axis of the plot. 
 
 For the second version, I also added the ends of the blades using geom_point. As is clear from the plot, there is a size discrepancy between the end of the blades and the blades themselves. This primarily stems from the width of `geom_col` being relative to the size of the plot and `geom_point` being absolute.
 
