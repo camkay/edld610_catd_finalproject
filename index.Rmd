@@ -1014,4 +1014,4 @@ My solution came when I switched from using `transition_time` to using `transiti
 
 For this plot, I also ended up having to drop "Alderaan"; it was orbiting at the same speed and at the same distance from its star as the Earth. I decided that the Earth was a far more important point of comparison than Alderaan. 
 
-Finally, to increase interpretability, I added a `geom_label`, inset in the plot, describing the number of kilometers that an AU represents, and a legend describing what color of planets come from the Solar System universe and what color of planets come from the Star Wars universe. 
+Finally, to increase interpretability, I added a `geom_label`, inset in the plot, describing the number of kilometers that an AU represents, and a legend describing what color of planets come from the Solar System and what color of planets come from the Star Wars universe. 
