@@ -20,6 +20,8 @@ library(repurrrsive) # contains the star wars datasets
 library(rlist) # for binding all lit elements by column (using `list.cbind`)
 library(ggrepel) # for adding geom_text labels that do not overlap
 library(gganimate) # for animating the plot
+library(av) # for rendering the gganimate into a video file
+library(magick)
 
 # add gravitational constant (i.e., 6.67408 * 10^-11)
 grav_constant <- 6.67408 * (10 ^ -11)
@@ -32,6 +34,7 @@ source(here("resources/functions/geom_saberblade.R")) # load the function for cr
 # set figure output dimensions
 knitr::opts_chunk$set(fig.width  = 12, 
                       fig.height = 8)
+
 ```
 
 # The Data {.storyboard data-icon="fa-database"}
@@ -46,7 +49,7 @@ knitr::include_graphics(here("resources/images/swapi.png"))
 Welcome! 
 
 This portfolio shows the development of three different visualizations 
-of the Star Wars universe. The [first visualization][The People] shows the average age of characters in the universe bifurcated by gender. The [second visualization][The Starships] demonstrates how starship classes differ in terms of length. The [third visualization][The Planets] illustrates the distance of Star War's planet from their host stars and animates their orbital periods. Planets from our solar system are included for easy comparison.
+of the Star Wars universe. The [first visualization][The People] shows the average age of characters in the universe bifurcated by gender. The [second visualization][The Starships] demonstrates how starship classes differ in terms of length. The [third visualization][The Planets] illustrates the distance of Star War's planets from their host stars and animates their orbital periods. Planets from our solar system are included for easy comparison.
 
 All of the data for the visualizations are from [Jenny Bryan](https://github.com/jennybc)'s  [repurrrsive](https://github.com/jennybc/repurrrsive) package. The [repurrrsive](https://github.com/jennybc/repurrrsive) package includes various datasets to assist in the teaching of R. The Star Wars dataset is originally from [SWAPI](https://swapi.co) (i.e., the Star Wars API).
 
@@ -200,7 +203,7 @@ datatable(planets)
 
 Again, I converted [repurrrsive](https://github.com/jennybc/repurrrsive)'s `sw_planets` dataset to a `tibble`, unlisted the list columns, and converted the numeric variables to numeric variables. 
 
-When I cleaned the variables, I wasn't exactly sure what variables I was going to use for my plot, so I ended up creating a lot of additional variables that I thought could be interesting to plot. Directly applicable to my final plot, I calculated the planets' distances from their stars using Kepler's Third Law (i.e., ["The squares of the sidereal periods (of revolution) of the planets are directly proportional to the cubes of their mean distances from the Sun"](https://www.britannica.com/science/Keplers-laws-of-planetary-motion)). Essentially, the distance of a planet from its star is proportional to the length of its year. In this case, I used Astronomical Units (AU; ~150,000,000 km) to represent the distance from the star to the planet. Using astronomical units is helpful in this case because they are far more manageable and, since the distance from the Earth to the Sun is approximately 1 AU, they are far more interpretable. [Although, if one is able to hold the thought of 1,636,025,600 football fields in their head, that would also be a viable option](https://www.reddit.com/r/memes/comments/a7hnx7/daaaaaaaaamn_never_knew_that/).
+When I cleaned the variables, I wasn't exactly sure what variables I was going to use for my plot, so I ended up creating a lot of additional variables that I thought could be interesting to plot. Directly applicable to my final plot, I calculated the planets' distances from their stars using Kepler's Third Law (i.e., "The squares of the sidereal periods (of revolution) of the planets are directly proportional to the cubes of their mean distances from the Sun" - [Encyclopædia Britannica](https://www.britannica.com/science/Keplers-laws-of-planetary-motion)). Essentially, the distance of a planet from its star is proportional to the length of its year. In this case, I used Astronomical Units (AU; ~150,000,000 km) to represent the distance from the star to the planet. Using astronomical units is helpful in this case because they are far more manageable and, since the distance from the Earth to the Sun is approximately 1 AU, they are far more interpretable. Although, if one is able to hold the thought of 1,636,025,600 football fields in their head, that would also be [a viable option](https://www.reddit.com/r/memes/comments/a7hnx7/daaaaaaaaamn_never_knew_that/).
 
 I also added a column indicating whether the planet was featured in the original trilogy using data from [Wikipedia](https://en.wikipedia.org/wiki/List_of_Star_Wars_planets_and_moons). Finally, I used data from [NASA](https://nssdc.gsfc.nasa.gov/planetary/factsheet/) and [Ask an Astronomer](http://curious.astro.cornell.edu/about-us/56-our-solar-system/planets-and-dwarf-planets/general-questions/214-how-far-is-each-planet-from-earth-intermediate) to add the first five planets in the Solar System to the dataset, including their AUs, orbital periods, and their radii. 
 
@@ -858,16 +861,12 @@ plot3 <- planets %>%
           plot.caption  = element_text(hjust = 0.5),
           axis.text     = element_blank(),
           axis.title    = element_blank(),
-          plot.margin   = unit(c(1, 2, 1, 2), "cm")) #+
-    #geom_label_repel(data = . %>% filter(!is.na(orig_tril)), aes(label = name),
-    #                 color              = "#00ddff",
-    #                 fill               =        NA,
-    #                 size               =         8,
-    #                 min.segment.length =         0,
-    #                 nudge_y            =       2.1)
+          plot.margin   = unit(c(1, 7, 1, 7), "cm")) 
+
+# animate the plot with a duration of 55 and a fps of 6
 animate(plot3, 
-        duration = 30,
-        fps      = 5)
+        duration = 55,
+        fps      = 12)
 ```
 
 *** 
@@ -882,7 +881,7 @@ In order to have planets with orbits less than 5110 days continue orbiting once 
 
 ### Version Four
 
-```{r planets_viz_v4, fig.height = 12, warning = FALSE}
+```{r planets_viz_v4, warning = FALSE}
 # create function for calculating x axis locations during the time it takes
 # bespin to make one rotation. There has to be enough slices to obscure the
 # geom_points jumping back at the end of Bespin's year
@@ -990,17 +989,19 @@ planets_plot <- planets %>%
           plot.caption    = element_text(hjust = 0.5),
           axis.text       = element_blank(),
           axis.title      = element_blank(),
-          plot.margin     = unit(c(1, 5, 1, 7), "cm"),
+          plot.margin     = unit(c(1, 4, 1, 7), "cm"),
           legend.position = "right") +
     # drop radius legend and change the size of the legend points
     guides(size = FALSE,
            colour = guide_legend(override.aes = list(size  = 5,
                                                      alpha = 1)))
 
-# animate plot with a duration of 55 and a fps of  48
-animate(planets_plot, 
-        nframes = 24 * 55,
-        fps     = 24)
+# animate plot with a duration of 55 and a fps of 12
+animate(planets_plot,
+        nframes  = 12 * 55,
+        fps      = 12)
+
+
 
 ``` 
 
